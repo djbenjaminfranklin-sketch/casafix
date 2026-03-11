@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "480428910205",
+    "project_id": "casafix-d45da",
+    "storage_bucket": "casafix-d45da.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:480428910205:android:2bdff2f889e961c95eb314",
+        "android_client_info": {
+          "package_name": "com.casafix"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCbROqVeSlwlhIg8aN2RS9X2XSDyBiVMVI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
