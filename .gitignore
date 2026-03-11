@@ -71,6 +71,10 @@ yarn-error.log
 .env.*
 !.env.example
 
+# Firebase config (contains API keys flagged by GitHub)
+android/app/google-services.json
+ios/CasaFix/GoogleService-Info.plist
+
 # Yarn
 .yarn/*
 !.yarn/patches
