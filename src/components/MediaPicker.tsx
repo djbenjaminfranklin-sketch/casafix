@@ -7,6 +7,7 @@ import {
   Image,
   ScrollView,
   Alert,
+  TextInput,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import { launchCamera, launchImageLibrary } from "react-native-image-picker";
@@ -18,9 +19,13 @@ type Props = {
   media: MediaItem[];
   onMediaChange: (media: MediaItem[]) => void;
   maxItems?: number;
+  description: string;
+  onDescriptionChange: (text: string) => void;
+  showDescription?: boolean;
+  photoOnly?: boolean;
 };
 
-export default function MediaPicker({ media, onMediaChange, maxItems = 5 }: Props) {
+export default function MediaPicker({ media, onMediaChange, maxItems = 5, description, onDescriptionChange, showDescription = true, photoOnly = false }: Props) {
   const { t } = useTranslation();
 
   function handleAdd() {
@@ -29,21 +34,26 @@ export default function MediaPicker({ media, onMediaChange, maxItems = 5 }: Prop
       return;
     }
 
-    Alert.alert(t("media.addTitle"), t("media.addDesc"), [
+    const options: any[] = [
       {
         text: t("media.takePhoto"),
         onPress: () => pickFromCamera("photo"),
       },
-      {
+    ];
+    if (!photoOnly) {
+      options.push({
         text: t("media.recordVideo"),
         onPress: () => pickFromCamera("video"),
-      },
+      });
+    }
+    options.push(
       {
         text: t("media.fromGallery"),
         onPress: () => pickFromGallery(),
       },
       { text: t("priceConfirm.no"), style: "cancel" },
-    ]);
+    );
+    Alert.alert(t("media.addTitle"), t("media.addDesc"), options);
   }
 
   async function pickFromCamera(mediaType: "photo" | "video") {
@@ -71,7 +81,7 @@ export default function MediaPicker({ media, onMediaChange, maxItems = 5 }: Prop
   async function pickFromGallery() {
     const remaining = maxItems - media.length;
     const result = await launchImageLibrary({
-      mediaType: "mixed",
+      mediaType: photoOnly ? "photo" : "mixed",
       selectionLimit: remaining,
       quality: 0.8,
       videoQuality: "medium",
@@ -128,6 +138,24 @@ export default function MediaPicker({ media, onMediaChange, maxItems = 5 }: Prop
           </TouchableOpacity>
         )}
       </ScrollView>
+
+      {media.length > 0 && showDescription && (
+        <View style={styles.descriptionContainer}>
+          <Text style={styles.descriptionLabel}>
+            {t("media.descriptionLabel")}<Text style={styles.requiredAsterisk}> *</Text>
+          </Text>
+          <TextInput
+            style={styles.descriptionInput}
+            multiline
+            placeholder={t("media.descriptionPlaceholder")}
+            placeholderTextColor="#9ca3af"
+            value={description}
+            onChangeText={onDescriptionChange}
+            maxLength={500}
+          />
+          <Text style={styles.charCount}>{description.length}/500</Text>
+        </View>
+      )}
     </View>
   );
 }
@@ -168,4 +196,34 @@ const styles = StyleSheet.create({
     alignItems: "center", justifyContent: "center",
   },
   addText: { fontSize: 10, color: COLORS.primary, marginTop: 2 },
+  descriptionContainer: {
+    marginTop: 12,
+  },
+  descriptionLabel: {
+    fontSize: 13,
+    fontWeight: "600",
+    color: "#1f2937",
+    marginBottom: 6,
+  },
+  requiredAsterisk: {
+    color: "#ef4444",
+    fontWeight: "700",
+  },
+  descriptionInput: {
+    backgroundColor: "#FFFFFF",
+    borderWidth: 1,
+    borderColor: "#e5e7eb",
+    borderRadius: RADIUS.sm,
+    padding: 12,
+    minHeight: 80,
+    fontSize: 14,
+    color: "#1f2937",
+    textAlignVertical: "top",
+  },
+  charCount: {
+    fontSize: 11,
+    color: COLORS.textLight,
+    textAlign: "right",
+    marginTop: 4,
+  },
 });

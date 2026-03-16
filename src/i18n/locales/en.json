@@ -10,7 +10,7 @@
     "home": "Home",
     "search": "Search",
     "messages": "Messages",
-    "favorites": "Favorites",
+    "favorites": "Favourites",
     "profile": "Profile"
   },
   "categories": {
@@ -105,7 +105,7 @@
     "smoke_detector_install": "Smoke detector installation",
     "electrical_diagnosis": "Electrical diagnosis",
     "simple_door_unlock": "Simple door unlocking",
-    "armored_door_unlock": "Armored door unlocking",
+    "armored_door_unlock": "Armoured door unlocking",
     "jammed_door_open": "Jammed door opening",
     "lock_1point_install": "1-point lock installation",
     "lock_3point_install": "3-point lock installation",
@@ -212,8 +212,8 @@
   "payment": {
     "book": "Book now",
     "maxPrice": "Max price",
-    "realPriceNote": "The actual price will be set on-site by the tradesperson",
-    "explanation": "The maximum amount is pre-authorised on your card. Only the actual price, set by the tradesperson after the job, will be charged.",
+    "realPriceNote": "The actual price will be set on-site by the artisan",
+    "explanation": "The maximum amount is pre-authorised on your card. Only the actual price, set by the artisan after the job, will be charged.",
     "preauth": "Pre-authorisation",
     "charged": "Amount charged",
     "secure": "100% secure payment"
@@ -238,11 +238,12 @@
     "artisanOnWay": "Artisan on the way",
     "call": "Call",
     "chat": "Chat",
+    "callUnavailable": "Phone calls are not available on this device",
     "confirmed": "Booking confirmed",
     "confirmedDesc": "You will receive a confirmation by email and notification",
     "backHome": "Back to home",
     "today": "Today",
-    "guarantee2h": "At your door within 2 hours",
+    "guarantee2h": "At your door within 2 hours max",
     "lateCancel": "Free cancellation if the artisan is late",
     "punctuality": "Punctuality"
   },
@@ -256,7 +257,10 @@
     "hasAccount": "Already have an account?",
     "fillAllFields": "Please fill in all fields",
     "success": "Registration successful",
-    "checkEmail": "Check your email to confirm your account"
+    "checkEmail": "Check your email to confirm your account",
+    "continueWithApple": "Continue with Apple",
+    "continueWithGoogle": "Continue with Google",
+    "orContinueWith": "or continue with"
   },
   "review": {
     "title": "Leave a review",
@@ -273,6 +277,24 @@
     "thankYou": "Thank you!",
     "submitted": "Your review helps improve the service"
   },
+  "report": {
+    "title": "Report a problem",
+    "about": "Report about",
+    "selectReason": "Please select a reason",
+    "descriptionLabel": "Details (optional)",
+    "descriptionPlaceholder": "Describe what happened...",
+    "submit": "Send report",
+    "thankYou": "Report sent",
+    "submitted": "Our team will review your report and take appropriate action.",
+    "reasons": {
+      "off_app_payment": "Proposed payment outside the app",
+      "no_show": "Did not show up",
+      "inappropriate_behavior": "Inappropriate behaviour",
+      "price_dispute": "Price dispute",
+      "poor_quality": "Poor quality work",
+      "other": "Other"
+    }
+  },
   "priceConfirm": {
     "title": "Confirm price",
     "proposes": "proposes",
@@ -280,7 +302,7 @@
     "refuse": "Decline",
     "saved": "You saved",
     "guarantee": "Secure payment with 1-year guarantee. Only the confirmed price is charged, the rest is automatically released.",
-    "cancelPenalty": "If you cancel after the artisan has arrived, the full pre-authorized amount will be charged.",
+    "cancelPenalty": "If you cancel after the artisan has arrived, the full pre-authorised amount will be charged.",
     "cancelTitle": "Cancel service?",
     "cancelWarning": "If the artisan has already arrived, you will be charged the full amount as a penalty.",
     "yesCancel": "Yes, cancel",
@@ -295,8 +317,8 @@
     "deposit": "Deposit / Guarantee",
     "additionalCharge": "Additional charge",
     "lessThanDeposit": "Price lower than deposit",
-    "displacementWarning": "If you decline, a {{fee}}€ displacement fee will be charged for the artisan's travel.",
-    "displacementFeeInfo": "If you decline the quote, a {{fee}}€ displacement fee will apply for the artisan's travel.",
+    "displacementWarning": "If you decline, a €{{fee}} displacement fee will be charged for the artisan's travel.",
+    "displacementFeeInfo": "If you decline the quote, a €{{fee}} displacement fee will apply for the artisan's travel.",
     "additionalPaymentError": "Error charging the additional amount",
     "leaveReview": "Leave a review"
   },
@@ -317,6 +339,7 @@
       "pending_client_confirmation": "Validation pending",
       "work_completed": "Work completed",
       "completed": "Completed",
+      "disputed": "Dispute pending",
       "cancelled": "Cancelled"
     }
   },
@@ -324,7 +347,7 @@
     "empty": "No messages yet",
     "placeholder": "Type a message..."
   },
-  "favorites": { "empty": "No favorites yet", "emptyDesc": "Artisans you mark as favorites will appear here" },
+  "favorites": { "empty": "No favourites yet", "emptyDesc": "Artisans you mark as favourites will appear here" },
   "media": {
     "title": "Photos and videos",
     "subtitle": "Add photos or videos of the issue so the artisan can prepare",
@@ -335,7 +358,27 @@
     "recordVideo": "Record a video",
     "fromGallery": "Choose from gallery",
     "maxReached": "Limit reached",
-    "maxReachedDesc": "Maximum {{max}} files"
+    "maxReachedDesc": "Maximum {{max}} files",
+    "descriptionLabel": "Problem description",
+    "descriptionPlaceholder": "Describe the problem you're experiencing...",
+    "descriptionRequired": "Description required",
+    "descriptionRequiredDesc": "Please describe the problem so the artisan can prepare"
+  },
+  "diagnostic": {
+    "title": "AI Analysis",
+    "analyze": "Analyse with AI",
+    "analyzing": "Analysing...",
+    "severity": "Severity",
+    "estimatedPrice": "Estimated price",
+    "materials": "Likely materials",
+    "tips": "Tips for the artisan",
+    "low": "Low",
+    "medium": "Medium",
+    "high": "High",
+    "urgent": "Urgent",
+    "disclaimer": "This estimate is provided by AI for informational purposes only. The final price will be determined by the artisan on site. Work will only begin after your approval of the quote.",
+    "error": "Error",
+    "analysisFailed": "The analysis failed"
   },
   "completion": {
     "title": "Validate work",
@@ -345,7 +388,7 @@
     "autoConfirmSoon": "Auto-confirmation imminent",
     "autoConfirmInfo": "If you don't respond within 48h, the payment will be automatically released to the artisan.",
     "confirmTitle": "Validate the work?",
-    "confirmDesc": "{{price}}€ will be released to {{artisan}}. This action cannot be undone.",
+    "confirmDesc": "€{{price}} will be released to {{artisan}}. This action cannot be undone.",
     "yesConfirm": "Yes, validate",
     "confirm": "Validate and pay",
     "dispute": "Issue",
@@ -373,13 +416,33 @@
     "isWorkDoneDesc": "By confirming, the payment will be released to the artisan. Make sure all work has been completed to your satisfaction.",
     "confirmComplete": "Confirm completion",
     "confirmCompleteTitle": "Confirm the work?",
-    "confirmCompleteDesc": "{{price}}€ will be released to {{artisan}}. This action cannot be undone.",
+    "confirmCompleteDesc": "€{{price}} will be released to {{artisan}}. This action cannot be undone.",
     "yesConfirm": "Yes, confirm",
     "confirmWarning": "Once confirmed, the payment will be transferred to the artisan. Make sure all work meets your expectations.",
     "guaranteeReminder": "Remember: all work is covered by our 1-year guarantee.",
     "workDone": "Work completed!",
     "artisanWillBePaid": "Payment has been released to the artisan. Thank you for using CasaFix!",
     "released": "Amount released"
+  },
+  "visualization": {
+    "title": "AI Visualisation",
+    "visualize": "Visualise the result",
+    "generating": "Generating...",
+    "before": "Before",
+    "after": "After",
+    "disclaimer": "This visualisation is AI-generated for illustrative purposes. The final result may vary depending on materials and technical constraints.",
+    "paymentConfirm": "Generate a 3D visualisation of your project for only €2. You'll see the result in seconds.",
+    "payAndGenerate": "Generate for €2",
+    "wantPlan3D": "I want a 3D plan",
+    "authorizeConfirm": "The artisan will be able to generate a 3D visualisation of your project. €2 will be added to your bill.",
+    "authorizeBtn": "Authorise for €2",
+    "authorized": "3D plan authorised",
+    "generationFailed": "Generation failed",
+    "testLabel": "Simulate artisan generation",
+    "generate3D": "Generate 3D"
+  },
+  "pricing": {
+    "onQuote": "On quote"
   },
   "priceRange": "Price range",
   "noSurcharge": "No surcharge 24/7",
@@ -405,11 +468,11 @@
     "privacyTitle": "Privacy Policy",
     "lastUpdated": "Last updated",
     "cgu": {
-      "article1": { "title": "Article 1 – Purpose", "content": "These Terms and Conditions govern the use of the CasaFix mobile application, a platform connecting homeowners with qualified tradespeople on the Costa del Sol (Marbella, Estepona, Fuengirola, Málaga and surrounding areas)." },
+      "article1": { "title": "Article 1 – Purpose", "content": "These Terms and Conditions govern the use of the CasaFix mobile application, a platform connecting homeowners with qualified artisans on the Costa del Sol (Marbella, Estepona, Fuengirola, Málaga and surrounding areas)." },
       "article2": { "title": "Article 2 – Access", "content": "Access to the Application is free. Some services may require creating a user account. Users agree to provide accurate information and maintain the confidentiality of their login credentials." },
-      "article3": { "title": "Article 3 – Services", "content": "CasaFix connects users with tradespeople for: plumbing, electrical, locksmith, heating, AC, pest control, appliances, glazing, small works, renovation, pool and garden services. Displayed prices are indicative. A free, no-obligation quote is provided before any work." },
-      "article4": { "title": "Article 4 – Pricing & Payment", "content": "Prices shown are indicative ranges including VAT. No surcharge is applied for evenings, weekends or holidays. Payment is exclusively online: upon booking, the maximum amount is pre-authorised on the customer's card. After the job, the tradesperson enters the actual price and only that amount is charged. The difference is automatically released. An invoice is sent by email within 48 hours." },
-      "article5": { "title": "Article 5 – Guarantees", "content": "All work carried out by CasaFix network tradespeople comes with a 1-year guarantee on parts and labour. A free return visit is arranged within 48 hours for any related issues. Partner tradespeople carry professional liability insurance." },
+      "article3": { "title": "Article 3 – Services", "content": "CasaFix connects users with artisans for: plumbing, electrical, locksmith, heating, AC, pest control, appliances, glazing, small works, renovation, pool and garden services. Displayed prices are indicative. A free, no-obligation quote is provided before any work." },
+      "article4": { "title": "Article 4 – Pricing & Payment", "content": "Prices shown are indicative ranges including VAT. No surcharge is applied for evenings, weekends or holidays. Payment is exclusively online: upon booking, the maximum amount is pre-authorised on the customer's card. After the job, the artisan enters the actual price and only that amount is charged. The difference is automatically released. An invoice is sent by email within 48 hours." },
+      "article5": { "title": "Article 5 – Guarantees", "content": "All work carried out by CasaFix network artisans comes with a 1-year guarantee on parts and labour. A free return visit is arranged within 48 hours for any related issues. Partner artisans carry professional liability insurance." },
       "article6": { "title": "Article 6 – Liability", "content": "CasaFix acts as an intermediary and is not directly responsible for the quality of work, though it commits to selecting qualified and insured professionals." },
       "article7": { "title": "Article 7 – Personal Data", "content": "CasaFix complies with GDPR and Spanish LOPD regulations. Data collected is used solely for service operation and is never shared with third parties without consent." },
       "article8": { "title": "Article 8 – Intellectual Property", "content": "All elements of the Application are protected by intellectual property law. Reproduction without authorisation is prohibited." },
@@ -426,11 +489,62 @@
     },
     "privacy": {
       "dataTitle": "Data Collection",
-      "dataContent": "CasaFix collects: name, email, phone number and location. This data is necessary for service operation, in compliance with GDPR and Spanish LOPD.",
+      "dataContent": "CasaFix collects the following personal data: name, surname, email, phone number and location. This data is necessary for service operation, in compliance with GDPR and Spanish LOPD.",
       "cookiesTitle": "Cookies",
-      "cookiesContent": "The application uses functional and analytical cookies. You can modify your preferences at any time in the app settings.",
+      "cookiesContent": "The application uses functional and analytical cookies. You can modify your preferences at any time.",
       "rightsTitle": "Your Rights",
       "rightsContent": "You have the right to access, rectify, delete and port your data. Contact: contact@casafix.es. You may also file a complaint with the Spanish AEPD."
     }
+  },
+  "account": {
+    "phone": "Phone",
+    "phonePlaceholder": "+34 600 000 000",
+    "save": "Save",
+    "saved": "Changes saved",
+    "saveError": "Error saving changes",
+    "signOut": "Sign out",
+    "signOutTitle": "Sign out",
+    "signOutConfirm": "Are you sure you want to sign out?",
+    "deleteAccount": "Delete my account"
+  },
+  "notifications": {
+    "pushTitle": "Push notifications",
+    "bookingUpdates": "Bookings",
+    "bookingUpdatesDesc": "Updates on your active bookings",
+    "messages": "Messages",
+    "messagesDesc": "New messages from artisans",
+    "reminders": "Reminders",
+    "remindersDesc": "Upcoming appointment reminders",
+    "promotions": "Promotions",
+    "promotionsDesc": "Special offers and discounts",
+    "note": "You can also manage notifications in your device settings"
+  },
+  "paymentSettings": {
+    "howItWorks": "How it works",
+    "secureTitle": "Secure payment",
+    "secureDesc": "All payments are protected by Stripe, the world leader in online payments",
+    "preauthTitle": "Pre-authorisation",
+    "preauthDesc": "Only the actual amount is charged after the service. The rest is automatically released",
+    "invoiceTitle": "Invoices",
+    "invoiceDesc": "Automatically receive your invoice by email after each service",
+    "methodTitle": "Payment method",
+    "addedAtBooking": "Card added during booking",
+    "methodNote": "Your card is securely saved during your first booking",
+    "poweredBy": "Secure payments by"
+  },
+  "help": {
+    "contactTitle": "Contact us",
+    "email": "Email",
+    "faqTitle": "Frequently asked questions",
+    "faq1q": "How does payment work?",
+    "faq1a": "When booking, the maximum amount is pre-authorised on your card. After the service, only the actual price set by the artisan is charged. The difference is automatically released.",
+    "faq2q": "Can I cancel a booking?",
+    "faq2a": "Once a booking is confirmed, a €75 displacement fee applies. You may however decline the work and only pay the displacement fee. This system prevents cancellation abuse while leaving you the choice.",
+    "faq3q": "What is the guarantee?",
+    "faq3a": "All services are covered by a 1-year guarantee on parts and labour. If you have an issue, contact us.",
+    "faq4q": "How do I report a problem?",
+    "faq4a": "From your booking page, you can report a problem. Our team will review your case within 24 hours.",
+    "faq5q": "Are artisans verified?",
+    "faq5a": "All artisans are verified, insured for professional liability, and hold the required qualifications."
   }
 }

@@ -19,6 +19,7 @@ export async function createBooking(params: {
   scheduledSlot?: string;
   latitude?: number;
   longitude?: number;
+  description?: string;
 }): Promise<{ data: Booking | null; error: any }> {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return { data: null, error: { message: "Not authenticated" } };
@@ -39,6 +40,7 @@ export async function createBooking(params: {
       scheduled_slot: params.scheduledSlot || null,
       client_latitude: params.latitude || null,
       client_longitude: params.longitude || null,
+      description: params.description || null,
     })
     .select()
     .single();
@@ -101,6 +103,16 @@ export async function cancelBooking(bookingId: string) {
   const { error } = await supabase
     .from("bookings")
     .update({ status: "cancelled" })
+    .eq("id", bookingId);
+
+  return { error };
+}
+
+// Authorize 3D visualization (client authorizes, artisan can then generate)
+export async function authorizeVisualization(bookingId: string) {
+  const { error } = await supabase
+    .from("bookings")
+    .update({ visualization_authorized: true })
     .eq("id", bookingId);
 
   return { error };

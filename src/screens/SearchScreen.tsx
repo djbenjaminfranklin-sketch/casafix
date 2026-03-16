@@ -133,7 +133,7 @@ export default function SearchScreen() {
                   <Text style={styles.resultName}>{t(`services.${item.serviceId}`)}</Text>
                   <Text style={styles.resultCategory}>{t(`categories.${item.categoryId}`)}</Text>
                 </View>
-                <Text style={styles.resultPrice}>{item.priceRange}</Text>
+                <Text style={styles.resultPrice}>{item.priceRange === "__onQuote__" ? t("pricing.onQuote") : item.priceRange}</Text>
               </TouchableOpacity>
             );
           }}

@@ -134,7 +134,7 @@ export default function CategoryDetailScreen({ route, navigation }: Props) {
                         </Text>
                         <View style={styles.priceBox}>
                           <Text style={styles.priceLabel}>{t("payment.maxPrice")}</Text>
-                          <Text style={styles.servicePrice}>{svc.priceRange}</Text>
+                          <Text style={styles.servicePrice}>{svc.priceRange === "__onQuote__" ? t("pricing.onQuote") : svc.priceRange}</Text>
                         </View>
                       </View>
                       <Text style={styles.priceNote}>{t("payment.realPriceNote")}</Text>

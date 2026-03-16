@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -8,15 +8,21 @@ import {
   TouchableOpacity,
   ScrollView,
   Dimensions,
+  Alert,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import { useTranslation } from "react-i18next";
 import { CATEGORIES } from "../constants/categories";
 import { COLORS, SPACING, RADIUS } from "../constants/theme";
 import MediaPicker from "../components/MediaPicker";
+import DiagnosticCard from "../components/DiagnosticCard";
+
 import { MediaItem, uploadAllMedia } from "../services/media";
-import { createBooking } from "../services/bookings";
+import { createBooking, subscribeToBooking, getBookingWithArtisan } from "../services/bookings";
 import { supabase } from "../lib/supabase";
+import { Booking } from "../lib/database.types";
+import { analyzeProblem, DiagnosticResult } from "../services/ai-diagnostic";
+
 
 type Props = {
   route: {
@@ -67,6 +73,58 @@ export default function AppointmentBookingScreen({ route, navigation }: Props) {
   const [confirmed, setConfirmed] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [media, setMedia] = useState<MediaItem[]>([]);
+  const [description, setDescription] = useState("");
+  const [aiDiagnostic, setAiDiagnostic] = useState<DiagnosticResult | null>(null);
+  const [analyzingAi, setAnalyzingAi] = useState(false);
+  const [bookingId, setBookingId] = useState<string | null>(null);
+  // Subscribe to booking realtime updates (detect price_proposed)
+  useEffect(() => {
+    if (!bookingId) return;
+
+    const unsubscribe = subscribeToBooking(bookingId, async (updatedBooking: Booking) => {
+      if (updatedBooking.status === "price_proposed" && updatedBooking.proposed_price) {
+        const { data: fullBooking } = await getBookingWithArtisan(bookingId);
+        const artisanName = fullBooking?.artisan?.full_name || "";
+
+        navigation.replace("PriceConfirmation", {
+          bookingId,
+          serviceName,
+          artisanName,
+          categoryId,
+          depositAmount: updatedBooking.deposit_amount || updatedBooking.max_price,
+          proposedPrice: updatedBooking.proposed_price,
+          paymentIntentId: updatedBooking.stripe_payment_intent_id || "",
+          estimatedDays: updatedBooking.estimated_days || 1,
+          isMultiday: updatedBooking.is_multiday || false,
+        });
+      }
+    });
+
+    return unsubscribe;
+  }, [bookingId, navigation, serviceName]);
+
+  const handleAnalyze = async () => {
+    if (!description.trim()) {
+      Alert.alert(t("media.descriptionRequired"), t("media.descriptionRequiredDesc"));
+      return;
+    }
+    setAnalyzingAi(true);
+    try {
+      const result = await analyzeProblem({
+        mediaItems: media,
+        description: description.trim(),
+        serviceName,
+        categoryName: category ? t(`categories.${category.id}`) : "",
+        priceRange,
+      });
+      setAiDiagnostic(result);
+    } catch (e: any) {
+      console.warn("AI diagnostic failed:", e);
+      Alert.alert(t("diagnostic.error"), e.message || t("diagnostic.analysisFailed"));
+    } finally {
+      setAnalyzingAi(false);
+    }
+  };
 
   if (confirmed) {
     return (
@@ -78,6 +136,9 @@ export default function AppointmentBookingScreen({ route, navigation }: Props) {
           </View>
           <Text style={styles.confirmTitle}>{t("booking.confirmed")}</Text>
           <Text style={styles.confirmSubtitle}>{t("booking.confirmedDesc")}</Text>
+
+          {/* AI Diagnostic */}
+          {aiDiagnostic && <DiagnosticCard diagnostic={aiDiagnostic} />}
 
           <View style={styles.confirmDetails}>
             <View style={styles.confirmRow}>
@@ -191,7 +252,25 @@ export default function AppointmentBookingScreen({ route, navigation }: Props) {
         </View>
 
         {/* Photos / Videos */}
-        <MediaPicker media={media} onMediaChange={setMedia} maxItems={5} />
+        <MediaPicker media={media} onMediaChange={setMedia} maxItems={5} description={description} onDescriptionChange={setDescription} />
+
+        {/* Analyze button */}
+        {media.length > 0 && description.trim().length > 0 && !aiDiagnostic && (
+          <TouchableOpacity
+            style={[styles.analyzeBtn, analyzingAi && { opacity: 0.6 }]}
+            onPress={handleAnalyze}
+            activeOpacity={0.85}
+            disabled={analyzingAi}
+          >
+            <Icon name="sparkles" size={20} color={COLORS.primary} />
+            <Text style={styles.analyzeBtnText}>
+              {analyzingAi ? t("diagnostic.analyzing") : t("diagnostic.analyze")}
+            </Text>
+          </TouchableOpacity>
+        )}
+
+        {/* AI Diagnostic result */}
+        {aiDiagnostic && <DiagnosticCard diagnostic={aiDiagnostic} />}
 
         {/* Payment info */}
         <View style={styles.paymentInfo}>
@@ -203,9 +282,10 @@ export default function AppointmentBookingScreen({ route, navigation }: Props) {
       {/* Bottom button */}
       <View style={styles.bottomBar}>
         <TouchableOpacity
-          style={[styles.bookBtn, (selectedSlot === null || submitting) && styles.bookBtnDisabled]}
+          style={[styles.bookBtn, (selectedSlot === null || submitting || analyzingAi) && styles.bookBtnDisabled]}
           onPress={async () => {
             if (selectedSlot === null || submitting) return;
+
             setSubmitting(true);
 
             const selectedDate = days[selectedDay].date.toISOString().split("T")[0];
@@ -217,7 +297,12 @@ export default function AppointmentBookingScreen({ route, navigation }: Props) {
               type: "appointment",
               scheduledDate: selectedDate,
               scheduledSlot: TIME_SLOTS[selectedSlot],
+              description: description.trim() || undefined,
             });
+
+            if (booking) {
+              setBookingId(booking.id);
+            }
 
             // Upload media if any
             if (booking && media.length > 0) {
@@ -231,7 +316,7 @@ export default function AppointmentBookingScreen({ route, navigation }: Props) {
             setConfirmed(true);
           }}
           activeOpacity={0.85}
-          disabled={selectedSlot === null || submitting}
+          disabled={selectedSlot === null || submitting || analyzingAi}
         >
           <Icon name="card" size={20} color="#FFFFFF" />
           <Text style={styles.bookBtnText}>{t("payment.book")}</Text>
@@ -291,6 +376,12 @@ const styles = StyleSheet.create({
   slotCardActive: { backgroundColor: COLORS.primary },
   slotText: { fontSize: 13, fontWeight: "600", color: "#4b5563" },
   slotTextActive: { color: "#FFFFFF" },
+  analyzeBtn: {
+    flexDirection: "row", alignItems: "center", justifyContent: "center",
+    backgroundColor: "#f0f9ff", paddingVertical: 12, borderRadius: RADIUS.md, gap: 8,
+    marginHorizontal: SPACING.md, marginTop: SPACING.sm, borderWidth: 2, borderColor: COLORS.primary,
+  },
+  analyzeBtnText: { fontSize: 14, fontWeight: "700", color: COLORS.primary },
   paymentInfo: {
     flexDirection: "row", alignItems: "flex-start", gap: 8,
     marginHorizontal: SPACING.md, marginTop: SPACING.lg,

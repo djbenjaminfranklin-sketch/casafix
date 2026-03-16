@@ -33,11 +33,11 @@
     "garden_install": "Haveanlæg", "garden_repair": "Havereparation"
   },
   "services": {
-    "toilet_unclog": "Toilet tilstopning", "toilet_flush_repair": "Cisterne-reparation",
+    "toilet_unclog": "Toiletafløbning", "toilet_flush_repair": "Cisterne-reparation",
     "toilet_leak": "Toiletlækage", "toilet_install": "Toiletinstallation",
-    "toilet_macerator": "Kværn-installation", "sink_unclog": "Vask tilstopning",
+    "toilet_macerator": "Kværn-installation", "sink_unclog": "Vaskeafløbning",
     "sink_faucet_repair": "Armatur-reparation", "sink_faucet_install": "Armatur-installation",
-    "sink_leak": "Vaskelækage", "shower_unclog": "Bruser tilstopning",
+    "sink_leak": "Vaskelækage", "shower_unclog": "Bruserafløbning",
     "shower_faucet_repair": "Bruserblandings-reparation", "shower_seal_repair": "Bruserfugning",
     "shower_install": "Bruserinstallation", "pipe_leak_repair": "Rørlækage-reparation",
     "pipe_leak_detection": "Læksøgning", "pipe_replacement": "Rørskifte",
@@ -70,9 +70,9 @@
     "bedbug_thermal": "Termisk væggelusbehandling", "rat_treatment": "Rottebekæmpelse",
     "mouse_treatment": "Musebekæmpelse", "pest_contract": "Skadedyrsaftale",
     "pest_diagnosis": "Skadedyrsdiagnose", "washer_repair": "Vaskemaskine-reparation",
-    "washer_unclog": "Vaskemaskine rensning", "washer_leak": "Vaskemaskine-lækage",
+    "washer_unclog": "Vaskemaskinerensning", "washer_leak": "Vaskemaskine-lækage",
     "washer_install": "Vaskemaskine-installation", "dishwasher_repair": "Opvaskemaskine-reparation",
-    "dishwasher_unclog": "Opvaskemaskine rensning", "dishwasher_install": "Opvaskemaskine-installation",
+    "dishwasher_unclog": "Opvaskemaskinerensning", "dishwasher_install": "Opvaskemaskine-installation",
     "fridge_repair": "Køleskabsreparation", "fridge_compressor": "Kompressor-reparation",
     "oven_repair": "Ovnreparation", "cooktop_repair": "Kogepladereparation",
     "cooktop_replace": "Kogeplade-udskiftning", "dryer_repair": "Tørretumbler-reparation",
@@ -81,18 +81,18 @@
     "window_aluminium_install": "Aluminium-vinduesinstallation", "window_repair": "Vinduesreparation",
     "window_handle_replace": "Vindueshåndtag-udskiftning", "shelf_install": "Hyldemontage",
     "curtain_rod_install": "Gardinstangmontage", "tv_mount": "TV-vægmontering",
-    "mirror_install": "Spejmontage", "blinds_install": "Persiennemontage",
+    "mirror_install": "Spejlmontage", "blinds_install": "Persiennemontage",
     "furniture_assembly": "Møbelmontage", "kitchen_assembly": "Køkkenmontage",
     "wardrobe_assembly": "Garderobemontage", "door_repair": "Dørreparation",
     "furniture_repair": "Møbelreparation", "general_handyman": "Altmuligmand",
-    "room_painting": "Værelses maling", "facade_painting": "Facademaling",
+    "room_painting": "Værelsesmaling", "facade_painting": "Facademaling",
     "ceiling_painting": "Loftsmaling", "floor_tiling": "Gulvfliser",
     "wall_tiling": "Vægfliser", "tile_repair": "Flisereparation",
     "bathroom_renovation": "Badeværelsesrenovering", "kitchen_renovation": "Køkkenrenovering",
     "full_renovation": "Totalrenovering", "pool_cleaning": "Poolrengøring",
     "pool_chemical_balance": "Poolkemisk balance", "pool_maintenance_contract": "Poolvedligeholdelsesaftale",
     "pool_pump_repair": "Poolpumpereparation", "pool_filter_repair": "Poolfilterreparation",
-    "pool_leak_repair": "Poollækage", "pool_liner_repair": "Pool-linerreparation",
+    "pool_leak_repair": "Poollækagereparation", "pool_liner_repair": "Pool-linerreparation",
     "pool_heat_pump": "Poolvarmepumpe", "pool_cover_install": "Poolovertræk-installation",
     "pool_robot_install": "Poolrobotinstallation", "lawn_mowing": "Græsslåning",
     "hedge_trimming": "Hækklipning", "tree_pruning": "Træbeskæring",
@@ -127,6 +127,7 @@
     "artisanOnWay": "Håndværkeren er på vej",
     "call": "Ring",
     "chat": "Chat",
+    "callUnavailable": "Telefonopkald er ikke tilgængelige på denne enhed",
     "confirmed": "Booking bekræftet",
     "confirmedDesc": "Du modtager en bekræftelse via e-mail og notifikation",
     "backHome": "Tilbage til start",
@@ -145,7 +146,10 @@
     "hasAccount": "Har du allerede en konto?",
     "fillAllFields": "Udfyld venligst alle felter",
     "success": "Registrering gennemført",
-    "checkEmail": "Tjek din e-mail for at bekræfte din konto"
+    "checkEmail": "Tjek din e-mail for at bekræfte din konto",
+    "continueWithApple": "Fortsæt med Apple",
+    "continueWithGoogle": "Fortsæt med Google",
+    "orContinueWith": "eller fortsæt med"
   },
   "review": {
     "title": "Giv en anmeldelse",
@@ -161,6 +165,24 @@
     "submit": "Send anmeldelse",
     "thankYou": "Tak!",
     "submitted": "Din anmeldelse hjælper med at forbedre servicen"
+  },
+  "report": {
+    "title": "Rapporter et problem",
+    "about": "Rapport om",
+    "selectReason": "Vælg en årsag",
+    "descriptionLabel": "Detaljer (valgfrit)",
+    "descriptionPlaceholder": "Beskriv hvad der skete...",
+    "submit": "Send rapport",
+    "thankYou": "Rapport sendt",
+    "submitted": "Vores team vil gennemgå din rapport og tage de nødvendige skridt.",
+    "reasons": {
+      "off_app_payment": "Foreslog betaling uden for appen",
+      "no_show": "Mødte ikke op",
+      "inappropriate_behavior": "Upassende opførsel",
+      "price_dispute": "Pristvist",
+      "poor_quality": "Dårlig kvalitet af arbejdet",
+      "other": "Andet"
+    }
   },
   "priceConfirm": {
     "title": "Bekræft pris",
@@ -195,7 +217,7 @@
     "past": "Historik",
     "empty": "Ingen bookinger endnu",
     "actionNeeded": "Handling påkrævet",
-    "status": { "pending": "Afventer", "searching": "Søger", "matched": "Tildelt", "in_progress": "I gang", "price_proposed": "Pris foreslået", "price_accepted": "Pris accepteret", "work_in_progress": "Arbejde i gang", "pending_client_confirmation": "Afventer godkendelse", "work_completed": "Arbejde færdigt", "completed": "Afsluttet", "cancelled": "Annulleret" }
+    "status": { "pending": "Afventer", "searching": "Søger", "matched": "Tildelt", "in_progress": "I gang", "price_proposed": "Pris foreslået", "price_accepted": "Pris accepteret", "work_in_progress": "Arbejde i gang", "pending_client_confirmation": "Afventer godkendelse", "work_completed": "Arbejde færdigt", "completed": "Afsluttet", "disputed": "Tvist i gang", "cancelled": "Annulleret" }
   },
   "chat": { "empty": "Ingen beskeder endnu", "placeholder": "Skriv en besked..." },
   "favorites": { "empty": "Ingen favoritter endnu", "emptyDesc": "Håndværkere du markerer som favoritter vises her" },
@@ -209,7 +231,27 @@
     "recordVideo": "Optag video",
     "fromGallery": "Vælg fra galleri",
     "maxReached": "Grænse nået",
-    "maxReachedDesc": "Maksimalt {{max}} filer"
+    "maxReachedDesc": "Maksimalt {{max}} filer",
+    "descriptionLabel": "Problembeskrivelse",
+    "descriptionPlaceholder": "Beskriv problemet...",
+    "descriptionRequired": "Beskrivelse påkrævet",
+    "descriptionRequiredDesc": "Beskriv venligst problemet, så håndværkeren kan forberede sig"
+  },
+  "diagnostic": {
+    "title": "AI-analyse",
+    "analyze": "Analysér med AI",
+    "analyzing": "Analyserer...",
+    "severity": "Alvorlighed",
+    "estimatedPrice": "Estimeret pris",
+    "materials": "Sandsynligt materiale",
+    "tips": "Tips til håndværkeren",
+    "low": "Lav",
+    "medium": "Middel",
+    "high": "Høj",
+    "urgent": "Akut",
+    "disclaimer": "Dette estimat er leveret af AI kun til orientering. Den endelige pris fastsættes af håndværkeren på stedet. Arbejdet påbegyndes først efter din godkendelse af tilbuddet.",
+    "error": "Fejl",
+    "analysisFailed": "Analysen mislykkedes"
   },
   "completion": {
     "title": "Godkend arbejde",
@@ -255,6 +297,8 @@
     "artisanWillBePaid": "Betalingen er frigivet til håndværkeren. Tak fordi du bruger CasaFix!",
     "released": "Frigivet beløb"
   },
+  "visualization": { "title": "AI-visualisering", "visualize": "Visualiser resultatet", "generating": "Genererer...", "before": "Før", "after": "Efter", "disclaimer": "Denne visualisering er AI-genereret til illustrationsformål. Det endelige resultat kan variere afhængigt af materialer og tekniske begrænsninger.", "paymentConfirm": "Generer en 3D-visualisering af dit projekt for kun 2€. Du ser resultatet på sekunder.", "payAndGenerate": "Generer for 2€", "wantPlan3D": "Jeg vil have en 3D-plan", "authorizeConfirm": "Håndværkeren kan generere en 3D-visualisering af dit projekt. 2€ tilføjes til din regning.", "authorizeBtn": "Godkend for 2€", "authorized": "3D-plan godkendt", "generationFailed": "Genereringen mislykkedes", "testLabel": "Simuler håndværkerens generering", "generate3D": "Generer 3D" },
+  "pricing": { "onQuote": "Efter tilbud" },
   "priceRange": "Prisinterval",
   "noSurcharge": "Uden tillæg 24/7", "guarantee1year": "1 års garanti",
   "response24h": "Svar inden 24t", "selectService": "Vælg tjeneste",
@@ -291,5 +335,56 @@
       "cookiesTitle": "Cookies", "cookiesContent": "Appen bruger funktionelle og analytiske cookies.",
       "rightsTitle": "Dine rettigheder", "rightsContent": "Du har ret til indsigt, rettelse og sletning af dine data. Kontakt: contact@casafix.es."
     }
+  },
+  "account": {
+    "phone": "Telefon",
+    "phonePlaceholder": "+34 600 000 000",
+    "save": "Gem",
+    "saved": "Ændringer gemt",
+    "saveError": "Fejl ved gemning",
+    "signOut": "Log ud",
+    "signOutTitle": "Log ud",
+    "signOutConfirm": "Er du sikker på, at du vil logge ud?",
+    "deleteAccount": "Slet min konto"
+  },
+  "notifications": {
+    "pushTitle": "Push-notifikationer",
+    "bookingUpdates": "Bookinger",
+    "bookingUpdatesDesc": "Opdateringer om dine aktive bookinger",
+    "messages": "Beskeder",
+    "messagesDesc": "Nye beskeder fra håndværkere",
+    "reminders": "Påmindelser",
+    "remindersDesc": "Påmindelser om kommende aftaler",
+    "promotions": "Tilbud",
+    "promotionsDesc": "Specialtilbud og rabatter",
+    "note": "Du kan også administrere notifikationer i enhedens indstillinger"
+  },
+  "paymentSettings": {
+    "howItWorks": "Sådan fungerer det",
+    "secureTitle": "Sikker betaling",
+    "secureDesc": "Alle betalinger er beskyttet af Stripe, verdensledende inden for onlinebetaling",
+    "preauthTitle": "Forhåndsautorisation",
+    "preauthDesc": "Kun det faktiske beløb debiteres efter servicen. Resten frigives automatisk",
+    "invoiceTitle": "Fakturaer",
+    "invoiceDesc": "Modtag automatisk din faktura per e-mail efter hver service",
+    "methodTitle": "Betalingsmetode",
+    "addedAtBooking": "Kort tilføjet ved booking",
+    "methodNote": "Dit kort gemmes sikkert ved din første booking",
+    "poweredBy": "Sikre betalinger med"
+  },
+  "help": {
+    "contactTitle": "Kontakt os",
+    "email": "E-mail",
+    "faqTitle": "Ofte stillede spørgsmål",
+    "faq1q": "Hvordan fungerer betalingen?",
+    "faq1a": "Ved booking forhåndsautoriseres maksimumsbeløbet på dit kort. Efter servicen debiteres kun den faktiske pris. Forskellen frigives automatisk.",
+    "faq2q": "Kan jeg annullere en booking?",
+    "faq2a": "Når en booking er bekræftet, pålægges 75€ i udkørselsgebyr. Du kan dog afvise arbejdet og kun betale udkørselsgebyret. Dette system forhindrer misbrug af annulleringer og giver dig valget.",
+    "faq3q": "Hvad er garantien?",
+    "faq3a": "Alle services er dækket af 1 års garanti på dele og arbejde. Kontakt os ved problemer.",
+    "faq4q": "Hvordan rapporterer jeg et problem?",
+    "faq4a": "Fra din bookingside kan du rapportere et problem. Vores team gennemgår din sag inden for 24 timer.",
+    "faq5q": "Er håndværkerne verificerede?",
+    "faq5a": "Alle håndværkere er verificerede, erhvervsansvarsforsikrede og har de nødvendige kvalifikationer."
   }
 }

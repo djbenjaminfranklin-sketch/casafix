@@ -29,7 +29,7 @@
     "assembly": "Møbelmontasje", "repairs": "Reparasjoner", "painting": "Maling",
     "tiling": "Flislegging", "general_renovation": "Totalrenovering",
     "pool_maintenance": "Bassengvedlikehold", "pool_repair": "Bassengreparasjon",
-    "pool_install": "Bassengutstyr", "garden_maintenance": "Hagestell",
+    "pool_install": "Bassenginstallasjon", "garden_maintenance": "Hagestell",
     "garden_install": "Hageanlegg", "garden_repair": "Hagereparasjon"
   },
   "services": {
@@ -57,7 +57,7 @@
     "door_hinge_repair": "Hengslereparasjon", "door_install": "Dørinstallasjon",
     "shutter_repair": "Persiennreparasjon", "shutter_install": "Persienninstallasjon",
     "shutter_motor_install": "Persiennmotor-installasjon", "boiler_repair": "Kjelreparasjon",
-    "boiler_maintenance": "Årlig kjelsservice", "boiler_install": "Kjelinstallasjon",
+    "boiler_maintenance": "Årlig kjelservice", "boiler_install": "Kjelinstallasjon",
     "hot_water_tank_repair": "VVT-reparasjon", "hot_water_tank_install": "VVT-installasjon",
     "hot_water_tank_leak": "VVT-lekkasje", "radiator_repair": "Radiatorreparasjon",
     "radiator_install": "Radiatorinstallasjon", "underfloor_heating_repair": "Gulvvarme-reparasjon",
@@ -66,7 +66,7 @@
     "ac_multi_split_install": "Multi-split AC-installasjon", "heat_pump_install": "Varmepumpe-installasjon",
     "ac_annual_maintenance": "Årlig AC-service", "ac_filter_cleaning": "AC-filterrens",
     "cockroach_treatment": "Kakerlakkbekjempelse", "ant_treatment": "Maurbekjempelse",
-    "wasp_hornet_removal": "Veps-/hornfjerning", "bedbug_treatment": "Veggedyrbekjempelse",
+    "wasp_hornet_removal": "Fjerning av veps/kjempeveps", "bedbug_treatment": "Veggedyrbekjempelse",
     "bedbug_thermal": "Termisk veggedyrbehandling", "rat_treatment": "Rottebekjempelse",
     "mouse_treatment": "Musebekjempelse", "pest_contract": "Skadedyravtale",
     "pest_diagnosis": "Skadedyrdiagnose", "washer_repair": "Vaskemaskinreparasjon",
@@ -77,7 +77,7 @@
     "oven_repair": "Ovnsreparasjon", "cooktop_repair": "Koketoppreparasjon",
     "cooktop_replace": "Koketoppbytte", "dryer_repair": "Tørketrommelreparasjon",
     "single_glass_replace": "Enkelglassbytte", "double_glass_replace": "Dobbeltglassbytte",
-    "glass_emergency": "Akutt glassing", "window_pvc_install": "PVC-vinduinstallasjon",
+    "glass_emergency": "Akutt glassreparasjon", "window_pvc_install": "PVC-vinduinstallasjon",
     "window_aluminium_install": "Aluminiumsvindu-installasjon", "window_repair": "Vindusreparasjon",
     "window_handle_replace": "Vindushåndtaksbytte", "shelf_install": "Hyllemontasje",
     "curtain_rod_install": "Gardinstangmontasje", "tv_mount": "TV-veggmontering",
@@ -94,9 +94,9 @@
     "pool_pump_repair": "Bassengpumpereparasjon", "pool_filter_repair": "Bassengfilterreparasjon",
     "pool_leak_repair": "Bassenglekkasje", "pool_liner_repair": "Basseng-linerreparasjon",
     "pool_heat_pump": "Bassengvarmepumpe", "pool_cover_install": "Bassengtrekk-installasjon",
-    "pool_robot_install": "Bassengrobotinstallasjon", "lawn_mowing": "Gresskliipping",
+    "pool_robot_install": "Bassengrobotinstallasjon", "lawn_mowing": "Gressklipping",
     "hedge_trimming": "Hekkklipping", "tree_pruning": "Trebeskjæring",
-    "garden_cleanup": "Hagestell", "irrigation_install": "Vanningsanlegg-installasjon",
+    "garden_cleanup": "Hagerydding", "irrigation_install": "Vanningsanlegg-installasjon",
     "lawn_install": "Plenlegging", "garden_design": "Hagedesign",
     "irrigation_repair": "Vanningsanlegg-reparasjon", "fence_repair": "Gjerdereparasjon"
   },
@@ -127,6 +127,7 @@
     "artisanOnWay": "Håndverkeren er på vei",
     "call": "Ring",
     "chat": "Chat",
+    "callUnavailable": "Telefonsamtaler er ikke tilgjengelig på denne enheten",
     "confirmed": "Booking bekreftet",
     "confirmedDesc": "Du vil motta en bekreftelse via e-post og varsel",
     "backHome": "Tilbake til start",
@@ -145,7 +146,10 @@
     "hasAccount": "Har du allerede en konto?",
     "fillAllFields": "Vennligst fyll ut alle felt",
     "success": "Registrering vellykket",
-    "checkEmail": "Sjekk e-posten din for å bekrefte kontoen"
+    "checkEmail": "Sjekk e-posten din for å bekrefte kontoen",
+    "continueWithApple": "Fortsett med Apple",
+    "continueWithGoogle": "Fortsett med Google",
+    "orContinueWith": "eller fortsett med"
   },
   "review": {
     "title": "Gi tilbakemelding",
@@ -161,6 +165,24 @@
     "submit": "Send tilbakemelding",
     "thankYou": "Takk!",
     "submitted": "Din tilbakemelding hjelper oss å forbedre tjenesten"
+  },
+  "report": {
+    "title": "Rapporter et problem",
+    "about": "Rapport om",
+    "selectReason": "Velg en grunn",
+    "descriptionLabel": "Detaljer (valgfritt)",
+    "descriptionPlaceholder": "Beskriv hva som skjedde...",
+    "submit": "Send rapport",
+    "thankYou": "Rapport sendt",
+    "submitted": "Teamet vårt vil gjennomgå rapporten din og iverksette tiltak.",
+    "reasons": {
+      "off_app_payment": "Foreslo betaling utenfor appen",
+      "no_show": "Møtte ikke opp",
+      "inappropriate_behavior": "Upassende oppførsel",
+      "price_dispute": "Pristvist",
+      "poor_quality": "Dårlig kvalitet på arbeidet",
+      "other": "Annet"
+    }
   },
   "priceConfirm": {
     "title": "Bekreft pris",
@@ -195,7 +217,7 @@
     "past": "Historikk",
     "empty": "Ingen bestillinger ennå",
     "actionNeeded": "Handling kreves",
-    "status": { "pending": "Venter", "searching": "Søker", "matched": "Tildelt", "in_progress": "Pågår", "price_proposed": "Pris foreslått", "price_accepted": "Pris godkjent", "work_in_progress": "Arbeid pågår", "pending_client_confirmation": "Venter på godkjenning", "work_completed": "Arbeid ferdig", "completed": "Fullført", "cancelled": "Avbestilt" }
+    "status": { "pending": "Venter", "searching": "Søker", "matched": "Tildelt", "in_progress": "Pågår", "price_proposed": "Pris foreslått", "price_accepted": "Pris godkjent", "work_in_progress": "Arbeid pågår", "pending_client_confirmation": "Venter på godkjenning", "work_completed": "Arbeid ferdig", "completed": "Fullført", "disputed": "Tvist pågår", "cancelled": "Avbestilt" }
   },
   "chat": { "empty": "Ingen meldinger ennå", "placeholder": "Skriv en melding..." },
   "favorites": { "empty": "Ingen favoritter ennå", "emptyDesc": "Håndverkere du markerer som favoritter vises her" },
@@ -209,7 +231,27 @@
     "recordVideo": "Spill inn video",
     "fromGallery": "Velg fra galleri",
     "maxReached": "Grense nådd",
-    "maxReachedDesc": "Maks {{max}} filer"
+    "maxReachedDesc": "Maks {{max}} filer",
+    "descriptionLabel": "Problembeskrivelse",
+    "descriptionPlaceholder": "Beskriv problemet...",
+    "descriptionRequired": "Beskrivelse påkrevd",
+    "descriptionRequiredDesc": "Beskriv problemet slik at håndverkeren kan forberede seg"
+  },
+  "diagnostic": {
+    "title": "AI-analyse",
+    "analyze": "Analyser med AI",
+    "analyzing": "Analyserer...",
+    "severity": "Alvorlighetsgrad",
+    "estimatedPrice": "Estimert pris",
+    "materials": "Sannsynlig materiell",
+    "tips": "Tips til håndverkeren",
+    "low": "Lav",
+    "medium": "Middels",
+    "high": "Høy",
+    "urgent": "Akutt",
+    "disclaimer": "Dette estimatet er gitt av AI kun til informasjonsformål. Den endelige prisen fastsettes av håndverkeren på stedet. Arbeidet starter først etter din godkjenning av tilbudet.",
+    "error": "Feil",
+    "analysisFailed": "Analysen mislyktes"
   },
   "completion": {
     "title": "Godkjenn arbeid",
@@ -255,6 +297,8 @@
     "artisanWillBePaid": "Betalingen er frigitt til håndverkeren. Takk for at du bruker CasaFix!",
     "released": "Frigitt beløp"
   },
+  "visualization": { "title": "AI-visualisering", "visualize": "Visualiser resultatet", "generating": "Genererer...", "before": "Før", "after": "Etter", "disclaimer": "Denne visualiseringen er AI-generert for illustrasjon. Sluttresultatet kan variere avhengig av materialer og tekniske begrensninger.", "paymentConfirm": "Lag en 3D-visualisering av prosjektet ditt for bare 2€. Du ser resultatet på sekunder.", "payAndGenerate": "Generer for 2€", "wantPlan3D": "Jeg vil ha en 3D-plan", "authorizeConfirm": "Håndverkeren kan generere en 3D-visualisering av prosjektet ditt. 2€ legges til på fakturaen din.", "authorizeBtn": "Godkjenn for 2€", "authorized": "3D-plan godkjent", "generationFailed": "Genereringen mislyktes", "testLabel": "Simuler håndverkerens generering", "generate3D": "Generer 3D" },
+  "pricing": { "onQuote": "Etter tilbud" },
   "priceRange": "Prisområde",
   "noSurcharge": "Uten tillegg 24/7", "guarantee1year": "1 års garanti",
   "response24h": "Svar innen 24t", "selectService": "Velg tjeneste",
@@ -291,5 +335,56 @@
       "cookiesTitle": "Cookies", "cookiesContent": "Appen bruker funksjonelle og analytiske cookies.",
       "rightsTitle": "Dine rettigheter", "rightsContent": "Du har rett til innsyn, retting og sletting av dine data. Kontakt: contact@casafix.es."
     }
+  },
+  "account": {
+    "phone": "Telefon",
+    "phonePlaceholder": "+34 600 000 000",
+    "save": "Lagre",
+    "saved": "Endringer lagret",
+    "saveError": "Feil ved lagring",
+    "signOut": "Logg ut",
+    "signOutTitle": "Logg ut",
+    "signOutConfirm": "Er du sikker på at du vil logge ut?",
+    "deleteAccount": "Slett kontoen min"
+  },
+  "notifications": {
+    "pushTitle": "Push-varsler",
+    "bookingUpdates": "Bestillinger",
+    "bookingUpdatesDesc": "Oppdateringer om dine aktive bestillinger",
+    "messages": "Meldinger",
+    "messagesDesc": "Nye meldinger fra håndverkere",
+    "reminders": "Påminnelser",
+    "remindersDesc": "Påminnelser om kommende avtaler",
+    "promotions": "Tilbud",
+    "promotionsDesc": "Spesialtilbud og rabatter",
+    "note": "Du kan også administrere varsler i enhetens innstillinger"
+  },
+  "paymentSettings": {
+    "howItWorks": "Slik fungerer det",
+    "secureTitle": "Sikker betaling",
+    "secureDesc": "Alle betalinger er beskyttet av Stripe, verdensledende innen nettbetaling",
+    "preauthTitle": "Forhåndsautorisering",
+    "preauthDesc": "Kun det faktiske beløpet belastes etter tjenesten. Resten frigjøres automatisk",
+    "invoiceTitle": "Fakturaer",
+    "invoiceDesc": "Motta automatisk fakturaen din på e-post etter hver tjeneste",
+    "methodTitle": "Betalingsmetode",
+    "addedAtBooking": "Kort lagt til ved bestilling",
+    "methodNote": "Kortet ditt lagres sikkert ved din første bestilling",
+    "poweredBy": "Sikre betalinger med"
+  },
+  "help": {
+    "contactTitle": "Kontakt oss",
+    "email": "E-post",
+    "faqTitle": "Vanlige spørsmål",
+    "faq1q": "Hvordan fungerer betalingen?",
+    "faq1a": "Ved bestilling forhåndsautoriseres maksimumsbeløpet på kortet ditt. Etter tjenesten belastes kun den faktiske prisen. Differansen frigjøres automatisk.",
+    "faq2q": "Kan jeg avbestille?",
+    "faq2a": "Når en bestilling er bekreftet, påløper 75€ i utrykningsavgift. Du kan likevel avslå arbeidet og kun betale utrykningsavgiften. Dette systemet forhindrer misbruk av avbestillinger og gir deg valget.",
+    "faq3q": "Hva er garantien?",
+    "faq3a": "Alle tjenester dekkes av 1 års garanti på deler og arbeid. Kontakt oss ved problemer.",
+    "faq4q": "Hvordan rapporterer jeg et problem?",
+    "faq4a": "Fra bestillingssiden din kan du rapportere et problem. Teamet vårt gjennomgår saken din innen 24 timer.",
+    "faq5q": "Er håndverkerne verifisert?",
+    "faq5a": "Alle håndverkere er verifisert, ansvarsforsikret og har de nødvendige kvalifikasjonene."
   }
 }

@@ -10,6 +10,7 @@ export type BookingStatus =
   | "pending_client_confirmation"
   | "work_completed"
   | "completed"
+  | "disputed"
   | "cancelled";
 
 export type Profile = {
@@ -62,9 +63,14 @@ export type Booking = {
   is_multiday: boolean;
   artisan_marked_done_at: string | null;
   auto_confirmed: boolean;
+  description: string | null;
   client_latitude: number | null;
   client_longitude: number | null;
   stripe_payment_intent_id: string | null;
+  payment_released_at: string | null;
+  visualization_authorized: boolean;
+  visualization_image_url: string | null;
+  visualization_original_url: string | null;
   created_at: string;
   updated_at: string;
 };

@@ -12,6 +12,7 @@ import {
 import Icon from "react-native-vector-icons/Ionicons";
 import { useTranslation } from "react-i18next";
 import { supabase } from "../lib/supabase";
+import { releaseToArtisan } from "../lib/stripe";
 import { COLORS, SPACING, RADIUS } from "../constants/theme";
 
 type Props = {
@@ -66,13 +67,16 @@ export default function WorkCompletionScreen({ route, navigation }: Props) {
               p_client_id: (await supabase.auth.getUser()).data.user?.id,
             });
 
-            setLoading(false);
-
             if (error) {
+              setLoading(false);
               Alert.alert("Error", error.message);
               return;
             }
 
+            // Release payment to artisan
+            await releaseToArtisan({ bookingId });
+
+            setLoading(false);
             setCompleted(true);
           },
         },
@@ -81,20 +85,17 @@ export default function WorkCompletionScreen({ route, navigation }: Props) {
   }
 
   async function handleDispute() {
-    Alert.alert(
-      t("completion.disputeTitle"),
-      t("completion.disputeDesc"),
-      [
-        { text: t("priceConfirm.no"), style: "cancel" },
-        {
-          text: t("completion.yesDispute"),
-          onPress: () => {
-            // TODO: open dispute/chat with support
-            Alert.alert(t("completion.disputeSent"), t("completion.disputeSentDesc"));
-          },
-        },
-      ]
-    );
+    const { data } = await supabase
+      .from("bookings")
+      .select("artisan_id")
+      .eq("id", bookingId)
+      .single();
+
+    navigation.navigate("Report", {
+      bookingId,
+      reportedUserId: data?.artisan_id || "",
+      reportedUserName: artisanName,
+    });
   }
 
   // ─── SUCCESS ───

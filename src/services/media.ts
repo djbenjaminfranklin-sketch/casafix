@@ -61,18 +61,18 @@ export async function uploadMedia(
   return { url: urlData.publicUrl };
 }
 
-// Upload multiple files
+// Upload multiple files - returns public URLs of successfully uploaded files
 export async function uploadAllMedia(
   bookingId: string,
   clientId: string,
   mediaList: MediaItem[]
-): Promise<number> {
-  let successCount = 0;
+): Promise<{ count: number; urls: string[] }> {
+  const urls: string[] = [];
   for (const media of mediaList) {
     const result = await uploadMedia(bookingId, clientId, media);
-    if (result) successCount++;
+    if (result) urls.push(result.url);
   }
-  return successCount;
+  return { count: urls.length, urls };
 }
 
 // Get media for a booking

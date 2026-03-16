@@ -23,6 +23,11 @@ import ChatScreen from "../screens/ChatScreen";
 import SearchScreen from "../screens/SearchScreen";
 import MessagesScreen from "../screens/MessagesScreen";
 import FavoritesScreen from "../screens/FavoritesScreen";
+import ReportScreen from "../screens/ReportScreen";
+import MyAccountScreen from "../screens/MyAccountScreen";
+import NotificationsSettingsScreen from "../screens/NotificationsSettingsScreen";
+import PaymentScreen from "../screens/PaymentScreen";
+import HelpScreen from "../screens/HelpScreen";
 
 type RootStackParamList = {
   Auth: undefined;
@@ -38,6 +43,11 @@ type RootStackParamList = {
   WorkCompletion: { bookingId: string; serviceName: string; artisanName: string; finalPrice: number; artisanMarkedDoneAt: string };
   MyBookings: undefined;
   Chat: { bookingId: string; artisanName: string };
+  Report: { bookingId: string; reportedUserId: string; reportedUserName: string };
+  MyAccount: undefined;
+  NotificationsSettings: undefined;
+  Payment: undefined;
+  Help: undefined;
 };
 
 const Tab = createBottomTabNavigator();
@@ -173,6 +183,31 @@ export default function RootNavigator() {
         name="Review"
         component={ReviewScreen}
         options={{ animation: "slide_from_bottom" }}
+      />
+      <Stack.Screen
+        name="Report"
+        component={ReportScreen}
+        options={{ animation: "slide_from_bottom" }}
+      />
+      <Stack.Screen
+        name="MyAccount"
+        component={MyAccountScreen}
+        options={{ animation: "slide_from_right" }}
+      />
+      <Stack.Screen
+        name="NotificationsSettings"
+        component={NotificationsSettingsScreen}
+        options={{ animation: "slide_from_right" }}
+      />
+      <Stack.Screen
+        name="Payment"
+        component={PaymentScreen}
+        options={{ animation: "slide_from_right" }}
+      />
+      <Stack.Screen
+        name="Help"
+        component={HelpScreen}
+        options={{ animation: "slide_from_right" }}
       />
         </>
       )}

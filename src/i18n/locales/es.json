@@ -238,11 +238,12 @@
     "artisanOnWay": "Artesano en camino",
     "call": "Llamar",
     "chat": "Chat",
+    "callUnavailable": "Las llamadas no están disponibles en este dispositivo",
     "confirmed": "Reserva confirmada",
     "confirmedDesc": "Recibirás una confirmación por email y notificación",
     "backHome": "Volver al inicio",
     "today": "Hoy",
-    "guarantee2h": "En su domicilio en 2h máximo",
+    "guarantee2h": "En tu domicilio en 2h máximo",
     "lateCancel": "Cancelación gratuita si el artesano llega tarde",
     "punctuality": "Puntualidad"
   },
@@ -256,7 +257,10 @@
     "hasAccount": "¿Ya tienes cuenta?",
     "fillAllFields": "Por favor, rellena todos los campos",
     "success": "Registro exitoso",
-    "checkEmail": "Revisa tu correo para confirmar tu cuenta"
+    "checkEmail": "Revisa tu correo para confirmar tu cuenta",
+    "continueWithApple": "Continuar con Apple",
+    "continueWithGoogle": "Continuar con Google",
+    "orContinueWith": "o continuar con"
   },
   "review": {
     "title": "Dejar una opinión",
@@ -272,6 +276,24 @@
     "submit": "Enviar opinión",
     "thankYou": "¡Gracias!",
     "submitted": "Tu opinión ayuda a mejorar el servicio"
+  },
+  "report": {
+    "title": "Reportar un problema",
+    "about": "Reporte sobre",
+    "selectReason": "Selecciona un motivo",
+    "descriptionLabel": "Detalles (opcional)",
+    "descriptionPlaceholder": "Describe lo que ocurrió...",
+    "submit": "Enviar reporte",
+    "thankYou": "Reporte enviado",
+    "submitted": "Nuestro equipo revisará tu reporte y tomará las medidas correspondientes.",
+    "reasons": {
+      "off_app_payment": "Propuso pago fuera de la app",
+      "no_show": "No se presentó",
+      "inappropriate_behavior": "Comportamiento inapropiado",
+      "price_dispute": "Disputa de precio",
+      "poor_quality": "Trabajo de mala calidad",
+      "other": "Otro"
+    }
   },
   "priceConfirm": {
     "title": "Confirmar precio",
@@ -317,6 +339,7 @@
       "pending_client_confirmation": "Validación pendiente",
       "work_completed": "Trabajo terminado",
       "completed": "Completado",
+      "disputed": "Litigio en curso",
       "cancelled": "Cancelado"
     }
   },
@@ -335,7 +358,27 @@
     "recordVideo": "Grabar un vídeo",
     "fromGallery": "Elegir de la galería",
     "maxReached": "Límite alcanzado",
-    "maxReachedDesc": "Máximo {{max}} archivos"
+    "maxReachedDesc": "Máximo {{max}} archivos",
+    "descriptionLabel": "Descripción del problema",
+    "descriptionPlaceholder": "Describe el problema que tienes...",
+    "descriptionRequired": "Descripción obligatoria",
+    "descriptionRequiredDesc": "Por favor describe el problema para que el artesano pueda prepararse"
+  },
+  "diagnostic": {
+    "title": "Análisis IA",
+    "analyze": "Analizar con IA",
+    "analyzing": "Analizando...",
+    "severity": "Severidad",
+    "estimatedPrice": "Precio estimado",
+    "materials": "Material probable",
+    "tips": "Consejos para el artesano",
+    "low": "Bajo",
+    "medium": "Medio",
+    "high": "Alto",
+    "urgent": "Urgente",
+    "disclaimer": "Esta estimación es proporcionada por IA a título indicativo. El precio final será definido por el artesano en el lugar. Los trabajos solo comenzarán tras tu aprobación del presupuesto.",
+    "error": "Error",
+    "analysisFailed": "El análisis ha fallado"
   },
   "completion": {
     "title": "Validar trabajo",
@@ -380,6 +423,26 @@
     "workDone": "¡Trabajo completado!",
     "artisanWillBePaid": "El pago se ha liberado al artesano. ¡Gracias por usar CasaFix!",
     "released": "Importe liberado"
+  },
+  "visualization": {
+    "title": "Visualización IA",
+    "visualize": "Visualizar el resultado",
+    "generating": "Generando...",
+    "before": "Antes",
+    "after": "Después",
+    "disclaimer": "Esta visualización es generada por IA con fines ilustrativos. El resultado final puede variar según los materiales y las limitaciones técnicas.",
+    "paymentConfirm": "Genera una visualización 3D de tu proyecto por solo 2€. Verás el resultado en segundos.",
+    "payAndGenerate": "Generar por 2€",
+    "wantPlan3D": "Quiero un plano 3D",
+    "authorizeConfirm": "El artesano podrá generar una visualización 3D de tu proyecto. Se añadirán 2€ a tu factura.",
+    "authorizeBtn": "Autorizar por 2€",
+    "authorized": "Plano 3D autorizado",
+    "generationFailed": "La generación ha fallado",
+    "testLabel": "Simular la generación del artesano",
+    "generate3D": "Generar el 3D"
+  },
+  "pricing": {
+    "onQuote": "Según presupuesto"
   },
   "priceRange": "Rango de precio",
   "noSurcharge": "Sin recargo 24/7",
@@ -432,5 +495,56 @@
       "rightsTitle": "Sus derechos",
       "rightsContent": "Tiene derecho de acceso, rectificación, supresión y portabilidad de sus datos. Contacto: contact@casafix.es. Puede presentar reclamación ante la AEPD."
     }
+  },
+  "account": {
+    "phone": "Teléfono",
+    "phonePlaceholder": "+34 600 000 000",
+    "save": "Guardar",
+    "saved": "Cambios guardados",
+    "saveError": "Error al guardar",
+    "signOut": "Cerrar sesión",
+    "signOutTitle": "Cerrar sesión",
+    "signOutConfirm": "¿Estás seguro de que quieres cerrar sesión?",
+    "deleteAccount": "Eliminar mi cuenta"
+  },
+  "notifications": {
+    "pushTitle": "Notificaciones push",
+    "bookingUpdates": "Reservas",
+    "bookingUpdatesDesc": "Actualizaciones de tus reservas activas",
+    "messages": "Mensajes",
+    "messagesDesc": "Nuevos mensajes de los artesanos",
+    "reminders": "Recordatorios",
+    "remindersDesc": "Recordatorios de citas próximas",
+    "promotions": "Promociones",
+    "promotionsDesc": "Ofertas especiales y descuentos",
+    "note": "También puedes gestionar las notificaciones en los ajustes de tu dispositivo"
+  },
+  "paymentSettings": {
+    "howItWorks": "Cómo funciona",
+    "secureTitle": "Pago seguro",
+    "secureDesc": "Todos los pagos están protegidos por Stripe, líder mundial en pagos online",
+    "preauthTitle": "Preautorización",
+    "preauthDesc": "Solo se cobra el importe real después de la intervención. El resto se libera automáticamente",
+    "invoiceTitle": "Facturas",
+    "invoiceDesc": "Recibe automáticamente tu factura por email después de cada intervención",
+    "methodTitle": "Método de pago",
+    "addedAtBooking": "Tarjeta añadida durante la reserva",
+    "methodNote": "Tu tarjeta se guarda de forma segura durante tu primera reserva",
+    "poweredBy": "Pagos seguros con"
+  },
+  "help": {
+    "contactTitle": "Contáctanos",
+    "email": "Email",
+    "faqTitle": "Preguntas frecuentes",
+    "faq1q": "¿Cómo funciona el pago?",
+    "faq1a": "Al reservar, se preautoriza el importe máximo en tu tarjeta. Después de la intervención, solo se cobra el precio real fijado por el artesano. La diferencia se libera automáticamente.",
+    "faq2q": "¿Puedo cancelar una reserva?",
+    "faq2a": "Una vez confirmada la reserva, se aplican 75€ de gastos de desplazamiento. Sin embargo, puedes rechazar los trabajos y pagar solo los gastos de desplazamiento. Este sistema evita las cancelaciones abusivas y te deja la elección.",
+    "faq3q": "¿Cuál es la garantía?",
+    "faq3a": "Todas las intervenciones están cubiertas por una garantía de 1 año en piezas y mano de obra. Si tienes algún problema, contáctanos.",
+    "faq4q": "¿Cómo reporto un problema?",
+    "faq4a": "Desde la página de tu reserva, puedes reportar un problema. Nuestro equipo revisará tu caso en 24 horas.",
+    "faq5q": "¿Los artesanos están verificados?",
+    "faq5a": "Todos los artesanos están verificados, asegurados en responsabilidad civil profesional y cuentan con las cualificaciones requeridas."
   }
 }

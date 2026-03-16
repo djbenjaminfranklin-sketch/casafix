@@ -27,6 +27,7 @@ const STATUS_CONFIG: Record<string, { icon: string; color: string; bg: string }>
   in_progress: { icon: "construct", color: "#f59e0b", bg: "#FEF3C7" },
   price_proposed: { icon: "pricetag", color: "#e11d48", bg: "#fff1f2" },
   price_accepted: { icon: "checkmark-circle", color: "#16a34a", bg: "#dcfce7" },
+  disputed: { icon: "flag", color: "#dc2626", bg: "#fee2e2" },
   work_in_progress: { icon: "hammer", color: "#f59e0b", bg: "#FEF3C7" },
   pending_client_confirmation: { icon: "alert-circle", color: "#e11d48", bg: "#fff1f2" },
   work_completed: { icon: "checkmark-done", color: "#16a34a", bg: "#dcfce7" },
@@ -44,7 +45,7 @@ export default function MyBookingsScreen({ navigation }: Props) {
   const activeStatuses: BookingStatus[] = [
     "pending", "searching", "matched", "in_progress",
     "price_proposed", "price_accepted", "work_in_progress",
-    "pending_client_confirmation",
+    "pending_client_confirmation", "disputed",
   ];
 
   const fetchBookings = useCallback(async () => {

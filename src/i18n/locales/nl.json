@@ -1,14 +1,14 @@
 {
   "appName": "CasaFix",
   "location": "Costa del Sol",
-  "searchPlaceholder": "Wat zoek je?",
+  "searchPlaceholder": "Wat zoekt u?",
   "servicesTitle": "Thuisservices",
   "emergency": "Noodgeval",
   "emergencySubtitle": "Snelle respons 24/7",
   "emergencyTitle": "Nooddiensten",
   "nav": { "home": "Home", "search": "Zoeken", "messages": "Berichten", "favorites": "Favorieten", "profile": "Profiel" },
   "categories": {
-    "plumbing": "Loodgieter", "electrical": "Elektricien", "locksmith": "Slotenmaker",
+    "plumbing": "Loodgieterwerk", "electrical": "Elektriciteit", "locksmith": "Slotenmakerij",
     "heating": "Verwarming", "ac": "Airconditioning", "pest": "Ongediertebestrijding",
     "appliances": "Huishoudapparaten", "glazing": "Glaswerk", "smallworks": "Kleine klussen",
     "renovation": "Renovatie", "pool": "Zwembad", "garden": "Tuin"
@@ -25,11 +25,11 @@
     "insects": "Insecten", "rodents": "Knaagdieren", "pest_maintenance": "Ongediertecontract",
     "washing_machine": "Wasmachine", "dishwasher": "Vaatwasser",
     "fridge": "Koelkast", "oven_cooktop": "Oven & Kookplaat", "dryer": "Droger",
-    "glass": "Glasruiten", "windows": "Ramen", "installation": "Montage",
-    "assembly": "Meubelmontage", "repairs": "Reparaties", "painting": "Schilderwerk",
+    "glass": "Glasruiten", "windows": "Ramen", "installation": "Installaties",
+    "assembly": "Montage", "repairs": "Reparaties", "painting": "Schilderwerk",
     "tiling": "Tegelwerk", "general_renovation": "Totaalrenovatie",
     "pool_maintenance": "Zwembadonderhoud", "pool_repair": "Zwembadreparatie",
-    "pool_install": "Zwembaduitrusting", "garden_maintenance": "Tuinonderhoud",
+    "pool_install": "Zwembadinstallatie", "garden_maintenance": "Tuinonderhoud",
     "garden_install": "Tuinaanleg", "garden_repair": "Tuinreparatie"
   },
   "services": {
@@ -70,9 +70,9 @@
     "bedbug_thermal": "Thermische bedwantsenbehandeling", "rat_treatment": "Rattenbestrijding",
     "mouse_treatment": "Muizenbestrijding", "pest_contract": "Ongediertecontract",
     "pest_diagnosis": "Ongedierte-diagnose", "washer_repair": "Wasmachinereparatie",
-    "washer_unclog": "Wasmachine reinigen", "washer_leak": "Wasmachinelekkage",
+    "washer_unclog": "Wasmachine ontstoppen", "washer_leak": "Wasmachinelekkage",
     "washer_install": "Wasmachine-installatie", "dishwasher_repair": "Vaatwasserreparatie",
-    "dishwasher_unclog": "Vaatwasser reinigen", "dishwasher_install": "Vaatwasser-installatie",
+    "dishwasher_unclog": "Vaatwasser ontstoppen", "dishwasher_install": "Vaatwasser-installatie",
     "fridge_repair": "Koelkastreparatie", "fridge_compressor": "Compressorreparatie",
     "oven_repair": "Ovenreparatie", "cooktop_repair": "Kookplaatreparatie",
     "cooktop_replace": "Kookplaatvervanging", "dryer_repair": "Drogerreparatie",
@@ -102,7 +102,7 @@
   },
   "banner": { "onlinePayment": "Online betaling", "noMarkup": "Zonder toeslag", "guarantee": "1 jaar garantie" },
   "payment": {
-    "book": "Nu boeken", "maxPrice": "Max prijs",
+    "book": "Boeken", "maxPrice": "Max. prijs",
     "realPriceNote": "De werkelijke prijs wordt ter plaatse bepaald door de vakman",
     "explanation": "Het maximumbedrag wordt vooraf geautoriseerd op uw kaart. Alleen de werkelijke prijs, bepaald door de vakman na het werk, wordt afgeschreven.",
     "preauth": "Voorautorisatie", "charged": "Afgeschreven bedrag", "secure": "100% veilige betaling"
@@ -115,7 +115,7 @@
     "fastResponse": "Snelle respons",
     "liveTracking": "Live-tracking",
     "bookEmergency": "Noodgeval boeken",
-    "appointment": "Afspraak",
+    "appointment": "Geplande afspraak",
     "appointmentDesc": "Kies de dag en het tijdstip dat u past",
     "chooseDate": "Kies een datum",
     "chooseTime": "Kies een tijdstip",
@@ -127,6 +127,7 @@
     "artisanOnWay": "Vakman onderweg",
     "call": "Bellen",
     "chat": "Chat",
+    "callUnavailable": "Bellen is niet beschikbaar op dit apparaat",
     "confirmed": "Boeking bevestigd",
     "confirmedDesc": "U ontvangt een bevestiging per e-mail en melding",
     "backHome": "Terug naar home",
@@ -145,7 +146,10 @@
     "hasAccount": "Al een account?",
     "fillAllFields": "Vul alle velden in",
     "success": "Registratie geslaagd",
-    "checkEmail": "Controleer uw e-mail om uw account te bevestigen"
+    "checkEmail": "Controleer uw e-mail om uw account te bevestigen",
+    "continueWithApple": "Doorgaan met Apple",
+    "continueWithGoogle": "Doorgaan met Google",
+    "orContinueWith": "of doorgaan met"
   },
   "review": {
     "title": "Beoordeling achterlaten",
@@ -162,16 +166,34 @@
     "thankYou": "Bedankt!",
     "submitted": "Uw beoordeling helpt de service te verbeteren"
   },
+  "report": {
+    "title": "Probleem melden",
+    "about": "Melding over",
+    "selectReason": "Selecteer een reden",
+    "descriptionLabel": "Details (optioneel)",
+    "descriptionPlaceholder": "Beschrijf wat er is gebeurd...",
+    "submit": "Melding versturen",
+    "thankYou": "Melding verzonden",
+    "submitted": "Ons team zal uw melding bekijken en passende maatregelen nemen.",
+    "reasons": {
+      "off_app_payment": "Betaling buiten de app voorgesteld",
+      "no_show": "Niet komen opdagen",
+      "inappropriate_behavior": "Ongepast gedrag",
+      "price_dispute": "Prijsgeschil",
+      "poor_quality": "Slecht werk",
+      "other": "Overig"
+    }
+  },
   "priceConfirm": {
     "title": "Prijs bevestigen",
     "proposes": "stelt voor",
     "accept": "Betalen",
     "refuse": "Weigeren",
-    "saved": "U bespaarde",
+    "saved": "Besparing van",
     "guarantee": "Veilige betaling met 1 jaar garantie. Alleen de bevestigde prijs wordt afgeschreven, de rest wordt automatisch vrijgegeven.",
     "cancelPenalty": "Als u annuleert na aankomst van de vakman, wordt het volledige vooraf geautoriseerde bedrag in rekening gebracht.",
-    "cancelTitle": "Service annuleren?",
-    "cancelWarning": "Als de vakman al is gearriveerd, wordt het volledige bedrag in rekening gebracht.",
+    "cancelTitle": "Interventie annuleren?",
+    "cancelWarning": "Als de vakman al is gearriveerd, wordt het maximale vooraf geautoriseerde bedrag als boete in rekening gebracht.",
     "yesCancel": "Ja, annuleren",
     "no": "Nee",
     "paymentDone": "Betaling voltooid!",
@@ -195,7 +217,7 @@
     "past": "Geschiedenis",
     "empty": "Nog geen boekingen",
     "actionNeeded": "Actie vereist",
-    "status": { "pending": "Wachtend", "searching": "Zoeken", "matched": "Toegewezen", "in_progress": "Bezig", "price_proposed": "Prijs voorgesteld", "price_accepted": "Prijs geaccepteerd", "work_in_progress": "Werk bezig", "pending_client_confirmation": "Wacht op goedkeuring", "work_completed": "Werk voltooid", "completed": "Afgerond", "cancelled": "Geannuleerd" }
+    "status": { "pending": "Wachtend", "searching": "Zoeken", "matched": "Toegewezen", "in_progress": "Bezig", "price_proposed": "Prijs voorgesteld", "price_accepted": "Prijs geaccepteerd", "work_in_progress": "Werk bezig", "pending_client_confirmation": "Wacht op goedkeuring", "work_completed": "Werk voltooid", "completed": "Afgerond", "disputed": "Geschil", "cancelled": "Geannuleerd" }
   },
   "chat": { "empty": "Nog geen berichten", "placeholder": "Typ een bericht..." },
   "favorites": { "empty": "Nog geen favorieten", "emptyDesc": "Vakmensen die u als favoriet markeert verschijnen hier" },
@@ -209,7 +231,27 @@
     "recordVideo": "Video opnemen",
     "fromGallery": "Kies uit galerij",
     "maxReached": "Limiet bereikt",
-    "maxReachedDesc": "Maximaal {{max}} bestanden"
+    "maxReachedDesc": "Maximaal {{max}} bestanden",
+    "descriptionLabel": "Probleembeschrijving",
+    "descriptionPlaceholder": "Beschrijf het probleem...",
+    "descriptionRequired": "Beschrijving vereist",
+    "descriptionRequiredDesc": "Beschrijf het probleem zodat de vakman zich kan voorbereiden"
+  },
+  "diagnostic": {
+    "title": "AI-analyse",
+    "analyze": "Analyseer met AI",
+    "analyzing": "Bezig met analyseren...",
+    "severity": "Ernst",
+    "estimatedPrice": "Geschatte prijs",
+    "materials": "Waarschijnlijk materiaal",
+    "tips": "Tips voor de vakman",
+    "low": "Laag",
+    "medium": "Gemiddeld",
+    "high": "Hoog",
+    "urgent": "Urgent",
+    "disclaimer": "Deze schatting is door AI ter indicatie verstrekt. De uiteindelijke prijs wordt door de vakman ter plaatse bepaald. De werkzaamheden beginnen pas na uw goedkeuring van de offerte.",
+    "error": "Fout",
+    "analysisFailed": "De analyse is mislukt"
   },
   "completion": {
     "title": "Werk goedkeuren",
@@ -255,6 +297,8 @@
     "artisanWillBePaid": "De betaling is vrijgegeven aan de vakman. Bedankt voor het gebruik van CasaFix!",
     "released": "Vrijgegeven bedrag"
   },
+  "visualization": { "title": "AI-visualisatie", "visualize": "Resultaat visualiseren", "generating": "Wordt gegenereerd...", "before": "Voor", "after": "Na", "disclaimer": "Deze visualisatie is door AI gegenereerd ter illustratie. Het eindresultaat kan variëren afhankelijk van materialen en technische beperkingen.", "paymentConfirm": "Genereer een 3D-visualisatie van uw project voor slechts €2. U ziet het resultaat in seconden.", "payAndGenerate": "Genereren voor €2", "wantPlan3D": "Ik wil een 3D-plan", "authorizeConfirm": "De vakman kan een 3D-visualisatie van uw project genereren. €2 wordt aan uw factuur toegevoegd.", "authorizeBtn": "Autoriseren voor €2", "authorized": "3D-plan geautoriseerd", "generationFailed": "Het genereren is mislukt", "testLabel": "Vakman-generering simuleren", "generate3D": "3D genereren" },
+  "pricing": { "onQuote": "Op offerte" },
   "priceRange": "Prijsklasse",
   "noSurcharge": "Zonder toeslag 24/7", "guarantee1year": "1 jaar garantie",
   "response24h": "Antwoord binnen 24u", "selectService": "Selecteer dienst",
@@ -270,26 +314,77 @@
     "cguTitle": "Algemene Gebruiksvoorwaarden", "legalNoticeTitle": "Juridische informatie",
     "privacyTitle": "Privacybeleid", "lastUpdated": "Laatst bijgewerkt",
     "cgu": {
-      "article1": { "title": "Artikel 1 – Doel", "content": "Deze voorwaarden regelen het gebruik van de CasaFix-app voor thuisdiensten aan de Costa del Sol." },
-      "article2": { "title": "Artikel 2 – Toegang", "content": "Toegang tot de app is gratis. Sommige diensten vereisen een account." },
-      "article3": { "title": "Artikel 3 – Diensten", "content": "CasaFix bemiddelt vakmensen voor loodgieter, elektricien, slotenmaker, verwarming, airco, ongedierte, huishoudapparaten, glaswerk, kleine klussen, renovatie, zwembad en tuin." },
-      "article4": { "title": "Artikel 4 – Prijzen & Betaling", "content": "Prijzen zijn indicatief incl. btw. Geen toeslag voor avonden, weekenden of feestdagen." },
-      "article5": { "title": "Artikel 5 – Garanties", "content": "Alle werkzaamheden hebben 1 jaar garantie. Gratis herbezoek binnen 48 uur bij problemen." },
-      "article6": { "title": "Artikel 6 – Aansprakelijkheid", "content": "CasaFix treedt op als bemiddelaar en selecteert gekwalificeerde en verzekerde vakmensen." },
-      "article7": { "title": "Artikel 7 – Persoonsgegevens", "content": "CasaFix voldoet aan de AVG en Spaanse LOPD." },
-      "article8": { "title": "Artikel 8 – Intellectueel eigendom", "content": "Alle app-inhoud is auteursrechtelijk beschermd." },
-      "article9": { "title": "Artikel 9 – Toepasselijk recht", "content": "Spaans recht is van toepassing. Bevoegde rechtbank is Málaga, Spanje." },
-      "article10": { "title": "Artikel 10 – Wijzigingen", "content": "CasaFix behoudt zich het recht voor deze voorwaarden te wijzigen." }
+      "article1": { "title": "Artikel 1 – Doel", "content": "Deze Algemene Gebruiksvoorwaarden (hierna «AGV») hebben tot doel de voorwaarden en modaliteiten van het gebruik van de mobiele applicatie CasaFix (hierna «de Applicatie») te definiëren, evenals de rechten en verplichtingen van de partijen. De Applicatie is een bemiddelingsdienst tussen particulieren die thuisdiensten zoeken en gekwalificeerde vakmensen die actief zijn aan de Costa del Sol (Marbella, Estepona, Fuengirola, Málaga en omgeving)." },
+      "article2": { "title": "Artikel 2 – Toegang tot de Applicatie", "content": "De toegang tot de Applicatie is gratis. Voor het gebruik van bepaalde diensten kan het aanmaken van een gebruikersaccount vereist zijn. De gebruiker verbindt zich ertoe waarheidsgetrouwe en actuele informatie te verstrekken en de vertrouwelijkheid van zijn inloggegevens te bewaren." },
+      "article3": { "title": "Artikel 3 – Aangeboden diensten", "content": "CasaFix biedt bemiddeling tussen gebruikers en vakmensen voor: loodgieterwerk, elektriciteit, slotenmakerij, verwarming, airconditioning, ongediertebestrijding, huishoudapparaten, glaswerk, kleine klussen, renovatie, zwembad en tuinonderhoud. De getoonde prijzen zijn indicatief. Voorafgaand aan elke interventie wordt een gratis en vrijblijvende offerte opgesteld." },
+      "article4": { "title": "Artikel 4 – Tarieven en betaling", "content": "De getoonde prijzen zijn indicatief en inclusief btw. Er wordt geen toeslag berekend voor avond-, weekend- of feestdaginterventies. De betaling vindt uitsluitend online plaats: bij het boeken wordt het maximumbedrag vooraf geautoriseerd op de kaart van de klant. Na afloop van de interventie geeft de vakman de werkelijke prijs aan en alleen dit bedrag wordt afgeschreven. Het verschil wordt automatisch vrijgegeven. De factuur wordt binnen 48 uur per e-mail verzonden." },
+      "article5": { "title": "Artikel 5 – Garanties", "content": "Alle interventies worden gedekt door een garantie van 1 jaar op onderdelen en arbeid. Bij een incident wordt binnen 48 uur een gratis herbezoek georganiseerd. De vakmensen beschikken over een beroepsaansprakelijkheidsverzekering." },
+      "article6": { "title": "Artikel 6 – Aansprakelijkheid", "content": "CasaFix treedt op als bemiddelaar en is niet rechtstreeks aansprakelijk voor de kwaliteit van de dienstverlening, maar verbindt zich ertoe gekwalificeerde en verzekerde vakmensen te selecteren." },
+      "article7": { "title": "Artikel 7 – Persoonsgegevens", "content": "CasaFix voldoet aan de AVG en de Spaanse LOPD. De verzamelde gegevens worden uitsluitend gebruikt voor de werking van de dienst en worden niet zonder toestemming aan derden verstrekt." },
+      "article8": { "title": "Artikel 8 – Intellectueel eigendom", "content": "Alle elementen van de Applicatie zijn beschermd door de wetten op het intellectueel eigendom. Reproductie zonder toestemming is verboden." },
+      "article9": { "title": "Artikel 9 – Toepasselijk recht", "content": "Deze AGV worden beheerst door het Spaans recht. Geschillen worden voorgelegd aan de bevoegde rechtbanken van Málaga." },
+      "article10": { "title": "Artikel 10 – Wijzigingen", "content": "CasaFix behoudt zich het recht voor de AGV op elk moment te wijzigen. Voortgezet gebruik van de Applicatie houdt aanvaarding van de nieuwe voorwaarden in." }
     },
     "legalNotice": {
-      "publisherTitle": "Uitgever", "publisherContent": "CasaFix\nThuisdienstenplatform\nCosta del Sol, Málaga, Spanje\nContact: contact@casafix.es",
-      "hostingTitle": "Hosting", "hostingContent": "Vercel Inc., VS. Database: Supabase Inc.",
-      "ipTitle": "Intellectueel eigendom", "ipContent": "Alle CasaFix-inhoud is auteursrechtelijk beschermd."
+      "publisherTitle": "Uitgever van de Applicatie", "publisherContent": "CasaFix\nBemiddelingsapplicatie voor thuisdiensten\nCosta del Sol, Málaga, Spanje\nContact: contact@casafix.es",
+      "hostingTitle": "Hosting", "hostingContent": "De applicatie wordt gehost door Vercel Inc., 340 S Lemon Ave #4133, Walnut, CA 91789, VS. De database door Supabase Inc.",
+      "ipTitle": "Intellectueel eigendom", "ipContent": "Alle inhoud van CasaFix is beschermd door intellectuele eigendomsrechten. Reproductie zonder uitdrukkelijke toestemming is verboden."
     },
     "privacy": {
-      "dataTitle": "Gegevensverzameling", "dataContent": "CasaFix verzamelt: naam, e-mail, telefoon en locatie.",
-      "cookiesTitle": "Cookies", "cookiesContent": "De app gebruikt functionele en analytische cookies.",
-      "rightsTitle": "Uw rechten", "rightsContent": "U hebt recht op inzage, rectificatie en verwijdering van uw gegevens. Contact: contact@casafix.es."
+      "dataTitle": "Gegevensverzameling", "dataContent": "CasaFix verzamelt de volgende persoonsgegevens: naam, achternaam, e-mail, telefoon en locatie. Deze gegevens zijn noodzakelijk voor de werking van de dienst, conform de AVG en de Spaanse LOPD.",
+      "cookiesTitle": "Cookies", "cookiesContent": "De applicatie maakt gebruik van functionele en analytische cookies. U kunt uw voorkeuren op elk moment wijzigen.",
+      "rightsTitle": "Uw rechten", "rightsContent": "U hebt recht op inzage, rectificatie, verwijdering en overdraagbaarheid van uw gegevens. Contact: contact@casafix.es. U kunt een klacht indienen bij de Spaanse Gegevensbeschermingsautoriteit (AEPD)."
     }
+  },
+  "account": {
+    "phone": "Telefoon",
+    "phonePlaceholder": "+34 600 000 000",
+    "save": "Opslaan",
+    "saved": "Wijzigingen opgeslagen",
+    "saveError": "Fout bij opslaan",
+    "signOut": "Uitloggen",
+    "signOutTitle": "Uitloggen",
+    "signOutConfirm": "Weet u zeker dat u wilt uitloggen?",
+    "deleteAccount": "Mijn account verwijderen"
+  },
+  "notifications": {
+    "pushTitle": "Pushmeldingen",
+    "bookingUpdates": "Boekingen",
+    "bookingUpdatesDesc": "Updates over uw actieve boekingen",
+    "messages": "Berichten",
+    "messagesDesc": "Nieuwe berichten van vakmensen",
+    "reminders": "Herinneringen",
+    "remindersDesc": "Herinneringen voor aankomende afspraken",
+    "promotions": "Aanbiedingen",
+    "promotionsDesc": "Speciale aanbiedingen en kortingen",
+    "note": "U kunt meldingen ook beheren in uw apparaatinstellingen"
+  },
+  "paymentSettings": {
+    "howItWorks": "Hoe het werkt",
+    "secureTitle": "Veilige betaling",
+    "secureDesc": "Alle betalingen worden beschermd door Stripe, wereldleider in online betalingen",
+    "preauthTitle": "Voorautorisatie",
+    "preauthDesc": "Alleen het werkelijke bedrag wordt in rekening gebracht na de service. De rest wordt automatisch vrijgegeven",
+    "invoiceTitle": "Facturen",
+    "invoiceDesc": "Ontvang automatisch uw factuur per e-mail na elke service",
+    "methodTitle": "Betaalmethode",
+    "addedAtBooking": "Kaart toegevoegd bij boeking",
+    "methodNote": "Uw kaart wordt veilig opgeslagen bij uw eerste boeking",
+    "poweredBy": "Veilige betalingen met"
+  },
+  "help": {
+    "contactTitle": "Neem contact op",
+    "email": "E-mail",
+    "faqTitle": "Veelgestelde vragen",
+    "faq1q": "Hoe werkt de betaling?",
+    "faq1a": "Bij het boeken wordt het maximumbedrag voorgeautoriseerd op uw kaart. Na de service wordt alleen de werkelijke prijs in rekening gebracht. Het verschil wordt automatisch vrijgegeven.",
+    "faq2q": "Kan ik een boeking annuleren?",
+    "faq2a": "Na bevestiging van een boeking zijn er €75 voorrijkosten verschuldigd. U kunt de werkzaamheden echter weigeren en alleen de voorrijkosten betalen. Dit systeem voorkomt misbruik van annuleringen en laat u de keuze.",
+    "faq3q": "Wat is de garantie?",
+    "faq3a": "Alle services vallen onder een garantie van 1 jaar op onderdelen en arbeid. Neem bij problemen contact met ons op.",
+    "faq4q": "Hoe meld ik een probleem?",
+    "faq4a": "Vanaf uw boekingspagina kunt u een probleem melden. Ons team bekijkt uw zaak binnen 24 uur.",
+    "faq5q": "Zijn de vakmensen geverifieerd?",
+    "faq5a": "Alle vakmensen zijn geverifieerd, beroepsaansprakelijkheidsverzekerd en beschikken over de vereiste kwalificaties."
   }
 }

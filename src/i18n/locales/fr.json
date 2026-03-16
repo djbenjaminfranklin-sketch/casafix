@@ -238,6 +238,7 @@
     "artisanOnWay": "Artisan en route",
     "call": "Appeler",
     "chat": "Chat",
+    "callUnavailable": "Les appels ne sont pas disponibles sur cet appareil",
     "confirmed": "Réservation confirmée",
     "confirmedDesc": "Vous recevrez une confirmation par email et notification",
     "backHome": "Retour à l'accueil",
@@ -256,7 +257,10 @@
     "hasAccount": "Déjà un compte ?",
     "fillAllFields": "Veuillez remplir tous les champs",
     "success": "Inscription réussie",
-    "checkEmail": "Vérifiez votre email pour confirmer votre compte"
+    "checkEmail": "Vérifiez votre email pour confirmer votre compte",
+    "continueWithApple": "Continuer avec Apple",
+    "continueWithGoogle": "Continuer avec Google",
+    "orContinueWith": "ou continuer avec"
   },
   "review": {
     "title": "Laisser un avis",
@@ -272,6 +276,24 @@
     "submit": "Envoyer l'avis",
     "thankYou": "Merci !",
     "submitted": "Votre avis aide à améliorer le service"
+  },
+  "report": {
+    "title": "Signaler un problème",
+    "about": "Signalement concernant",
+    "selectReason": "Veuillez sélectionner un motif",
+    "descriptionLabel": "Détails (facultatif)",
+    "descriptionPlaceholder": "Décrivez ce qu'il s'est passé...",
+    "submit": "Envoyer le signalement",
+    "thankYou": "Signalement envoyé",
+    "submitted": "Notre équipe examinera votre signalement et prendra les mesures appropriées.",
+    "reasons": {
+      "off_app_payment": "A proposé un paiement hors application",
+      "no_show": "Ne s'est pas présenté",
+      "inappropriate_behavior": "Comportement inapproprié",
+      "price_dispute": "Litige sur le prix",
+      "poor_quality": "Travail de mauvaise qualité",
+      "other": "Autre"
+    }
   },
   "priceConfirm": {
     "title": "Confirmer le prix",
@@ -317,6 +339,7 @@
       "pending_client_confirmation": "Validation en attente",
       "work_completed": "Travaux terminés",
       "completed": "Terminé",
+      "disputed": "Litige en cours",
       "cancelled": "Annulé"
     }
   },
@@ -335,7 +358,27 @@
     "recordVideo": "Filmer une vidéo",
     "fromGallery": "Choisir dans la galerie",
     "maxReached": "Limite atteinte",
-    "maxReachedDesc": "Maximum {{max}} fichiers"
+    "maxReachedDesc": "Maximum {{max}} fichiers",
+    "descriptionLabel": "Description du problème",
+    "descriptionPlaceholder": "Décrivez le problème que vous rencontrez...",
+    "descriptionRequired": "Description obligatoire",
+    "descriptionRequiredDesc": "Veuillez décrire le problème pour que l'artisan puisse se préparer"
+  },
+  "diagnostic": {
+    "title": "Analyse IA",
+    "analyze": "Analyser avec l'IA",
+    "analyzing": "Analyse en cours...",
+    "severity": "Sévérité",
+    "estimatedPrice": "Prix estimé",
+    "materials": "Matériel probable",
+    "tips": "Conseils pour l'artisan",
+    "low": "Faible",
+    "medium": "Moyen",
+    "high": "Élevé",
+    "urgent": "Urgent",
+    "disclaimer": "Cette estimation est fournie par l'IA à titre indicatif. Le prix final sera défini par l'artisan sur place. Les travaux ne commenceront qu'après votre accord sur le devis.",
+    "error": "Erreur",
+    "analysisFailed": "L'analyse a échoué"
   },
   "completion": {
     "title": "Valider le travail",
@@ -380,6 +423,26 @@
     "workDone": "Travaux terminés !",
     "artisanWillBePaid": "Le paiement a été libéré à l'artisan. Merci d'utiliser CasaFix !",
     "released": "Montant libéré"
+  },
+  "visualization": {
+    "title": "Visualisation IA",
+    "visualize": "Visualiser le résultat",
+    "generating": "Génération en cours...",
+    "before": "Avant",
+    "after": "Après",
+    "disclaimer": "Cette visualisation est générée par l'IA à titre indicatif. Le résultat final peut varier selon les matériaux et les contraintes techniques.",
+    "paymentConfirm": "Générez une visualisation 3D de votre projet pour seulement 2€. Vous verrez le résultat en quelques secondes.",
+    "payAndGenerate": "Générer pour 2€",
+    "wantPlan3D": "Je veux un plan 3D",
+    "authorizeConfirm": "L'artisan pourra générer une visualisation 3D de votre projet. 2€ seront ajoutés à votre facture.",
+    "authorizeBtn": "Autoriser pour 2€",
+    "authorized": "Plan 3D autorisé",
+    "generationFailed": "La génération a échoué",
+    "testLabel": "Simuler la génération artisan",
+    "generate3D": "Générer le 3D"
+  },
+  "pricing": {
+    "onQuote": "Sur devis"
   },
   "priceRange": "Fourchette de prix",
   "noSurcharge": "Sans majoration 24/7",
@@ -462,5 +525,56 @@
       "rightsTitle": "Vos droits",
       "rightsContent": "Conformément au RGPD, vous disposez d'un droit d'accès, de rectification, de suppression, de portabilité de vos données, ainsi que d'un droit d'opposition et de limitation du traitement. Pour exercer ces droits, contactez-nous à : contact@casafix.es. Vous disposez également du droit d'introduire une réclamation auprès de l'Agencia Española de Protección de Datos (AEPD)."
     }
+  },
+  "account": {
+    "phone": "Téléphone",
+    "phonePlaceholder": "+34 600 000 000",
+    "save": "Enregistrer",
+    "saved": "Modifications enregistrées",
+    "saveError": "Erreur lors de la sauvegarde",
+    "signOut": "Se déconnecter",
+    "signOutTitle": "Déconnexion",
+    "signOutConfirm": "Êtes-vous sûr de vouloir vous déconnecter ?",
+    "deleteAccount": "Supprimer mon compte"
+  },
+  "notifications": {
+    "pushTitle": "Notifications push",
+    "bookingUpdates": "Réservations",
+    "bookingUpdatesDesc": "Mises à jour de vos réservations en cours",
+    "messages": "Messages",
+    "messagesDesc": "Nouveaux messages des artisans",
+    "reminders": "Rappels",
+    "remindersDesc": "Rappels de rendez-vous à venir",
+    "promotions": "Promotions",
+    "promotionsDesc": "Offres spéciales et réductions",
+    "note": "Vous pouvez aussi gérer les notifications dans les réglages de votre appareil"
+  },
+  "paymentSettings": {
+    "howItWorks": "Comment ça marche",
+    "secureTitle": "Paiement sécurisé",
+    "secureDesc": "Tous les paiements sont protégés par Stripe, leader mondial du paiement en ligne",
+    "preauthTitle": "Préautorisation",
+    "preauthDesc": "Seul le montant réel est débité après l'intervention. Le reste est automatiquement libéré",
+    "invoiceTitle": "Factures",
+    "invoiceDesc": "Recevez automatiquement votre facture par email après chaque intervention",
+    "methodTitle": "Moyen de paiement",
+    "addedAtBooking": "Carte ajoutée lors de la réservation",
+    "methodNote": "Votre carte est enregistrée de manière sécurisée lors de votre première réservation",
+    "poweredBy": "Paiements sécurisés par"
+  },
+  "help": {
+    "contactTitle": "Nous contacter",
+    "email": "Email",
+    "faqTitle": "Questions fréquentes",
+    "faq1q": "Comment fonctionne le paiement ?",
+    "faq1a": "Lors de la réservation, le montant maximum est préautorisé sur votre carte. Après l'intervention, seul le prix réel fixé par l'artisan est débité. La différence est automatiquement libérée.",
+    "faq2q": "Puis-je annuler une réservation ?",
+    "faq2a": "Une fois la réservation confirmée, des frais de déplacement de 75€ sont dus. Vous pouvez cependant refuser les travaux et ne payer que ces frais de déplacement. Ce système permet d'éviter les annulations abusives tout en vous laissant le choix.",
+    "faq3q": "Quelle est la garantie ?",
+    "faq3a": "Toutes les interventions sont couvertes par une garantie de 1 an sur les pièces et la main-d'œuvre. En cas de problème, contactez-nous.",
+    "faq4q": "Comment signaler un problème ?",
+    "faq4a": "Depuis la page de votre réservation, vous pouvez signaler un problème. Notre équipe examinera votre cas dans les 24h.",
+    "faq5q": "Les artisans sont-ils vérifiés ?",
+    "faq5a": "Tous les artisans sont vérifiés, assurés en responsabilité civile professionnelle et disposent des qualifications requises."
   }
 }

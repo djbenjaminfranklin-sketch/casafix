@@ -383,7 +383,7 @@ export const SERVICES: CategoryServices[] = [
         services: [
           { id: "bathroom_renovation", priceRange: "3000–8000 €" },
           { id: "kitchen_renovation", priceRange: "4000–12000 €" },
-          { id: "full_renovation", priceRange: "Sur devis" },
+          { id: "full_renovation", priceRange: "__onQuote__" },
         ],
       },
     ],
@@ -440,7 +440,7 @@ export const SERVICES: CategoryServices[] = [
         services: [
           { id: "irrigation_install", priceRange: "300–800 €" },
           { id: "lawn_install", priceRange: "10–20 €/m²" },
-          { id: "garden_design", priceRange: "Sur devis" },
+          { id: "garden_design", priceRange: "__onQuote__" },
         ],
       },
       {

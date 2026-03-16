@@ -25,11 +25,11 @@
     "insects": "Insekter", "rodents": "Gnagare", "pest_maintenance": "Skadedjursavtal",
     "washing_machine": "Tvättmaskin", "dishwasher": "Diskmaskin",
     "fridge": "Kylskåp", "oven_cooktop": "Ugn & Häll", "dryer": "Torktumlare",
-    "glass": "Glasrutor", "windows": "Fönster", "installation": "Montering",
-    "assembly": "Möbelmontering", "repairs": "Reparationer", "painting": "Målning",
+    "glass": "Glasrutor", "windows": "Fönster", "installation": "Installationer",
+    "assembly": "Montering", "repairs": "Reparationer", "painting": "Målning",
     "tiling": "Kakel & Klinker", "general_renovation": "Helrenovering",
     "pool_maintenance": "Poolunderhåll", "pool_repair": "Poolreparation",
-    "pool_install": "Poolutrustning", "garden_maintenance": "Trädgårdsskötsel",
+    "pool_install": "Poolinstallation", "garden_maintenance": "Trädgårdsskötsel",
     "garden_install": "Trädgårdsanläggning", "garden_repair": "Trädgårdsreparation"
   },
   "services": {
@@ -90,15 +90,15 @@
     "wall_tiling": "Väggplattsättning", "tile_repair": "Kakelreparation",
     "bathroom_renovation": "Badrumsrenovering", "kitchen_renovation": "Köksrenovering",
     "full_renovation": "Helrenovering", "pool_cleaning": "Poolrengöring",
-    "pool_chemical_balance": "Pool-kemisk balans", "pool_maintenance_contract": "Poolunderhållsavtal",
-    "pool_pump_repair": "Poolpumpreparation", "pool_filter_repair": "Poolfilterreparation",
-    "pool_leak_repair": "Poolläckage", "pool_liner_repair": "Pool-linerreparation",
+    "pool_chemical_balance": "Kemisk poolbalansering", "pool_maintenance_contract": "Poolunderhållsavtal",
+    "pool_pump_repair": "Poolpumpsreparation", "pool_filter_repair": "Poolfilterreparation",
+    "pool_leak_repair": "Poolläckagereparation", "pool_liner_repair": "Pool-linerreparation",
     "pool_heat_pump": "Poolvärmepump", "pool_cover_install": "Poolöverdrag-installation",
     "pool_robot_install": "Poolrobotinstallation", "lawn_mowing": "Gräsklippning",
-    "hedge_trimming": "Häckklippning", "tree_pruning": "Trädgårdsbeskärning",
+    "hedge_trimming": "Häckklippning", "tree_pruning": "Trädbeskärning",
     "garden_cleanup": "Trädgårdsstädning", "irrigation_install": "Bevattningsinstallation",
     "lawn_install": "Gräsmatteutläggning", "garden_design": "Trädgårdsdesign",
-    "irrigation_repair": "Bevattningsreparation", "fence_repair": "Staketrreparation"
+    "irrigation_repair": "Bevattningsreparation", "fence_repair": "Staketreparation"
   },
   "banner": { "onlinePayment": "Onlinebetalning", "noMarkup": "Utan tillägg", "guarantee": "1 års garanti" },
   "payment": {
@@ -127,6 +127,7 @@
     "artisanOnWay": "Hantverkaren är på väg",
     "call": "Ring",
     "chat": "Chatt",
+    "callUnavailable": "Telefonsamtal är inte tillgängliga på denna enhet",
     "confirmed": "Bokning bekräftad",
     "confirmedDesc": "Du får en bekräftelse via e-post och notis",
     "backHome": "Tillbaka till start",
@@ -145,7 +146,10 @@
     "hasAccount": "Har du redan ett konto?",
     "fillAllFields": "Vänligen fyll i alla fält",
     "success": "Registrering lyckades",
-    "checkEmail": "Kolla din e-post för att bekräfta kontot"
+    "checkEmail": "Kolla din e-post för att bekräfta kontot",
+    "continueWithApple": "Fortsätt med Apple",
+    "continueWithGoogle": "Fortsätt med Google",
+    "orContinueWith": "eller fortsätt med"
   },
   "review": {
     "title": "Lämna omdöme",
@@ -161,6 +165,24 @@
     "submit": "Skicka omdöme",
     "thankYou": "Tack!",
     "submitted": "Ditt omdöme hjälper till att förbättra tjänsten"
+  },
+  "report": {
+    "title": "Rapportera ett problem",
+    "about": "Rapport om",
+    "selectReason": "Välj en anledning",
+    "descriptionLabel": "Detaljer (valfritt)",
+    "descriptionPlaceholder": "Beskriv vad som hände...",
+    "submit": "Skicka rapport",
+    "thankYou": "Rapport skickad",
+    "submitted": "Vårt team kommer att granska din rapport och vidta lämpliga åtgärder.",
+    "reasons": {
+      "off_app_payment": "Föreslog betalning utanför appen",
+      "no_show": "Dök inte upp",
+      "inappropriate_behavior": "Olämpligt beteende",
+      "price_dispute": "Pristvist",
+      "poor_quality": "Dålig kvalitet på arbetet",
+      "other": "Övrigt"
+    }
   },
   "priceConfirm": {
     "title": "Bekräfta pris",
@@ -195,7 +217,7 @@
     "past": "Historik",
     "empty": "Inga bokningar ännu",
     "actionNeeded": "Åtgärd krävs",
-    "status": { "pending": "Väntar", "searching": "Söker", "matched": "Tilldelad", "in_progress": "Pågår", "price_proposed": "Pris föreslaget", "price_accepted": "Pris accepterat", "work_in_progress": "Arbete pågår", "pending_client_confirmation": "Väntar på godkännande", "work_completed": "Arbete klart", "completed": "Slutfört", "cancelled": "Avbokat" }
+    "status": { "pending": "Väntar", "searching": "Söker", "matched": "Tilldelad", "in_progress": "Pågår", "price_proposed": "Pris föreslaget", "price_accepted": "Pris accepterat", "work_in_progress": "Arbete pågår", "pending_client_confirmation": "Väntar på godkännande", "work_completed": "Arbete klart", "completed": "Slutfört", "disputed": "Tvist pågår", "cancelled": "Avbokat" }
   },
   "chat": { "empty": "Inga meddelanden ännu", "placeholder": "Skriv ett meddelande..." },
   "favorites": { "empty": "Inga favoriter ännu", "emptyDesc": "Hantverkare du markerar som favoriter visas här" },
@@ -209,7 +231,27 @@
     "recordVideo": "Spela in video",
     "fromGallery": "Välj från galleri",
     "maxReached": "Gräns nådd",
-    "maxReachedDesc": "Max {{max}} filer"
+    "maxReachedDesc": "Max {{max}} filer",
+    "descriptionLabel": "Problembeskrivning",
+    "descriptionPlaceholder": "Beskriv problemet...",
+    "descriptionRequired": "Beskrivning krävs",
+    "descriptionRequiredDesc": "Beskriv problemet så att hantverkaren kan förbereda sig"
+  },
+  "diagnostic": {
+    "title": "AI-analys",
+    "analyze": "Analysera med AI",
+    "analyzing": "Analyserar...",
+    "severity": "Allvarlighetsgrad",
+    "estimatedPrice": "Uppskattat pris",
+    "materials": "Troligt material",
+    "tips": "Tips till hantverkaren",
+    "low": "Låg",
+    "medium": "Medel",
+    "high": "Hög",
+    "urgent": "Akut",
+    "disclaimer": "Denna uppskattning tillhandahålls av AI i informationssyfte. Det slutliga priset bestäms av hantverkaren på plats. Arbetet påbörjas först efter ditt godkännande av offerten.",
+    "error": "Fel",
+    "analysisFailed": "Analysen misslyckades"
   },
   "completion": {
     "title": "Godkänn arbete",
@@ -255,6 +297,8 @@
     "artisanWillBePaid": "Betalningen har frigjorts till hantverkaren. Tack för att du använder CasaFix!",
     "released": "Frigjort belopp"
   },
+  "visualization": { "title": "AI-visualisering", "visualize": "Visualisera resultatet", "generating": "Genererar...", "before": "Före", "after": "Efter", "disclaimer": "Denna visualisering är AI-genererad i illustrativt syfte. Slutresultatet kan variera beroende på material och tekniska förutsättningar.", "paymentConfirm": "Skapa en 3D-visualisering av ditt projekt för bara 2€. Du ser resultatet på sekunder.", "payAndGenerate": "Generera för 2€", "wantPlan3D": "Jag vill ha en 3D-plan", "authorizeConfirm": "Hantverkaren kan generera en 3D-visualisering av ditt projekt. 2€ läggs till på din faktura.", "authorizeBtn": "Godkänn för 2€", "authorized": "3D-plan godkänd", "generationFailed": "Genereringen misslyckades", "testLabel": "Simulera hantverkarens generering", "generate3D": "Generera 3D" },
+  "pricing": { "onQuote": "Enligt offert" },
   "priceRange": "Prisintervall",
   "noSurcharge": "Utan tillägg 24/7", "guarantee1year": "1 års garanti",
   "response24h": "Svar inom 24h", "selectService": "Välj tjänst",
@@ -283,7 +327,7 @@
     },
     "legalNotice": {
       "publisherTitle": "Utgivare", "publisherContent": "CasaFix\nHemtjänstplattform\nCosta del Sol, Málaga, Spanien\nKontakt: contact@casafix.es",
-      "hostingTitle": "Hosting", "hostingContent": "Vercel Inc., USA. Databas: Supabase Inc.",
+      "hostingTitle": "Webbhotell", "hostingContent": "Vercel Inc., USA. Databas: Supabase Inc.",
       "ipTitle": "Immaterialrätt", "ipContent": "Allt CasaFix-innehåll är upphovsrättsskyddat."
     },
     "privacy": {
@@ -291,5 +335,56 @@
       "cookiesTitle": "Cookies", "cookiesContent": "Appen använder funktionella och analytiska cookies.",
       "rightsTitle": "Dina rättigheter", "rightsContent": "Du har rätt till åtkomst, rättelse och radering av dina uppgifter. Kontakt: contact@casafix.es."
     }
+  },
+  "account": {
+    "phone": "Telefon",
+    "phonePlaceholder": "+34 600 000 000",
+    "save": "Spara",
+    "saved": "Ändringar sparade",
+    "saveError": "Fel vid sparande",
+    "signOut": "Logga ut",
+    "signOutTitle": "Logga ut",
+    "signOutConfirm": "Är du säker på att du vill logga ut?",
+    "deleteAccount": "Ta bort mitt konto"
+  },
+  "notifications": {
+    "pushTitle": "Push-notiser",
+    "bookingUpdates": "Bokningar",
+    "bookingUpdatesDesc": "Uppdateringar om dina aktiva bokningar",
+    "messages": "Meddelanden",
+    "messagesDesc": "Nya meddelanden från hantverkare",
+    "reminders": "Påminnelser",
+    "remindersDesc": "Påminnelser om kommande möten",
+    "promotions": "Erbjudanden",
+    "promotionsDesc": "Specialerbjudanden och rabatter",
+    "note": "Du kan även hantera notiser i enhetens inställningar"
+  },
+  "paymentSettings": {
+    "howItWorks": "Så fungerar det",
+    "secureTitle": "Säker betalning",
+    "secureDesc": "Alla betalningar skyddas av Stripe, världsledande inom onlinebetalningar",
+    "preauthTitle": "Förauktorisering",
+    "preauthDesc": "Endast det faktiska beloppet debiteras efter tjänsten. Resten frigörs automatiskt",
+    "invoiceTitle": "Fakturor",
+    "invoiceDesc": "Få automatiskt din faktura via e-post efter varje tjänst",
+    "methodTitle": "Betalningsmetod",
+    "addedAtBooking": "Kort tillagt vid bokning",
+    "methodNote": "Ditt kort sparas säkert vid din första bokning",
+    "poweredBy": "Säkra betalningar med"
+  },
+  "help": {
+    "contactTitle": "Kontakta oss",
+    "email": "E-post",
+    "faqTitle": "Vanliga frågor",
+    "faq1q": "Hur fungerar betalningen?",
+    "faq1a": "Vid bokning förauktoriseras maxbeloppet på ditt kort. Efter tjänsten debiteras bara det faktiska priset. Mellanskillnaden frigörs automatiskt.",
+    "faq2q": "Kan jag avboka?",
+    "faq2a": "När en bokning är bekräftad tillkommer 75€ i utryckningsavgift. Du kan dock tacka nej till arbetet och bara betala utryckningsavgiften. Detta system förhindrar missbruk av avbokningar och ger dig valet.",
+    "faq3q": "Vad är garantin?",
+    "faq3a": "Alla tjänster omfattas av 1 års garanti på delar och arbete. Kontakta oss vid problem.",
+    "faq4q": "Hur rapporterar jag ett problem?",
+    "faq4a": "Från din bokningssida kan du rapportera ett problem. Vårt team granskar ditt ärende inom 24 timmar.",
+    "faq5q": "Är hantverkarna verifierade?",
+    "faq5a": "Alla hantverkare är verifierade, ansvarsförsäkrade och har de kvalifikationer som krävs."
   }
 }

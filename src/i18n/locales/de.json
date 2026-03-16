@@ -8,7 +8,7 @@
   "emergencyTitle": "Notdienste",
   "nav": { "home": "Start", "search": "Suche", "messages": "Nachrichten", "favorites": "Favoriten", "profile": "Profil" },
   "categories": {
-    "plumbing": "Klempner", "electrical": "Elektriker", "locksmith": "Schlüsseldienst",
+    "plumbing": "Klempnerarbeiten", "electrical": "Elektrik", "locksmith": "Schlüsseldienst",
     "heating": "Heizung", "ac": "Klimaanlage", "pest": "Schädlingsbekämpfung",
     "appliances": "Haushaltsgeräte", "glazing": "Glaserei", "smallworks": "Kleine Reparaturen",
     "renovation": "Renovierung", "pool": "Pool", "garden": "Garten"
@@ -26,10 +26,10 @@
     "washing_machine": "Waschmaschine", "dishwasher": "Geschirrspüler",
     "fridge": "Kühlschrank", "oven_cooktop": "Backofen & Kochfeld", "dryer": "Trockner",
     "glass": "Glasscheiben", "windows": "Fenster", "installation": "Montage & Installation",
-    "assembly": "Möbelmontage", "repairs": "Reparaturen", "painting": "Malerarbeiten",
+    "assembly": "Montage", "repairs": "Reparaturen", "painting": "Malerarbeiten",
     "tiling": "Fliesenarbeiten", "general_renovation": "Komplettrenovierung",
     "pool_maintenance": "Poolpflege", "pool_repair": "Poolreparatur",
-    "pool_install": "Poolausstattung", "garden_maintenance": "Gartenpflege",
+    "pool_install": "Poolinstallation", "garden_maintenance": "Gartenpflege",
     "garden_install": "Gartengestaltung", "garden_repair": "Gartenreparatur"
   },
   "services": {
@@ -57,7 +57,7 @@
     "door_hinge_repair": "Scharnier-Reparatur", "door_install": "Tür-Installation",
     "shutter_repair": "Rollladen-Reparatur", "shutter_install": "Rollladen-Installation",
     "shutter_motor_install": "Rollladen-Motor-Installation", "boiler_repair": "Heizkessel-Reparatur",
-    "boiler_maintenance": "Jährliche Kessenwartung", "boiler_install": "Heizkessel-Installation",
+    "boiler_maintenance": "Jährliche Kesselwartung", "boiler_install": "Heizkessel-Installation",
     "hot_water_tank_repair": "Warmwasserspeicher-Reparatur", "hot_water_tank_install": "Warmwasserspeicher-Installation",
     "hot_water_tank_leak": "Warmwasserspeicher-Leck", "radiator_repair": "Heizkörper-Reparatur",
     "radiator_install": "Heizkörper-Installation", "underfloor_heating_repair": "Fußbodenheizung-Reparatur",
@@ -127,6 +127,7 @@
     "artisanOnWay": "Handwerker unterwegs",
     "call": "Anrufen",
     "chat": "Chat",
+    "callUnavailable": "Telefonanrufe sind auf diesem Gerät nicht verfügbar",
     "confirmed": "Buchung bestätigt",
     "confirmedDesc": "Sie erhalten eine Bestätigung per E-Mail und Benachrichtigung",
     "backHome": "Zurück zur Startseite",
@@ -145,7 +146,10 @@
     "hasAccount": "Bereits ein Konto?",
     "fillAllFields": "Bitte füllen Sie alle Felder aus",
     "success": "Registrierung erfolgreich",
-    "checkEmail": "Überprüfen Sie Ihre E-Mail zur Kontobestätigung"
+    "checkEmail": "Überprüfen Sie Ihre E-Mail zur Kontobestätigung",
+    "continueWithApple": "Weiter mit Apple",
+    "continueWithGoogle": "Weiter mit Google",
+    "orContinueWith": "oder weiter mit"
   },
   "review": {
     "title": "Bewertung abgeben",
@@ -160,14 +164,32 @@
     "commentPlaceholder": "Erzählen Sie von Ihrer Erfahrung...",
     "submit": "Bewertung senden",
     "thankYou": "Danke!",
-    "submitted": "Ihre Bewertung hilft den Service zu verbessern"
+    "submitted": "Ihre Bewertung hilft, den Service zu verbessern"
+  },
+  "report": {
+    "title": "Problem melden",
+    "about": "Meldung über",
+    "selectReason": "Bitte wählen Sie einen Grund",
+    "descriptionLabel": "Details (optional)",
+    "descriptionPlaceholder": "Beschreiben Sie, was passiert ist...",
+    "submit": "Meldung senden",
+    "thankYou": "Meldung gesendet",
+    "submitted": "Unser Team wird Ihre Meldung prüfen und entsprechende Maßnahmen ergreifen.",
+    "reasons": {
+      "off_app_payment": "Zahlung außerhalb der App vorgeschlagen",
+      "no_show": "Nicht erschienen",
+      "inappropriate_behavior": "Unangemessenes Verhalten",
+      "price_dispute": "Preisstreit",
+      "poor_quality": "Schlechte Arbeitsqualität",
+      "other": "Sonstiges"
+    }
   },
   "priceConfirm": {
     "title": "Preis bestätigen",
     "proposes": "schlägt vor",
     "accept": "Bezahlen",
     "refuse": "Ablehnen",
-    "saved": "Sie sparten",
+    "saved": "Ersparnis",
     "guarantee": "Sichere Zahlung mit 1 Jahr Garantie. Nur der bestätigte Preis wird abgebucht, der Rest wird automatisch freigegeben.",
     "cancelPenalty": "Bei Stornierung nach Ankunft des Handwerkers wird der volle vorautorisierte Betrag berechnet.",
     "cancelTitle": "Service stornieren?",
@@ -195,7 +217,7 @@
     "past": "Verlauf",
     "empty": "Noch keine Buchungen",
     "actionNeeded": "Handlung erforderlich",
-    "status": { "pending": "Ausstehend", "searching": "Suche", "matched": "Zugewiesen", "in_progress": "In Bearbeitung", "price_proposed": "Preis vorgeschlagen", "price_accepted": "Preis akzeptiert", "work_in_progress": "Arbeit läuft", "pending_client_confirmation": "Warte auf Bestätigung", "work_completed": "Arbeit fertig", "completed": "Abgeschlossen", "cancelled": "Storniert" }
+    "status": { "pending": "Ausstehend", "searching": "Suche", "matched": "Zugewiesen", "in_progress": "In Bearbeitung", "price_proposed": "Preis vorgeschlagen", "price_accepted": "Preis akzeptiert", "work_in_progress": "Arbeit läuft", "pending_client_confirmation": "Bestätigung ausstehend", "work_completed": "Arbeit fertig", "completed": "Abgeschlossen", "disputed": "Streitfall", "cancelled": "Storniert" }
   },
   "chat": { "empty": "Noch keine Nachrichten", "placeholder": "Nachricht schreiben..." },
   "favorites": { "empty": "Noch keine Favoriten", "emptyDesc": "Handwerker, die Sie als Favoriten markieren, erscheinen hier" },
@@ -209,7 +231,27 @@
     "recordVideo": "Video aufnehmen",
     "fromGallery": "Aus Galerie wählen",
     "maxReached": "Limit erreicht",
-    "maxReachedDesc": "Maximal {{max}} Dateien"
+    "maxReachedDesc": "Maximal {{max}} Dateien",
+    "descriptionLabel": "Problembeschreibung",
+    "descriptionPlaceholder": "Beschreiben Sie das Problem...",
+    "descriptionRequired": "Beschreibung erforderlich",
+    "descriptionRequiredDesc": "Bitte beschreiben Sie das Problem, damit sich der Handwerker vorbereiten kann"
+  },
+  "diagnostic": {
+    "title": "KI-Analyse",
+    "analyze": "Mit KI analysieren",
+    "analyzing": "Analyse läuft...",
+    "severity": "Schweregrad",
+    "estimatedPrice": "Geschätzter Preis",
+    "materials": "Voraussichtliches Material",
+    "tips": "Tipps für den Handwerker",
+    "low": "Niedrig",
+    "medium": "Mittel",
+    "high": "Hoch",
+    "urgent": "Dringend",
+    "disclaimer": "Diese Schätzung wird von KI nur zu Informationszwecken bereitgestellt. Der endgültige Preis wird vom Handwerker vor Ort festgelegt. Die Arbeiten beginnen erst nach Ihrer Zustimmung zum Kostenvoranschlag.",
+    "error": "Fehler",
+    "analysisFailed": "Die Analyse ist fehlgeschlagen"
   },
   "completion": {
     "title": "Arbeit bestätigen",
@@ -255,6 +297,8 @@
     "artisanWillBePaid": "Die Zahlung wurde an den Handwerker freigegeben. Vielen Dank, dass Sie CasaFix nutzen!",
     "released": "Freigegebener Betrag"
   },
+  "visualization": { "title": "KI-Visualisierung", "visualize": "Ergebnis visualisieren", "generating": "Wird generiert...", "before": "Vorher", "after": "Nachher", "disclaimer": "Diese Visualisierung wurde von KI erstellt und dient nur zur Veranschaulichung. Das Endergebnis kann je nach Materialien und technischen Gegebenheiten abweichen.", "paymentConfirm": "Erstellen Sie eine 3D-Visualisierung Ihres Projekts für nur 2€. Das Ergebnis sehen Sie in Sekunden.", "payAndGenerate": "Für 2€ generieren", "wantPlan3D": "Ich möchte einen 3D-Plan", "authorizeConfirm": "Der Handwerker kann eine 3D-Visualisierung Ihres Projekts erstellen. 2€ werden Ihrer Rechnung hinzugefügt.", "authorizeBtn": "Für 2€ autorisieren", "authorized": "3D-Plan autorisiert", "generationFailed": "Die Generierung ist fehlgeschlagen", "testLabel": "Handwerker-Generierung simulieren", "generate3D": "3D generieren" },
+  "pricing": { "onQuote": "Auf Anfrage" },
   "priceRange": "Preisbereich",
   "noSurcharge": "Ohne Aufpreis 24/7", "guarantee1year": "1 Jahr Garantie",
   "response24h": "Antwort innerhalb 24h", "selectService": "Service auswählen",
@@ -291,5 +335,56 @@
       "cookiesTitle": "Cookies", "cookiesContent": "Die App verwendet funktionale und analytische Cookies. Einstellungen jederzeit änderbar.",
       "rightsTitle": "Ihre Rechte", "rightsContent": "Sie haben das Recht auf Zugang, Berichtigung, Löschung und Übertragung Ihrer Daten. Kontakt: contact@casafix.es."
     }
+  },
+  "account": {
+    "phone": "Telefon",
+    "phonePlaceholder": "+34 600 000 000",
+    "save": "Speichern",
+    "saved": "Änderungen gespeichert",
+    "saveError": "Fehler beim Speichern",
+    "signOut": "Abmelden",
+    "signOutTitle": "Abmelden",
+    "signOutConfirm": "Möchten Sie sich wirklich abmelden?",
+    "deleteAccount": "Mein Konto löschen"
+  },
+  "notifications": {
+    "pushTitle": "Push-Benachrichtigungen",
+    "bookingUpdates": "Buchungen",
+    "bookingUpdatesDesc": "Updates zu Ihren aktiven Buchungen",
+    "messages": "Nachrichten",
+    "messagesDesc": "Neue Nachrichten von Handwerkern",
+    "reminders": "Erinnerungen",
+    "remindersDesc": "Erinnerungen an bevorstehende Termine",
+    "promotions": "Angebote",
+    "promotionsDesc": "Sonderangebote und Rabatte",
+    "note": "Sie können Benachrichtigungen auch in Ihren Geräteeinstellungen verwalten"
+  },
+  "paymentSettings": {
+    "howItWorks": "So funktioniert's",
+    "secureTitle": "Sichere Zahlung",
+    "secureDesc": "Alle Zahlungen werden durch Stripe geschützt, dem weltweit führenden Online-Zahlungsanbieter",
+    "preauthTitle": "Vorautorisierung",
+    "preauthDesc": "Es wird nur der tatsächliche Betrag nach dem Service abgebucht. Der Rest wird automatisch freigegeben",
+    "invoiceTitle": "Rechnungen",
+    "invoiceDesc": "Erhalten Sie nach jedem Service automatisch Ihre Rechnung per E-Mail",
+    "methodTitle": "Zahlungsmethode",
+    "addedAtBooking": "Karte bei der Buchung hinzugefügt",
+    "methodNote": "Ihre Karte wird bei Ihrer ersten Buchung sicher gespeichert",
+    "poweredBy": "Sichere Zahlungen mit"
+  },
+  "help": {
+    "contactTitle": "Kontakt",
+    "email": "E-Mail",
+    "faqTitle": "Häufig gestellte Fragen",
+    "faq1q": "Wie funktioniert die Zahlung?",
+    "faq1a": "Bei der Buchung wird der Höchstbetrag auf Ihrer Karte vorautorisiert. Nach dem Service wird nur der vom Handwerker festgelegte tatsächliche Preis abgebucht. Die Differenz wird automatisch freigegeben.",
+    "faq2q": "Kann ich eine Buchung stornieren?",
+    "faq2a": "Nach der Bestätigung einer Buchung fallen 75€ Anfahrtskosten an. Sie können die Arbeiten jedoch ablehnen und nur die Anfahrtskosten bezahlen. Dieses System verhindert Missbrauch bei Stornierungen und lässt Ihnen die Wahl.",
+    "faq3q": "Was ist die Garantie?",
+    "faq3a": "Alle Services sind durch eine 1-Jahres-Garantie auf Teile und Arbeit abgedeckt. Bei Problemen kontaktieren Sie uns.",
+    "faq4q": "Wie melde ich ein Problem?",
+    "faq4a": "Von Ihrer Buchungsseite aus können Sie ein Problem melden. Unser Team wird Ihren Fall innerhalb von 24 Stunden prüfen.",
+    "faq5q": "Sind die Handwerker verifiziert?",
+    "faq5a": "Alle Handwerker sind verifiziert, berufshaftpflichtversichert und verfügen über die erforderlichen Qualifikationen."
   }
 }

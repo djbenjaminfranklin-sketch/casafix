@@ -42,7 +42,7 @@ export default function BookingChoiceScreen({ route, navigation }: Props) {
         </View>
         <View style={styles.serviceInfo}>
           <Text style={styles.serviceNameText}>{serviceName}</Text>
-          <Text style={styles.servicePriceText}>{priceRange}</Text>
+          <Text style={styles.servicePriceText}>{priceRange === "__onQuote__" ? t("pricing.onQuote") : priceRange}</Text>
         </View>
       </View>
 
