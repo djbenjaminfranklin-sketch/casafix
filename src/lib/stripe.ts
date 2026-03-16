@@ -39,6 +39,20 @@ export async function capturePayment(params: {
   return { success: true };
 }
 
+// Release payment to artisan after 48h hold or manual confirmation
+export async function releaseToArtisan(params: {
+  bookingId: string;
+}): Promise<{ success: boolean }> {
+  const { data, error } = await supabase.functions.invoke("release-payment", {
+    body: {
+      booking_id: params.bookingId,
+    },
+  });
+
+  if (error) return { success: false };
+  return { success: true };
+}
+
 // Charge the remaining amount when price exceeds deposit
 // Example: deposit = 150€, real price = 1000€ → charge 850€ more
 export async function chargeRemaining(params: {
