@@ -13,10 +13,12 @@ import { useTranslation } from "react-i18next";
 import { useNavigation } from "@react-navigation/native";
 import { COLORS, SPACING, RADIUS } from "../constants/theme";
 import LanguageSelector from "../components/LanguageSelector";
+import { useAuth } from "../contexts/AuthContext";
 
 export default function ProfileScreen() {
   const { t } = useTranslation();
   const navigation = useNavigation<any>();
+  const { profile, user } = useAuth();
 
   const menuItems = [
     {
@@ -27,22 +29,22 @@ export default function ProfileScreen() {
     {
       icon: "person-outline",
       label: t("profile.myAccount"),
-      onPress: () => {},
+      onPress: () => navigation.navigate("MyAccount"),
     },
     {
       icon: "notifications-outline",
       label: t("profile.notifications"),
-      onPress: () => {},
+      onPress: () => navigation.navigate("NotificationsSettings"),
     },
     {
       icon: "card-outline",
       label: t("profile.payment"),
-      onPress: () => {},
+      onPress: () => navigation.navigate("Payment"),
     },
     {
       icon: "help-circle-outline",
       label: t("profile.help"),
-      onPress: () => {},
+      onPress: () => navigation.navigate("Help"),
     },
   ];
 
@@ -73,8 +75,12 @@ export default function ProfileScreen() {
           <View style={styles.avatarContainer}>
             <Icon name="person" size={36} color={COLORS.white} />
           </View>
-          <Text style={styles.welcomeText}>{t("profile.welcome")}</Text>
-          <Text style={styles.subtitleText}>{t("profile.loginPrompt")}</Text>
+          <Text style={styles.welcomeText}>
+            {profile?.full_name || t("profile.welcome")}
+          </Text>
+          <Text style={styles.subtitleText}>
+            {user?.email || t("profile.loginPrompt")}
+          </Text>
         </View>
 
         {/* Language */}
