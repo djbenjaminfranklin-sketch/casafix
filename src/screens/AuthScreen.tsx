@@ -20,7 +20,7 @@ import { COLORS, SPACING, RADIUS } from "../constants/theme";
 
 export default function AuthScreen() {
   const { t } = useTranslation();
-  const { signIn, signUp } = useAuth();
+  const { signIn, signUp, signInWithApple, signInWithGoogle } = useAuth();
 
   const [isLogin, setIsLogin] = useState(true);
   const [fullName, setFullName] = useState("");
@@ -28,6 +28,7 @@ export default function AuthScreen() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [socialLoading, setSocialLoading] = useState<"apple" | "google" | null>(null);
 
   async function handleSubmit() {
     if (!email || !password) {
@@ -163,6 +164,59 @@ export default function AuthScreen() {
             </TouchableOpacity>
           </View>
 
+          {/* Social sign-in */}
+          <View style={styles.dividerRow}>
+            <View style={styles.dividerLine} />
+            <Text style={styles.dividerText}>{t("auth.orContinueWith")}</Text>
+            <View style={styles.dividerLine} />
+          </View>
+
+          <View style={styles.socialRow}>
+            {Platform.OS === "ios" && (
+              <TouchableOpacity
+                style={styles.socialBtn}
+                activeOpacity={0.8}
+                disabled={socialLoading !== null}
+                onPress={async () => {
+                  setSocialLoading("apple");
+                  const { error } = await signInWithApple();
+                  if (error) Alert.alert("Error", error.message);
+                  setSocialLoading(null);
+                }}
+              >
+                {socialLoading === "apple" ? (
+                  <ActivityIndicator color="#1f2937" />
+                ) : (
+                  <>
+                    <Icon name="logo-apple" size={22} color="#1f2937" />
+                    <Text style={styles.socialBtnText}>{t("auth.continueWithApple")}</Text>
+                  </>
+                )}
+              </TouchableOpacity>
+            )}
+
+            <TouchableOpacity
+              style={styles.socialBtn}
+              activeOpacity={0.8}
+              disabled={socialLoading !== null}
+              onPress={async () => {
+                setSocialLoading("google");
+                const { error } = await signInWithGoogle();
+                if (error) Alert.alert("Error", error.message);
+                setSocialLoading(null);
+              }}
+            >
+              {socialLoading === "google" ? (
+                <ActivityIndicator color="#1f2937" />
+              ) : (
+                <>
+                  <Icon name="logo-google" size={20} color="#DB4437" />
+                  <Text style={styles.socialBtnText}>{t("auth.continueWithGoogle")}</Text>
+                </>
+              )}
+            </TouchableOpacity>
+          </View>
+
           {/* Switch mode */}
           <View style={styles.switchRow}>
             <Text style={styles.switchText}>
@@ -223,6 +277,18 @@ const styles = StyleSheet.create({
   },
   submitBtnDisabled: { opacity: 0.6 },
   submitBtnText: { fontSize: 16, fontWeight: "700", color: "#FFFFFF" },
+  dividerRow: {
+    flexDirection: "row", alignItems: "center", marginBottom: SPACING.md,
+  },
+  dividerLine: { flex: 1, height: 1, backgroundColor: "#e5e7eb" },
+  dividerText: { marginHorizontal: 12, fontSize: 13, color: COLORS.textLight },
+  socialRow: { gap: 10, marginBottom: SPACING.lg },
+  socialBtn: {
+    flexDirection: "row", alignItems: "center", justifyContent: "center",
+    backgroundColor: "#FFFFFF", paddingVertical: 13, borderRadius: RADIUS.md,
+    borderWidth: 1, borderColor: "#e5e7eb", gap: 10,
+  },
+  socialBtnText: { fontSize: 15, fontWeight: "600", color: "#1f2937" },
   switchRow: { flexDirection: "row", justifyContent: "center", gap: 6 },
   switchText: { fontSize: 14, color: COLORS.textLight },
   switchLink: { fontSize: 14, fontWeight: "600", color: COLORS.primary },

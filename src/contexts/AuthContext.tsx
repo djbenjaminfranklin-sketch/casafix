@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
+import { Platform } from "react-native";
 import { Session, User } from "@supabase/supabase-js";
 import { supabase } from "../lib/supabase";
 import { Profile } from "../lib/database.types";
@@ -10,6 +11,8 @@ type AuthContextType = {
   loading: boolean;
   signUp: (email: string, password: string, fullName: string) => Promise<{ error: any }>;
   signIn: (email: string, password: string) => Promise<{ error: any }>;
+  signInWithApple: () => Promise<{ error: any }>;
+  signInWithGoogle: () => Promise<{ error: any }>;
   signOut: () => Promise<void>;
   updateProfile: (updates: Partial<Profile>) => Promise<void>;
 };
@@ -65,6 +68,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       password,
       options: {
         data: { full_name: fullName },
+        emailRedirectTo: "casafix://auth/callback",
       },
     });
     return { error };
@@ -76,6 +80,75 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       password,
     });
     return { error };
+  }
+
+  async function signInWithApple() {
+    try {
+      const { appleAuth } = require("@invertase/react-native-apple-authentication");
+      const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+      let rawNonce = "";
+      for (let i = 0; i < 32; i++) {
+        rawNonce += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+
+      const appleResponse = await appleAuth.performRequest({
+        requestedOperation: appleAuth.Operation.LOGIN,
+        requestedScopes: [appleAuth.Scope.FULL_NAME, appleAuth.Scope.EMAIL],
+        nonce: rawNonce,
+      });
+
+      if (!appleResponse.identityToken) {
+        return { error: { message: "No identity token returned from Apple" } };
+      }
+
+      const { error } = await supabase.auth.signInWithIdToken({
+        provider: "apple",
+        token: appleResponse.identityToken,
+        nonce: rawNonce,
+      });
+      return { error };
+    } catch (e: any) {
+      if (e.code === "ERR_REQUEST_CANCELED") return { error: null };
+      return { error: e };
+    }
+  }
+
+  async function signInWithGoogle() {
+    try {
+      const { GoogleSignin } = require("@react-native-google-signin/google-signin");
+      if (Platform.OS === "android") {
+        await GoogleSignin.hasPlayServices();
+      }
+      const response = await GoogleSignin.signIn();
+
+      if (response.type === "cancelled") {
+        return { error: null };
+      }
+
+      const idToken = response.data?.idToken;
+
+      if (!idToken) {
+        // Fallback: try getTokens()
+        const tokens = await GoogleSignin.getTokens();
+        if (tokens.idToken) {
+          const { error } = await supabase.auth.signInWithIdToken({
+            provider: "google",
+            token: tokens.idToken,
+          });
+          return { error };
+        }
+        return { error: { message: "No ID token returned from Google" } };
+      }
+
+      const { error } = await supabase.auth.signInWithIdToken({
+        provider: "google",
+        token: idToken,
+      });
+      return { error };
+    } catch (e: any) {
+      if (e.code === "SIGN_IN_CANCELLED") return { error: null };
+      return { error: e };
+    }
   }
 
   async function signOut() {
@@ -96,7 +169,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <AuthContext.Provider
-      value={{ session, user, profile, loading, signUp, signIn, signOut, updateProfile }}
+      value={{ session, user, profile, loading, signUp, signIn, signInWithApple, signInWithGoogle, signOut, updateProfile }}
     >
       {children}
     </AuthContext.Provider>

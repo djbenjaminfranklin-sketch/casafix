@@ -33,6 +33,12 @@
 		<key>NSAllowsLocalNetworking</key>
 		<true/>
 	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>CasaFix needs access to your camera to take photos of the problem for the artisan.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>CasaFix needs access to your photo library to attach photos of the problem.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>CasaFix needs access to your microphone to record videos of the problem.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>CasaFix needs your location to find nearby artisans and show them on the map.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
@@ -55,6 +61,25 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 		<string>UIInterfaceOrientationPortrait</string>
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
+	</array>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>casafix</string>
+			</array>
+			<key>CFBundleURLName</key>
+			<string>com.casafix.app</string>
+		</dict>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.480428910205-ddl98g4s0d0otapukbpo0t3ggmudn518</string>
+			</array>
+			<key>CFBundleURLName</key>
+			<string>Google Sign-In</string>
+		</dict>
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
