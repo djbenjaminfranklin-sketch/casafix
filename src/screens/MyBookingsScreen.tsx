@@ -95,8 +95,6 @@ export default function MyBookingsScreen({ navigation }: Props) {
         depositAmount: booking.deposit_amount || booking.max_price,
         proposedPrice: booking.proposed_price,
         paymentIntentId: booking.stripe_payment_intent_id,
-        estimatedDays: booking.estimated_days || 1,
-        isMultiday: booking.is_multiday || false,
       });
     } else if (s === "pending_client_confirmation") {
       navigation.navigate("WorkCompletion", {

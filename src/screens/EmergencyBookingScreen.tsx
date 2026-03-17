@@ -22,12 +22,10 @@ import { COLORS, SPACING, RADIUS } from "../constants/theme";
 import MediaPicker from "../components/MediaPicker";
 import DiagnosticCard from "../components/DiagnosticCard";
 import { MediaItem, uploadAllMedia } from "../services/media";
-import { createBooking, subscribeToBooking, getBookingWithArtisan, authorizeVisualization } from "../services/bookings";
-import VisualizationCard from "../components/VisualizationCard";
+import { createBooking, subscribeToBooking, getBookingWithArtisan } from "../services/bookings";
 import { supabase } from "../lib/supabase";
 import { Booking } from "../lib/database.types";
 import { analyzeProblem, DiagnosticResult } from "../services/ai-diagnostic";
-import { visualizeRenovation } from "../services/ai-visualize";
 
 const { width } = Dimensions.get("window");
 
@@ -84,18 +82,6 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
   const [description, setDescription] = useState("");
   const [aiDiagnostic, setAiDiagnostic] = useState<DiagnosticResult | null>(null);
   const [analyzingAi, setAnalyzingAi] = useState(false);
-  const [vizAuthorized, setVizAuthorized] = useState(false);
-  const [vizImageUrl, setVizImageUrl] = useState<string | null>(null);
-  const [vizOriginalUrl, setVizOriginalUrl] = useState<string | null>(null);
-
-  const VISUAL_CATEGORIES = ["renovation", "smallworks", "pool", "garden"];
-  const showVisualize = VISUAL_CATEGORIES.includes(categoryId);
-
-  // Temporary test: generation from client side
-  const [testMedia, setTestMedia] = useState<MediaItem[]>([]);
-  const [testDescription, setTestDescription] = useState("");
-  const [visualizing, setVisualizing] = useState(false);
-
   const [userLocation, setUserLocation] = useState({
     latitude: 36.5105,
     longitude: -4.8826,
@@ -202,13 +188,6 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
     if (!bookingId) return;
 
     const unsubscribe = subscribeToBooking(bookingId, async (updatedBooking: Booking) => {
-      // Track visualization updates
-      if (updatedBooking.visualization_authorized) setVizAuthorized(true);
-      if (updatedBooking.visualization_image_url) {
-        setVizImageUrl(updatedBooking.visualization_image_url);
-        setVizOriginalUrl(updatedBooking.visualization_original_url || null);
-      }
-
       if (updatedBooking.status === "price_proposed" && updatedBooking.proposed_price) {
         // Fetch artisan details
         const { data: fullBooking } = await getBookingWithArtisan(bookingId);
@@ -222,8 +201,6 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
           depositAmount: updatedBooking.deposit_amount || updatedBooking.max_price,
           proposedPrice: updatedBooking.proposed_price,
           paymentIntentId: updatedBooking.stripe_payment_intent_id || "",
-          estimatedDays: updatedBooking.estimated_days || 1,
-          isMultiday: updatedBooking.is_multiday || false,
         });
       }
     });
@@ -276,52 +253,6 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
     } finally {
       setAnalyzingAi(false);
     }
-  };
-
-  // Temporary test: simulate artisan generating the 3D
-  const handleTestGenerate = async () => {
-    const photoItem = testMedia.find((m) => m.type === "photo");
-    if (!photoItem || !testDescription.trim()) return;
-    setVisualizing(true);
-    try {
-      const result = await visualizeRenovation({
-        photo: photoItem,
-        description: testDescription.trim(),
-        roomType: category ? t(`categories.${category.id}`) : serviceName,
-      });
-      setVizImageUrl(result.imageUrl);
-      setVizOriginalUrl(photoItem.uri);
-      // Store in DB so it persists
-      if (bookingId) {
-        await supabase.from("bookings").update({
-          visualization_image_url: result.imageUrl,
-          visualization_original_url: photoItem.uri,
-        }).eq("id", bookingId);
-      }
-    } catch (e: any) {
-      console.warn("Test visualization failed:", e);
-      Alert.alert(t("diagnostic.error"), e.message || t("visualization.generationFailed"));
-    } finally {
-      setVisualizing(false);
-    }
-  };
-
-  const handleAuthorizeViz = () => {
-    if (!bookingId) return;
-    Alert.alert(
-      t("visualization.title"),
-      t("visualization.authorizeConfirm"),
-      [
-        { text: t("priceConfirm.no"), style: "cancel" },
-        {
-          text: t("visualization.authorizeBtn"),
-          onPress: async () => {
-            const { error } = await authorizeVisualization(bookingId);
-            if (!error) setVizAuthorized(true);
-          },
-        },
-      ]
-    );
   };
 
   const handleConfirm = async () => {
@@ -619,76 +550,6 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
               </TouchableOpacity>
             </View>
 
-            {/* 3D Visualization authorization */}
-            {showVisualize && !vizImageUrl && (
-              <TouchableOpacity
-                style={[styles.vizBtn, vizAuthorized && styles.vizBtnAuthorized]}
-                onPress={vizAuthorized ? undefined : handleAuthorizeViz}
-                activeOpacity={vizAuthorized ? 1 : 0.8}
-                disabled={vizAuthorized}
-              >
-                <Icon name="color-palette" size={18} color={vizAuthorized ? "#16a34a" : "#7c3aed"} />
-                <Text style={[styles.vizBtnText, vizAuthorized && styles.vizBtnTextAuthorized]}>
-                  {vizAuthorized ? t("visualization.authorized") : t("visualization.wantPlan3D")}
-                </Text>
-                {!vizAuthorized && (
-                  <View style={styles.vizPriceBadge}>
-                    <Text style={styles.vizPriceText}>2€</Text>
-                  </View>
-                )}
-                {vizAuthorized && <Icon name="checkmark-circle" size={18} color="#16a34a" />}
-              </TouchableOpacity>
-            )}
-
-            {/* Temporary test: generate 3D from client side */}
-            {showVisualize && vizAuthorized && !vizImageUrl && (
-              <View style={styles.testSection}>
-                <View style={styles.testBadgeRow}>
-                  <View style={styles.testBadge}>
-                    <Text style={styles.testBadgeText}>TEST</Text>
-                  </View>
-                  <Text style={styles.testLabel}>{t("visualization.testLabel")}</Text>
-                </View>
-                <MediaPicker
-                  media={testMedia}
-                  onMediaChange={setTestMedia}
-                  maxItems={1}
-                  description={testDescription}
-                  onDescriptionChange={setTestDescription}
-                  photoOnly
-                />
-                <TouchableOpacity
-                  style={[
-                    styles.testGenerateBtn,
-                    (testMedia.length === 0 || !testDescription.trim() || visualizing) && { opacity: 0.4 },
-                  ]}
-                  onPress={handleTestGenerate}
-                  disabled={testMedia.length === 0 || !testDescription.trim() || visualizing}
-                  activeOpacity={0.85}
-                >
-                  <Icon name="color-palette" size={18} color="#FFFFFF" />
-                  <Text style={styles.testGenerateBtnText}>
-                    {visualizing ? t("visualization.generating") : t("visualization.generate3D")}
-                  </Text>
-                  {!visualizing && (
-                    <View style={styles.testPriceBadge}>
-                      <Text style={styles.testPriceText}>2€</Text>
-                    </View>
-                  )}
-                </TouchableOpacity>
-              </View>
-            )}
-
-            {/* Visualization result (generated by artisan) */}
-            {vizImageUrl && vizOriginalUrl && (
-              <View style={{ marginTop: SPACING.sm }}>
-                <VisualizationCard
-                  originalUri={vizOriginalUrl}
-                  visualization={{ imageUrl: vizImageUrl, description: "" }}
-                />
-              </View>
-            )}
-
             {/* Report */}
             <TouchableOpacity
               style={styles.reportLink}
@@ -877,43 +738,6 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.primary, paddingVertical: 12, borderRadius: RADIUS.sm, gap: 8,
   },
   chatBtnText: { fontSize: 14, fontWeight: "600", color: "#FFFFFF" },
-  vizBtn: {
-    flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 8,
-    backgroundColor: "#faf5ff", paddingVertical: 12, borderRadius: RADIUS.md,
-    marginTop: SPACING.sm, borderWidth: 2, borderColor: "#7c3aed",
-  },
-  vizBtnAuthorized: {
-    backgroundColor: "#dcfce7", borderColor: "#16a34a",
-  },
-  vizBtnText: { fontSize: 14, fontWeight: "700", color: "#7c3aed" },
-  vizBtnTextAuthorized: { color: "#16a34a" },
-  vizPriceBadge: {
-    backgroundColor: "#7c3aed", paddingHorizontal: 8, paddingVertical: 2, borderRadius: 10,
-  },
-  vizPriceText: { fontSize: 12, fontWeight: "700", color: "#FFFFFF" },
-  // Temporary test section
-  testSection: {
-    backgroundColor: "#faf5ff", borderRadius: RADIUS.md, padding: SPACING.md,
-    marginTop: SPACING.sm, borderWidth: 2, borderColor: "#e9d5ff", borderStyle: "dashed",
-  },
-  testBadgeRow: {
-    flexDirection: "row", alignItems: "center", gap: 8, marginBottom: SPACING.sm,
-  },
-  testBadge: {
-    backgroundColor: "#f97316", paddingHorizontal: 8, paddingVertical: 2, borderRadius: 6,
-  },
-  testBadgeText: { fontSize: 10, fontWeight: "800", color: "#FFFFFF" },
-  testLabel: { fontSize: 13, fontWeight: "600", color: "#7c3aed" },
-  testGenerateBtn: {
-    flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 8,
-    backgroundColor: "#7c3aed", paddingVertical: 12, borderRadius: RADIUS.md,
-    marginTop: SPACING.sm,
-  },
-  testGenerateBtnText: { fontSize: 14, fontWeight: "700", color: "#FFFFFF" },
-  testPriceBadge: {
-    backgroundColor: "#FFFFFF", paddingHorizontal: 8, paddingVertical: 2, borderRadius: 10,
-  },
-  testPriceText: { fontSize: 12, fontWeight: "700", color: "#7c3aed" },
   reportLink: {
     flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 6,
     marginTop: SPACING.sm, paddingVertical: 10,

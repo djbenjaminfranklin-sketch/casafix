@@ -94,8 +94,6 @@ export default function AppointmentBookingScreen({ route, navigation }: Props) {
           depositAmount: updatedBooking.deposit_amount || updatedBooking.max_price,
           proposedPrice: updatedBooking.proposed_price,
           paymentIntentId: updatedBooking.stripe_payment_intent_id || "",
-          estimatedDays: updatedBooking.estimated_days || 1,
-          isMultiday: updatedBooking.is_multiday || false,
         });
       }
     });

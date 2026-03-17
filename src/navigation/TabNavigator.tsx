@@ -39,7 +39,7 @@ type RootStackParamList = {
   EmergencyBooking: { categoryId: string; serviceId: string; serviceName: string; priceRange: string };
   AppointmentBooking: { categoryId: string; serviceId: string; serviceName: string; priceRange: string };
   Review: { bookingId: string; artisanId: string; artisanName: string; serviceName: string };
-  PriceConfirmation: { bookingId: string; serviceName: string; artisanName: string; depositAmount: number; proposedPrice: number; paymentIntentId: string; estimatedDays?: number; isMultiday?: boolean };
+  PriceConfirmation: { bookingId: string; serviceName: string; artisanName: string; depositAmount: number; proposedPrice: number; paymentIntentId: string };
   WorkCompletion: { bookingId: string; serviceName: string; artisanName: string; finalPrice: number; artisanMarkedDoneAt: string };
   MyBookings: undefined;
   Chat: { bookingId: string; artisanName: string };

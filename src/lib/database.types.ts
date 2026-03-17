@@ -59,8 +59,6 @@ export type Booking = {
   final_price: number | null;
   deposit_amount: number | null;
   proposed_price: number | null;
-  estimated_days: number | null;
-  is_multiday: boolean;
   artisan_marked_done_at: string | null;
   auto_confirmed: boolean;
   description: string | null;
@@ -68,9 +66,6 @@ export type Booking = {
   client_longitude: number | null;
   stripe_payment_intent_id: string | null;
   payment_released_at: string | null;
-  visualization_authorized: boolean;
-  visualization_image_url: string | null;
-  visualization_original_url: string | null;
   created_at: string;
   updated_at: string;
 };

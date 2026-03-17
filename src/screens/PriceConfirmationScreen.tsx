@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -15,9 +15,6 @@ import { useTranslation } from "react-i18next";
 import { supabase } from "../lib/supabase";
 import { capturePayment, chargeRemaining } from "../lib/stripe";
 import { COLORS, SPACING, RADIUS } from "../constants/theme";
-import { subscribeToBooking, authorizeVisualization } from "../services/bookings";
-import { Booking } from "../lib/database.types";
-import VisualizationCard from "../components/VisualizationCard";
 
 const DISPLACEMENT_FEE = 75; // €
 
@@ -31,8 +28,6 @@ type Props = {
       depositAmount: number;
       proposedPrice: number;
       paymentIntentId: string;
-      estimatedDays?: number;
-      isMultiday?: boolean;
     };
   };
   navigation: any;
@@ -41,64 +36,11 @@ type Props = {
 export default function PriceConfirmationScreen({ route, navigation }: Props) {
   const {
     bookingId, serviceName, artisanName, categoryId, depositAmount, proposedPrice, paymentIntentId,
-    estimatedDays = 1, isMultiday = false,
   } = route.params;
   const { t } = useTranslation();
 
   const [loading, setLoading] = useState(false);
   const [confirmed, setConfirmed] = useState(false);
-
-  // 3D Visualization
-  const VISUAL_CATEGORIES = ["renovation", "smallworks", "pool", "garden"];
-  const showVisualize = categoryId ? VISUAL_CATEGORIES.includes(categoryId) : false;
-  const [vizAuthorized, setVizAuthorized] = useState(false);
-  const [vizImageUrl, setVizImageUrl] = useState<string | null>(null);
-  const [vizOriginalUrl, setVizOriginalUrl] = useState<string | null>(null);
-
-  // Load initial viz state + subscribe to updates
-  useEffect(() => {
-    if (!showVisualize) return;
-
-    // Fetch current state
-    supabase
-      .from("bookings")
-      .select("visualization_authorized, visualization_image_url, visualization_original_url")
-      .eq("id", bookingId)
-      .single()
-      .then(({ data }) => {
-        if (data?.visualization_authorized) setVizAuthorized(true);
-        if (data?.visualization_image_url) setVizImageUrl(data.visualization_image_url);
-        if (data?.visualization_original_url) setVizOriginalUrl(data.visualization_original_url);
-      });
-
-    // Subscribe for realtime updates (artisan generates the 3D)
-    const unsubscribe = subscribeToBooking(bookingId, (updatedBooking: Booking) => {
-      if (updatedBooking.visualization_authorized) setVizAuthorized(true);
-      if (updatedBooking.visualization_image_url) {
-        setVizImageUrl(updatedBooking.visualization_image_url);
-        setVizOriginalUrl(updatedBooking.visualization_original_url || null);
-      }
-    });
-
-    return unsubscribe;
-  }, [bookingId, showVisualize]);
-
-  const handleAuthorizeViz = () => {
-    Alert.alert(
-      t("visualization.title"),
-      t("visualization.authorizeConfirm"),
-      [
-        { text: t("priceConfirm.no"), style: "cancel" },
-        {
-          text: t("visualization.authorizeBtn"),
-          onPress: async () => {
-            const { error } = await authorizeVisualization(bookingId);
-            if (!error) setVizAuthorized(true);
-          },
-        },
-      ]
-    );
-  };
 
   const remainingAmount = Math.max(proposedPrice - depositAmount, 0);
   const needsAdditionalCharge = remainingAmount > 0;
@@ -145,14 +87,6 @@ export default function PriceConfirmationScreen({ route, navigation }: Props) {
       }
     }
 
-    // 4. For multi-day work, start the work tracking
-    if (isMultiday) {
-      await supabase.rpc("start_multiday_work", {
-        p_booking_id: bookingId,
-        p_artisan_id: data?.artisan_id,
-      });
-    }
-
     setLoading(false);
     setConfirmed(true);
   }
@@ -192,14 +126,14 @@ export default function PriceConfirmationScreen({ route, navigation }: Props) {
       <SafeAreaView style={styles.container}>
         <StatusBar barStyle="dark-content" />
         <View style={styles.successScreen}>
-          <View style={[styles.checkCircle, isMultiday && { backgroundColor: COLORS.primary }]}>
-            <Icon name={isMultiday ? "lock-closed" : "checkmark"} size={48} color="#FFFFFF" />
+          <View style={styles.checkCircle}>
+            <Icon name="checkmark" size={48} color="#FFFFFF" />
           </View>
           <Text style={styles.successTitle}>
-            {isMultiday ? t("multiday.moneyBlocked") : t("priceConfirm.paymentDone")}
+            {t("priceConfirm.paymentDone")}
           </Text>
           <Text style={styles.successSubtitle}>
-            {isMultiday ? t("multiday.moneyBlockedDesc") : t("priceConfirm.paymentDoneDesc")}
+            {t("priceConfirm.paymentDoneDesc")}
           </Text>
 
           <View style={styles.receiptCard}>
@@ -211,12 +145,6 @@ export default function PriceConfirmationScreen({ route, navigation }: Props) {
               <Text style={styles.receiptLabel}>{t("priceConfirm.artisan")}</Text>
               <Text style={styles.receiptValue}>{artisanName}</Text>
             </View>
-            {isMultiday && (
-              <View style={styles.receiptRow}>
-                <Text style={styles.receiptLabel}>{t("multiday.duration")}</Text>
-                <Text style={styles.receiptValue}>{estimatedDays} {t("multiday.days")}</Text>
-              </View>
-            )}
             <View style={styles.receiptDivider} />
             {needsAdditionalCharge && (
               <>
@@ -233,31 +161,13 @@ export default function PriceConfirmationScreen({ route, navigation }: Props) {
             )}
             <View style={styles.receiptRow}>
               <Text style={[styles.receiptLabel, styles.finalLabel]}>
-                {isMultiday ? t("multiday.blockedAmount") : t("priceConfirm.totalCharged")}
+                {t("priceConfirm.totalCharged")}
               </Text>
               <Text style={styles.finalPrice}>{proposedPrice}€</Text>
             </View>
           </View>
 
-          {isMultiday && (
-            <View style={[styles.infoCard, { width: "100%", marginBottom: SPACING.md }]}>
-              <Icon name="shield-checkmark" size={18} color="#16a34a" />
-              <Text style={styles.infoText}>{t("multiday.artisanPaidAtEnd")}</Text>
-            </View>
-          )}
-
-          {isMultiday ? (
-            <TouchableOpacity
-              style={styles.reviewBtn}
-              onPress={() => navigation.popToTop()}
-              activeOpacity={0.85}
-            >
-              <Icon name="home" size={20} color="#FFFFFF" />
-              <Text style={styles.reviewBtnText}>{t("booking.backHome")}</Text>
-            </TouchableOpacity>
-          ) : (
-            <>
-              <TouchableOpacity
+          <TouchableOpacity
                 style={styles.reviewBtn}
                 onPress={() =>
                   navigation.replace("Review", {
@@ -273,15 +183,13 @@ export default function PriceConfirmationScreen({ route, navigation }: Props) {
                 <Text style={styles.reviewBtnText}>{t("priceConfirm.leaveReview")}</Text>
               </TouchableOpacity>
 
-              <TouchableOpacity
-                style={styles.homeBtn}
-                onPress={() => navigation.popToTop()}
-                activeOpacity={0.85}
-              >
-                <Text style={styles.homeBtnText}>{t("booking.backHome")}</Text>
-              </TouchableOpacity>
-            </>
-          )}
+          <TouchableOpacity
+            style={styles.homeBtn}
+            onPress={() => navigation.popToTop()}
+            activeOpacity={0.85}
+          >
+            <Text style={styles.homeBtnText}>{t("booking.backHome")}</Text>
+          </TouchableOpacity>
         </View>
       </SafeAreaView>
     );
@@ -337,19 +245,6 @@ export default function PriceConfirmationScreen({ route, navigation }: Props) {
           )}
         </View>
 
-        {/* Multi-day duration badge */}
-        {isMultiday && (
-          <View style={styles.multidayCard}>
-            <Icon name="calendar" size={20} color={COLORS.primary} />
-            <View style={{ flex: 1 }}>
-              <Text style={styles.multidayTitle}>
-                {t("multiday.workDuration")}: {estimatedDays} {t("multiday.days")}
-              </Text>
-              <Text style={styles.multidayDesc}>{t("multiday.paidOnlyAtEnd")}</Text>
-            </View>
-          </View>
-        )}
-
         {/* Service info */}
         <View style={styles.serviceCard}>
           <Icon name="construct" size={18} color={COLORS.primary} />
@@ -360,7 +255,7 @@ export default function PriceConfirmationScreen({ route, navigation }: Props) {
         <View style={styles.infoCard}>
           <Icon name="shield-checkmark" size={18} color="#16a34a" />
           <Text style={styles.infoText}>
-            {isMultiday ? t("multiday.fundsSecured") : t("priceConfirm.guarantee")}
+            {t("priceConfirm.guarantee")}
           </Text>
         </View>
 
@@ -371,37 +266,6 @@ export default function PriceConfirmationScreen({ route, navigation }: Props) {
             {t("priceConfirm.displacementFeeInfo", { fee: DISPLACEMENT_FEE })}
           </Text>
         </View>
-
-        {/* 3D Visualization authorization */}
-        {showVisualize && !vizImageUrl && (
-          <TouchableOpacity
-            style={[styles.vizBtn, vizAuthorized && styles.vizBtnAuthorized]}
-            onPress={vizAuthorized ? undefined : handleAuthorizeViz}
-            activeOpacity={vizAuthorized ? 1 : 0.8}
-            disabled={vizAuthorized}
-          >
-            <Icon name="color-palette" size={18} color={vizAuthorized ? "#16a34a" : "#7c3aed"} />
-            <Text style={[styles.vizBtnText, vizAuthorized && styles.vizBtnTextAuthorized]}>
-              {vizAuthorized ? t("visualization.authorized") : t("visualization.wantPlan3D")}
-            </Text>
-            {!vizAuthorized && (
-              <View style={styles.vizPriceBadge}>
-                <Text style={styles.vizPriceText}>2€</Text>
-              </View>
-            )}
-            {vizAuthorized && <Icon name="checkmark-circle" size={18} color="#16a34a" />}
-          </TouchableOpacity>
-        )}
-
-        {/* Visualization result (generated by artisan) */}
-        {vizImageUrl && vizOriginalUrl && (
-          <View style={{ marginTop: SPACING.sm }}>
-            <VisualizationCard
-              originalUri={vizOriginalUrl}
-              visualization={{ imageUrl: vizImageUrl, description: "" }}
-            />
-          </View>
-        )}
 
         {/* Report problem */}
         <TouchableOpacity
@@ -501,20 +365,6 @@ const styles = StyleSheet.create({
     borderWidth: 1, borderColor: "#FDE68A",
   },
   warningText: { fontSize: 12, color: "#92400e", flex: 1, lineHeight: 18 },
-  vizBtn: {
-    flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 8,
-    backgroundColor: "#faf5ff", paddingVertical: 12, borderRadius: RADIUS.md,
-    marginTop: SPACING.sm, borderWidth: 2, borderColor: "#7c3aed",
-  },
-  vizBtnAuthorized: {
-    backgroundColor: "#dcfce7", borderColor: "#16a34a",
-  },
-  vizBtnText: { fontSize: 14, fontWeight: "700", color: "#7c3aed" },
-  vizBtnTextAuthorized: { color: "#16a34a" },
-  vizPriceBadge: {
-    backgroundColor: "#7c3aed", paddingHorizontal: 8, paddingVertical: 2, borderRadius: 10,
-  },
-  vizPriceText: { fontSize: 12, fontWeight: "700", color: "#FFFFFF" },
   reportLink: {
     flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 6,
     marginTop: SPACING.md, paddingVertical: 12,
@@ -566,12 +416,4 @@ const styles = StyleSheet.create({
   reviewBtnText: { fontSize: 15, fontWeight: "700", color: "#FFFFFF" },
   homeBtn: { paddingVertical: 12, paddingHorizontal: 30 },
   homeBtnText: { fontSize: 14, fontWeight: "600", color: COLORS.textLight },
-  // Multi-day
-  multidayCard: {
-    flexDirection: "row", alignItems: "center", gap: 12,
-    backgroundColor: "#EFF6FF", padding: 14, borderRadius: RADIUS.md, marginBottom: SPACING.sm,
-    borderWidth: 1, borderColor: "#BFDBFE",
-  },
-  multidayTitle: { fontSize: 14, fontWeight: "700", color: COLORS.primary },
-  multidayDesc: { fontSize: 12, color: "#1e40af", marginTop: 2 },
 });

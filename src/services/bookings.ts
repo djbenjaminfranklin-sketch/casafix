@@ -107,13 +107,3 @@ export async function cancelBooking(bookingId: string) {
 
   return { error };
 }
-
-// Authorize 3D visualization (client authorizes, artisan can then generate)
-export async function authorizeVisualization(bookingId: string) {
-  const { error } = await supabase
-    .from("bookings")
-    .update({ visualization_authorized: true })
-    .eq("id", bookingId);
-
-  return { error };
-}
