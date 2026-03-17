@@ -13,6 +13,7 @@ import {
   Linking,
   Alert,
   ActivityIndicator,
+  TextInput,
 } from "react-native";
 import MapView, { Marker, Polyline, PROVIDER_DEFAULT } from "react-native-maps";
 import Geolocation from "@react-native-community/geolocation";
@@ -84,6 +85,8 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
   const [aiDiagnostic, setAiDiagnostic] = useState<DiagnosticResult | null>(null);
   const [analyzingAi, setAnalyzingAi] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [manualAddress, setManualAddress] = useState("");
+  const [locationFailed, setLocationFailed] = useState(false);
   const [userLocation, setUserLocation] = useState({
     latitude: 36.5105,
     longitude: -4.8826,
@@ -114,19 +117,13 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
           },
           (err) => {
             console.warn("Geolocation error:", err);
-            Alert.alert(
-              t("booking.locationError") || "Localisation",
-              t("booking.locationErrorDesc") || "Impossible d'obtenir votre position. Vérifiez vos paramètres de localisation."
-            );
+            setLocationFailed(true);
           },
           { enableHighAccuracy: true, timeout: 10000 }
         );
       },
       () => {
-        Alert.alert(
-          t("booking.locationError") || "Localisation",
-          t("booking.locationDenied") || "L'accès à la localisation est nécessaire pour trouver un artisan proche."
-        );
+        setLocationFailed(true);
       }
     );
   }, []);
@@ -275,8 +272,17 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
 
   const handleConfirm = async () => {
     if (submitting) return;
+    if (locationFailed && !manualAddress.trim()) {
+      Alert.alert("", t("booking.addressRequired"));
+      return;
+    }
     setSubmitting(true);
     setState("searching");
+
+    // Build description with address if manual
+    const fullDescription = locationFailed && manualAddress.trim()
+      ? `[Adresse: ${manualAddress.trim()}] ${description.trim() || ""}`
+      : description.trim() || undefined;
 
     // Create real booking in Supabase
     const { data: booking } = await createBooking({
@@ -287,7 +293,7 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
       type: "emergency",
       latitude: userLocation.latitude,
       longitude: userLocation.longitude,
-      description: description.trim() || undefined,
+      description: fullDescription,
     });
 
     if (booking) {
@@ -441,6 +447,23 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
               <Icon name="card" size={16} color={COLORS.primary} />
               <Text style={styles.paymentText}>{t("payment.explanation")}</Text>
             </View>
+
+            {/* Manual address fallback */}
+            {locationFailed && (
+              <View style={styles.addressContainer}>
+                <View style={styles.addressHeader}>
+                  <Icon name="location-outline" size={18} color="#d97706" />
+                  <Text style={styles.addressLabel}>{t("booking.enterAddress")}</Text>
+                </View>
+                <TextInput
+                  style={styles.addressInput}
+                  placeholder={t("booking.addressPlaceholder")}
+                  placeholderTextColor="#9ca3af"
+                  value={manualAddress}
+                  onChangeText={setManualAddress}
+                />
+              </View>
+            )}
 
             {/* Photos / Videos */}
             <MediaPicker media={media} onMediaChange={setMedia} maxItems={5} description={description} onDescriptionChange={setDescription} />
@@ -764,6 +787,18 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.primary, paddingVertical: 12, borderRadius: RADIUS.sm, gap: 8,
   },
   chatBtnText: { fontSize: 14, fontWeight: "600", color: "#FFFFFF" },
+  addressContainer: {
+    backgroundColor: "#FEF3C7", borderRadius: RADIUS.md, padding: SPACING.md,
+    marginBottom: SPACING.md, borderWidth: 1, borderColor: "#FDE68A",
+  },
+  addressHeader: {
+    flexDirection: "row", alignItems: "center", gap: 8, marginBottom: 8,
+  },
+  addressLabel: { fontSize: 13, fontWeight: "600", color: "#92400e" },
+  addressInput: {
+    backgroundColor: "#FFFFFF", borderRadius: RADIUS.sm, padding: 12,
+    fontSize: 14, color: "#1f2937", borderWidth: 1, borderColor: "#e5e7eb",
+  },
   reportLink: {
     flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 6,
     marginTop: SPACING.sm, paddingVertical: 10,

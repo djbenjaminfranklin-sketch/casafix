@@ -247,6 +247,9 @@
     "locationError": "Localisation",
     "locationErrorDesc": "Impossible d'obtenir votre position. Vérifiez vos paramètres de localisation.",
     "locationDenied": "L'accès à la localisation est nécessaire pour trouver un artisan proche de chez vous.",
+    "enterAddress": "Entrez votre adresse",
+    "addressPlaceholder": "Ex: 12 Calle de la Playa, Marbella",
+    "addressRequired": "Veuillez entrer votre adresse pour que l'artisan puisse vous trouver.",
     "lateCancel": "Annulation gratuite si l'artisan est en retard",
     "punctuality": "Ponctualité"
   },
@@ -498,7 +501,11 @@
     "signOut": "Se déconnecter",
     "signOutTitle": "Déconnexion",
     "signOutConfirm": "Êtes-vous sûr de vouloir vous déconnecter ?",
-    "deleteAccount": "Supprimer mon compte"
+    "deleteAccount": "Supprimer mon compte",
+    "deleteTitle": "Supprimer votre compte ?",
+    "deleteConfirm": "Cette action est irréversible. Toutes vos données seront supprimées.",
+    "deleteError": "Erreur lors de la suppression du compte",
+    "invalidPhone": "Numéro de téléphone invalide. Format attendu : +34 600 000 000"
   },
   "notifications": {
     "pushTitle": "Notifications push",

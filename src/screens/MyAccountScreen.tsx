@@ -14,6 +14,7 @@ import {
 import Icon from "react-native-vector-icons/Ionicons";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "../contexts/AuthContext";
+import { supabase } from "../lib/supabase";
 import { COLORS, SPACING, RADIUS } from "../constants/theme";
 
 type Props = {
@@ -32,8 +33,17 @@ export default function MyAccountScreen({ navigation }: Props) {
   const hasChanges =
     fullName !== (profile?.full_name || "") || phone !== (profile?.phone || "");
 
+  function isValidPhone(p: string): boolean {
+    const cleaned = p.replace(/[\s\-\(\)]/g, "");
+    return /^\+?\d{8,15}$/.test(cleaned);
+  }
+
   async function handleSave() {
     if (!hasChanges) return;
+    if (phone.trim() && !isValidPhone(phone.trim())) {
+      Alert.alert("", t("account.invalidPhone"));
+      return;
+    }
     setSaving(true);
     try {
       await updateProfile({ full_name: fullName.trim(), phone: phone.trim() });
@@ -43,6 +53,34 @@ export default function MyAccountScreen({ navigation }: Props) {
       Alert.alert("Error", t("account.saveError"));
     }
     setSaving(false);
+  }
+
+  function handleDeleteAccount() {
+    Alert.alert(
+      t("account.deleteTitle"),
+      t("account.deleteConfirm"),
+      [
+        { text: t("priceConfirm.no"), style: "cancel" },
+        {
+          text: t("account.deleteAccount"),
+          style: "destructive",
+          onPress: async () => {
+            try {
+              // Mark profile as deleted in database
+              if (user) {
+                await supabase
+                  .from("profiles")
+                  .update({ deleted_at: new Date().toISOString() })
+                  .eq("id", user.id);
+              }
+              await signOut();
+            } catch {
+              Alert.alert("Error", t("account.deleteError"));
+            }
+          },
+        },
+      ]
+    );
   }
 
   function handleSignOut() {
@@ -138,7 +176,7 @@ export default function MyAccountScreen({ navigation }: Props) {
         </TouchableOpacity>
 
         {/* Delete account */}
-        <TouchableOpacity style={styles.deleteBtn} activeOpacity={0.7}>
+        <TouchableOpacity style={styles.deleteBtn} onPress={handleDeleteAccount} activeOpacity={0.7}>
           <Text style={styles.deleteText}>{t("account.deleteAccount")}</Text>
         </TouchableOpacity>
       </ScrollView>
