@@ -69,9 +69,12 @@ export default function AuthScreen() {
           {/* Logo */}
           <View style={styles.logoSection}>
             <View style={styles.logoCircle}>
-              <Icon name="construct" size={40} color="#FFFFFF" />
+              <Icon name="home" size={40} color="#FFFFFF" />
             </View>
-            <Text style={styles.appName}>CasaFix</Text>
+            <Text style={styles.appName}>
+              <Text style={{ color: COLORS.primary }}>Casa</Text>
+              <Text style={{ color: "#1f2937" }}>Fix</Text>
+            </Text>
             <Text style={styles.tagline}>Costa del Sol</Text>
           </View>
 

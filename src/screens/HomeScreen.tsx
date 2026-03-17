@@ -36,10 +36,15 @@ export default function HomeScreen() {
             {/* Logo & Location */}
             <View style={styles.topRow}>
               <View>
-                <Text style={styles.logo}>
-                  <Text style={{ color: COLORS.primary }}>Casa</Text>
-                  <Text style={{ color: COLORS.accent }}>Fix</Text>
-                </Text>
+                <View style={styles.logoRow}>
+                  <View style={styles.logoIcon}>
+                    <Icon name="home" size={18} color="#FFFFFF" />
+                  </View>
+                  <Text style={styles.logo}>
+                    <Text style={{ color: COLORS.primary }}>Casa</Text>
+                    <Text style={{ color: COLORS.text }}>Fix</Text>
+                  </Text>
+                </View>
                 <View style={styles.locationRow}>
                   <Icon name="location" size={14} color={COLORS.accent} />
                   <Text style={styles.locationText}>{t("location")}</Text>
@@ -102,13 +107,23 @@ const styles = StyleSheet.create({
     paddingTop: SPACING.md,
     paddingBottom: SPACING.md,
   },
+  logoRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+  },
+  logoIcon: {
+    width: 32,
+    height: 32,
+    borderRadius: 8,
+    backgroundColor: COLORS.primary,
+    alignItems: "center",
+    justifyContent: "center",
+  },
   logo: {
     fontSize: 26,
     fontWeight: "800",
     color: COLORS.text,
-  },
-  logoAccent: {
-    color: COLORS.accent,
   },
   locationRow: {
     flexDirection: "row",
