@@ -244,6 +244,9 @@
     "backHome": "Retour à l'accueil",
     "today": "Auj.",
     "guarantee2h": "Chez vous en 2h maximum",
+    "locationError": "Localisation",
+    "locationErrorDesc": "Impossible d'obtenir votre position. Vérifiez vos paramètres de localisation.",
+    "locationDenied": "L'accès à la localisation est nécessaire pour trouver un artisan proche de chez vous.",
     "lateCancel": "Annulation gratuite si l'artisan est en retard",
     "punctuality": "Ponctualité"
   },

@@ -13,6 +13,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import Icon from "react-native-vector-icons/Ionicons";
 import { useTranslation } from "react-i18next";
 import { COLORS, SPACING, RADIUS } from "../constants/theme";
+import { supabase } from "../lib/supabase";
 
 const STORAGE_KEY = "@casafix_notifications";
 
@@ -51,12 +52,21 @@ export default function NotificationsSettingsScreen({ navigation }: Props) {
     });
   }, []);
 
-  // Save to AsyncStorage whenever a setting changes
+  // Save to AsyncStorage + Supabase whenever a setting changes
   const toggle = useCallback(
     (key: keyof NotifSettings) => {
       setSettings((prev) => {
         const updated = { ...prev, [key]: !prev[key] };
         AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+        // Sync to database so edge functions can check preferences
+        supabase.auth.getUser().then(({ data: { user } }) => {
+          if (user) {
+            supabase
+              .from("profiles")
+              .update({ notification_preferences: updated })
+              .eq("id", user.id);
+          }
+        });
         return updated;
       });
     },

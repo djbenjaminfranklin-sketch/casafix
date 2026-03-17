@@ -101,15 +101,31 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
   const pulse2Anim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    Geolocation.getCurrentPosition(
-      (pos) => {
-        setUserLocation({
-          latitude: pos.coords.latitude,
-          longitude: pos.coords.longitude,
-        });
+    Geolocation.requestAuthorization(
+      () => {
+        Geolocation.getCurrentPosition(
+          (pos) => {
+            setUserLocation({
+              latitude: pos.coords.latitude,
+              longitude: pos.coords.longitude,
+            });
+          },
+          (err) => {
+            console.warn("Geolocation error:", err);
+            Alert.alert(
+              t("booking.locationError") || "Localisation",
+              t("booking.locationErrorDesc") || "Impossible d'obtenir votre position. Vérifiez vos paramètres de localisation."
+            );
+          },
+          { enableHighAccuracy: true, timeout: 10000 }
+        );
       },
-      () => {},
-      { enableHighAccuracy: true, timeout: 10000 }
+      () => {
+        Alert.alert(
+          t("booking.locationError") || "Localisation",
+          t("booking.locationDenied") || "L'accès à la localisation est nécessaire pour trouver un artisan proche."
+        );
+      }
     );
   }, []);
 

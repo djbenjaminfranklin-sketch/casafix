@@ -24,7 +24,6 @@ type Props = {
       bookingId: string;
       serviceName: string;
       artisanName: string;
-      categoryId?: string;
       depositAmount: number;
       proposedPrice: number;
       paymentIntentId: string;
@@ -35,7 +34,7 @@ type Props = {
 
 export default function PriceConfirmationScreen({ route, navigation }: Props) {
   const {
-    bookingId, serviceName, artisanName, categoryId, depositAmount, proposedPrice, paymentIntentId,
+    bookingId, serviceName, artisanName, depositAmount, proposedPrice, paymentIntentId,
   } = route.params;
   const { t } = useTranslation();
 
