@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   FlatList,
   RefreshControl,
+  ActivityIndicator,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import { useTranslation } from "react-i18next";
@@ -48,19 +49,34 @@ export default function MyBookingsScreen({ navigation }: Props) {
     "pending_client_confirmation", "disputed",
   ];
 
-  const fetchBookings = useCallback(async () => {
+  const PAGE_SIZE = 20;
+  const [hasMore, setHasMore] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
+
+  const fetchBookings = useCallback(async (loadMore = false) => {
+    const from = loadMore ? bookings.length : 0;
+    const to = from + PAGE_SIZE - 1;
+
     const { data } = await supabase
       .from("bookings")
       .select(`
         *,
         artisan:artisans(id, full_name, phone, avatar_url, rating)
       `)
-      .order("created_at", { ascending: false });
+      .order("created_at", { ascending: false })
+      .range(from, to);
 
-    setBookings(data || []);
+    const newData = data || [];
+    if (loadMore) {
+      setBookings((prev) => [...prev, ...newData]);
+    } else {
+      setBookings(newData);
+    }
+    setHasMore(newData.length === PAGE_SIZE);
     setLoading(false);
     setRefreshing(false);
-  }, []);
+    setLoadingMore(false);
+  }, [bookings.length]);
 
   useEffect(() => {
     fetchBookings();
@@ -202,7 +218,19 @@ export default function MyBookingsScreen({ navigation }: Props) {
         renderItem={renderBooking}
         contentContainerStyle={styles.list}
         refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={() => { setRefreshing(true); fetchBookings(); }} />
+          <RefreshControl refreshing={refreshing} onRefresh={() => { setRefreshing(true); fetchBookings(false); }} />
+        }
+        onEndReached={() => {
+          if (hasMore && !loadingMore && !loading) {
+            setLoadingMore(true);
+            fetchBookings(true);
+          }
+        }}
+        onEndReachedThreshold={0.3}
+        ListFooterComponent={
+          loadingMore ? (
+            <ActivityIndicator style={{ paddingVertical: 20 }} color={COLORS.primary} />
+          ) : null
         }
         ListEmptyComponent={
           <View style={styles.empty}>

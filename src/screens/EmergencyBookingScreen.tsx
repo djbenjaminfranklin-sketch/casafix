@@ -12,6 +12,7 @@ import {
   Dimensions,
   Linking,
   Alert,
+  ActivityIndicator,
 } from "react-native";
 import MapView, { Marker, Polyline, PROVIDER_DEFAULT } from "react-native-maps";
 import Geolocation from "@react-native-community/geolocation";
@@ -82,6 +83,7 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
   const [description, setDescription] = useState("");
   const [aiDiagnostic, setAiDiagnostic] = useState<DiagnosticResult | null>(null);
   const [analyzingAi, setAnalyzingAi] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const [userLocation, setUserLocation] = useState({
     latitude: 36.5105,
     longitude: -4.8826,
@@ -272,6 +274,8 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
   };
 
   const handleConfirm = async () => {
+    if (submitting) return;
+    setSubmitting(true);
     setState("searching");
 
     // Create real booking in Supabase
@@ -472,9 +476,15 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
             {aiDiagnostic && <DiagnosticCard diagnostic={aiDiagnostic} />}
 
             {/* Confirm button */}
-            <TouchableOpacity style={[styles.confirmBtn, analyzingAi && { opacity: 0.4 }]} onPress={handleConfirm} activeOpacity={0.85} disabled={analyzingAi}>
-              <Icon name="flash" size={20} color="#FFFFFF" />
-              <Text style={styles.confirmBtnText}>{t("booking.confirmEmergency")}</Text>
+            <TouchableOpacity style={[styles.confirmBtn, (analyzingAi || submitting) && { opacity: 0.4 }]} onPress={handleConfirm} activeOpacity={0.85} disabled={analyzingAi || submitting}>
+              {submitting ? (
+                <ActivityIndicator color="#FFFFFF" />
+              ) : (
+                <>
+                  <Icon name="flash" size={20} color="#FFFFFF" />
+                  <Text style={styles.confirmBtnText}>{t("booking.confirmEmergency")}</Text>
+                </>
+              )}
             </TouchableOpacity>
           </>
         )}
