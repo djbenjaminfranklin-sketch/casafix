@@ -1,18 +1,18 @@
 export const COLORS = {
   primary: "#E8292C",
   primaryDark: "#B91C1C",
-  primaryLight: "#FEF3C7",
+  primaryLight: "#FEF2F2",
   background: "#FFFFFF",
   card: "#ffffff",
-  text: "#78350F",
-  textSecondary: "#92400E",
-  textLight: "#A3A3A3",
-  border: "#FDE68A",
+  text: "#1f2937",
+  textSecondary: "#4b5563",
+  textLight: "#9ca3af",
+  border: "#e5e7eb",
   white: "#ffffff",
-  accent: "#F59E0B",
-  accentLight: "#FCD34D",
+  accent: "#3b82f6",
+  accentLight: "#93c5fd",
   navActive: "#E8292C",
-  navInactive: "#A3A3A3",
+  navInactive: "#9ca3af",
 };
 
 export const FONTS = {
