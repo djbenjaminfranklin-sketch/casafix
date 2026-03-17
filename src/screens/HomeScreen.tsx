@@ -7,6 +7,7 @@ import {
   StyleSheet,
   SafeAreaView,
   StatusBar,
+  Image,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import { useTranslation } from "react-i18next";
@@ -37,13 +38,7 @@ export default function HomeScreen() {
             <View style={styles.topRow}>
               <View>
                 <View style={styles.logoRow}>
-                  <View style={styles.logoIcon}>
-                    <Icon name="home" size={18} color="#FFFFFF" />
-                  </View>
-                  <Text style={styles.logo}>
-                    <Text style={{ color: COLORS.primary }}>Casa</Text>
-                    <Text style={{ color: COLORS.text }}>Fix</Text>
-                  </Text>
+                  <Image source={require("../assets/logo.png")} style={styles.logoImage} />
                 </View>
                 <View style={styles.locationRow}>
                   <Icon name="location" size={14} color={COLORS.accent} />
@@ -110,20 +105,11 @@ const styles = StyleSheet.create({
   logoRow: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 8,
   },
-  logoIcon: {
-    width: 32,
-    height: 32,
-    borderRadius: 8,
-    backgroundColor: COLORS.primary,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  logo: {
-    fontSize: 26,
-    fontWeight: "800",
-    color: COLORS.text,
+  logoImage: {
+    width: 48,
+    height: 48,
+    borderRadius: 10,
   },
   locationRow: {
     flexDirection: "row",

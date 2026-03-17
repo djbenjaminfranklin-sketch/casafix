@@ -12,6 +12,7 @@ import {
   ScrollView,
   Alert,
   ActivityIndicator,
+  Image,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import { useTranslation } from "react-i18next";
@@ -68,13 +69,7 @@ export default function AuthScreen() {
         >
           {/* Logo */}
           <View style={styles.logoSection}>
-            <View style={styles.logoCircle}>
-              <Icon name="home" size={40} color="#FFFFFF" />
-            </View>
-            <Text style={styles.appName}>
-              <Text style={{ color: COLORS.primary }}>Casa</Text>
-              <Text style={{ color: "#1f2937" }}>Fix</Text>
-            </Text>
+            <Image source={require("../assets/logo.png")} style={styles.logoImage} />
             <Text style={styles.tagline}>Costa del Sol</Text>
           </View>
 
@@ -247,11 +242,9 @@ const styles = StyleSheet.create({
     paddingVertical: SPACING.xl,
   },
   logoSection: { alignItems: "center", marginBottom: 40 },
-  logoCircle: {
-    width: 80, height: 80, borderRadius: 40, backgroundColor: COLORS.primary,
-    alignItems: "center", justifyContent: "center", marginBottom: 16,
+  logoImage: {
+    width: 120, height: 120, borderRadius: 24, marginBottom: 16,
   },
-  appName: { fontSize: 28, fontWeight: "800", color: "#1f2937" },
   tagline: { fontSize: 14, color: COLORS.textLight, marginTop: 4 },
   toggle: {
     flexDirection: "row", backgroundColor: "#f3f4f6", borderRadius: RADIUS.md,
