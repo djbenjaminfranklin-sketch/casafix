@@ -59,6 +59,11 @@ export default function SearchScreen() {
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="dark-content" />
 
+      {/* Header */}
+      <View style={styles.header}>
+        <Text style={styles.headerTitle}>{t("nav.search")}</Text>
+      </View>
+
       {/* Search bar */}
       <View style={styles.searchBar}>
         <Icon name="search" size={20} color={COLORS.textLight} />
@@ -145,6 +150,12 @@ export default function SearchScreen() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#FFFFFF" },
+  header: {
+    paddingHorizontal: SPACING.md,
+    paddingTop: SPACING.md,
+    paddingBottom: SPACING.xs,
+  },
+  headerTitle: { fontSize: 22, fontWeight: "700", color: COLORS.text },
   searchBar: {
     flexDirection: "row",
     alignItems: "center",
