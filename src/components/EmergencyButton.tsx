@@ -1,5 +1,5 @@
-import React from "react";
-import { TouchableOpacity, Text, View, StyleSheet } from "react-native";
+import React, { useEffect, useRef } from "react";
+import { TouchableOpacity, Text, View, StyleSheet, Animated, Easing } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import { useTranslation } from "react-i18next";
 
@@ -9,20 +9,75 @@ type Props = {
 
 export default function EmergencyButton({ onPress }: Props) {
   const { t } = useTranslation();
+  const pulseAnim = useRef(new Animated.Value(1)).current;
+  const glowAnim = useRef(new Animated.Value(0.3)).current;
+
+  useEffect(() => {
+    const pulse = Animated.loop(
+      Animated.sequence([
+        Animated.timing(pulseAnim, {
+          toValue: 1.12,
+          duration: 800,
+          easing: Easing.inOut(Easing.ease),
+          useNativeDriver: true,
+        }),
+        Animated.timing(pulseAnim, {
+          toValue: 1,
+          duration: 800,
+          easing: Easing.inOut(Easing.ease),
+          useNativeDriver: true,
+        }),
+      ])
+    );
+
+    const glow = Animated.loop(
+      Animated.sequence([
+        Animated.timing(glowAnim, {
+          toValue: 0.6,
+          duration: 800,
+          easing: Easing.inOut(Easing.ease),
+          useNativeDriver: true,
+        }),
+        Animated.timing(glowAnim, {
+          toValue: 0.2,
+          duration: 800,
+          easing: Easing.inOut(Easing.ease),
+          useNativeDriver: true,
+        }),
+      ])
+    );
+
+    pulse.start();
+    glow.start();
+
+    return () => {
+      pulse.stop();
+      glow.stop();
+    };
+  }, [pulseAnim, glowAnim]);
 
   return (
     <View style={styles.wrapper}>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={onPress}
-        activeOpacity={0.8}
-      >
-        <View style={styles.outerRing}>
-          <View style={styles.innerCircle}>
-            <Icon name="flash" size={32} color="#ffffff" />
+      {/* Glow ring behind */}
+      <Animated.View
+        style={[
+          styles.glowRing,
+          { opacity: glowAnim, transform: [{ scale: pulseAnim }] },
+        ]}
+      />
+      <Animated.View style={{ transform: [{ scale: pulseAnim }] }}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={onPress}
+          activeOpacity={0.8}
+        >
+          <View style={styles.outerRing}>
+            <View style={styles.innerCircle}>
+              <Icon name="flash" size={32} color="#ffffff" />
+            </View>
           </View>
-        </View>
-      </TouchableOpacity>
+        </TouchableOpacity>
+      </Animated.View>
       <Text style={styles.label}>{t("emergency")}</Text>
       <Text style={styles.subtitle}>{t("emergencySubtitle")}</Text>
     </View>
@@ -34,6 +89,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 20,
     marginBottom: 8,
+  },
+  glowRing: {
+    position: "absolute",
+    top: -8,
+    width: 106,
+    height: 106,
+    borderRadius: 53,
+    backgroundColor: "#dc2626",
   },
   button: {
     width: 90,
