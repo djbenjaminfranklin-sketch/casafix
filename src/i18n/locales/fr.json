@@ -9,6 +9,7 @@
   "nav": {
     "home": "Accueil",
     "search": "Recherche",
+    "myBookings": "Mes courses",
     "messages": "Messages",
     "favorites": "Favoris",
     "profile": "Profil"

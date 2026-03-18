@@ -55,7 +55,7 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const TAB_ICONS: Record<string, { active: string; inactive: string }> = {
   Home: { active: "home", inactive: "home-outline" },
-  Search: { active: "search", inactive: "search-outline" },
+  MyBookingsTab: { active: "clipboard", inactive: "clipboard-outline" },
   Messages: { active: "chatbubble", inactive: "chatbubble-outline" },
   Favorites: { active: "heart", inactive: "heart-outline" },
   Profile: { active: "person", inactive: "person-outline" },
@@ -85,9 +85,9 @@ function TabsScreen() {
         options={{ tabBarLabel: t("nav.home") }}
       />
       <Tab.Screen
-        name="Search"
-        component={SearchScreen}
-        options={{ tabBarLabel: t("nav.search") }}
+        name="MyBookingsTab"
+        component={MyBookingsScreen}
+        options={{ tabBarLabel: t("nav.myBookings") }}
       />
       <Tab.Screen
         name="Messages"
