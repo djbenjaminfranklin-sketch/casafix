@@ -15,7 +15,7 @@ import {
   ActivityIndicator,
   TextInput,
 } from "react-native";
-import MapView, { Marker, Polyline, PROVIDER_DEFAULT } from "react-native-maps";
+import MapView, { Marker, PROVIDER_DEFAULT } from "react-native-maps";
 import Geolocation from "@react-native-community/geolocation";
 import Icon from "react-native-vector-icons/Ionicons";
 import QRCode from "react-native-qrcode-svg";
@@ -46,25 +46,6 @@ type Props = {
   };
   navigation: any;
 };
-
-// Generate a simulated route (series of points from artisan start to user location)
-function generateRoute(
-  from: { latitude: number; longitude: number },
-  to: { latitude: number; longitude: number },
-  steps: number
-) {
-  const points = [];
-  for (let i = 0; i <= steps; i++) {
-    const t = i / steps;
-    // Add slight curve to make it look like a real road
-    const curve = Math.sin(t * Math.PI) * 0.002;
-    points.push({
-      latitude: from.latitude + (to.latitude - from.latitude) * t + curve,
-      longitude: from.longitude + (to.longitude - from.longitude) * t - curve * 0.5,
-    });
-  }
-  return points;
-}
 
 export default function EmergencyBookingScreen({ route, navigation }: Props) {
   const { categoryId, serviceName, priceRange } = route.params;
@@ -100,9 +81,7 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
     latitude: 0,
     longitude: 0,
   });
-  const [routePoints, setRoutePoints] = useState<{ latitude: number; longitude: number }[]>([]);
-  const [routeProgress, setRouteProgress] = useState(0);
-  const [etaMinutes, setEtaMinutes] = useState(12);
+  const [etaMinutes, setEtaMinutes] = useState(0);
 
   // Pulse animation for searching
   const pulseAnim = useRef(new Animated.Value(0)).current;
@@ -186,35 +165,50 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
     }
   }, [state, pulseAnim, pulse2Anim]);
 
-  // When matched: generate route and start artisan movement
+  // When matched: get real artisan position and calculate ETA
   useEffect(() => {
-    if (state === "matched") {
-      const artisanStart = {
-        latitude: userLocation.latitude + 0.015,
-        longitude: userLocation.longitude + 0.01,
-      };
-      const fullRoute = generateRoute(artisanStart, userLocation, 50);
-      setRoutePoints(fullRoute);
-      setArtisanPosition(artisanStart);
-      setRouteProgress(0);
-      setEtaMinutes(12);
+    if (state === "matched" && bookingId) {
+      // Fetch artisan's real position
+      (async () => {
+        const { data } = await getBookingWithArtisan(bookingId);
+        if (data?.artisan) {
+          const artLat = data.artisan.latitude || userLocation.latitude;
+          const artLng = data.artisan.longitude || userLocation.longitude;
+          const artisanPos = { latitude: artLat, longitude: artLng };
 
-      // Fit map to show both user and artisan
-      setTimeout(() => {
-        mapRef.current?.fitToCoordinates(
-          [userLocation, artisanStart],
-          { edgePadding: { top: 100, right: 60, bottom: 300, left: 60 }, animated: true }
-        );
-      }, 500);
+          setArtisanPosition(artisanPos);
 
-      // After 2 seconds, switch to "arriving" state and start movement
-      const arriveTimer = setTimeout(() => {
+          // Calculate real distance (km) and ETA (assuming 40km/h average in city)
+          const R = 6371;
+          const dLat = ((userLocation.latitude - artLat) * Math.PI) / 180;
+          const dLng = ((userLocation.longitude - artLng) * Math.PI) / 180;
+          const a =
+            Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos((artLat * Math.PI) / 180) *
+              Math.cos((userLocation.latitude * Math.PI) / 180) *
+              Math.sin(dLng / 2) *
+              Math.sin(dLng / 2);
+          const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+          const distanceKm = R * c;
+          const etaMin = Math.max(1, Math.round((distanceKm / 40) * 60 * 1.3)); // 1.3x for road factor
+          setEtaMinutes(etaMin);
+
+          // Fit map to show both user and artisan
+          if (distanceKm > 0.1) {
+            setTimeout(() => {
+              mapRef.current?.fitToCoordinates(
+                [userLocation, artisanPos],
+                { edgePadding: { top: 100, right: 60, bottom: 300, left: 60 }, animated: true }
+              );
+            }, 500);
+          }
+        }
+
+        // Switch to arriving state
         setState("arriving");
-      }, 2000);
-
-      return () => clearTimeout(arriveTimer);
+      })();
     }
-  }, [state, userLocation]);
+  }, [state, bookingId]);
 
   // Subscribe to booking realtime updates (detect price_proposed)
   useEffect(() => {
@@ -254,29 +248,6 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
 
     return unsubscribe;
   }, [bookingId, navigation, serviceName]);
-
-  // Simulate artisan moving along the route
-  useEffect(() => {
-    if (state === "arriving" && routePoints.length > 0) {
-      let step = routeProgress;
-      const interval = setInterval(() => {
-        step += 1;
-        if (step >= routePoints.length) {
-          clearInterval(interval);
-          return;
-        }
-        setArtisanPosition(routePoints[step]);
-        setRouteProgress(step);
-
-        // Update ETA based on remaining distance
-        const remaining = routePoints.length - step;
-        const newEta = Math.max(1, Math.round((remaining / routePoints.length) * 12));
-        setEtaMinutes(newEta);
-      }, 800); // Move every 800ms
-
-      return () => clearInterval(interval);
-    }
-  }, [state, routePoints, routeProgress]);
 
   // AI Analysis - before booking
   const handleAnalyze = async () => {
@@ -366,8 +337,6 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
     outputRange: [0.3, 0],
   });
 
-  // Remaining route (from artisan current position to user)
-  const remainingRoute = routePoints.slice(routeProgress);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -386,17 +355,7 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
         showsUserLocation
         showsMyLocationButton={false}
       >
-        {/* Route polyline */}
-        {(state === "matched" || state === "arriving") && remainingRoute.length > 1 && (
-          <Polyline
-            coordinates={remainingRoute}
-            strokeColor={COLORS.primary}
-            strokeWidth={4}
-            lineDashPattern={[0]}
-          />
-        )}
-
-        {/* Artisan marker (moving) */}
+        {/* Artisan marker */}
         {(state === "matched" || state === "arriving") && artisanPosition.latitude !== 0 && (
           <Marker
             coordinate={artisanPosition}
