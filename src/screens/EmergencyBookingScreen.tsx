@@ -42,13 +42,14 @@ type Props = {
       serviceId: string;
       serviceName: string;
       priceRange: string;
+      resumeBookingId?: string;
     };
   };
   navigation: any;
 };
 
 export default function EmergencyBookingScreen({ route, navigation }: Props) {
-  const { categoryId, serviceName, priceRange } = route.params;
+  const { categoryId, serviceName, priceRange, resumeBookingId } = route.params;
   const { t } = useTranslation();
   const category = CATEGORIES.find((c) => c.id === categoryId);
   const mapRef = useRef<MapView>(null);
@@ -109,6 +110,44 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
       }
     );
   }, []);
+
+  // Resume an existing active booking (when returning to app)
+  useEffect(() => {
+    if (!resumeBookingId) return;
+
+    setBookingId(resumeBookingId);
+
+    (async () => {
+      const { data } = await getBookingWithArtisan(resumeBookingId);
+      if (!data) return;
+
+      if (data.arrival_code) setArrivalCode(data.arrival_code);
+
+      if (data.status === "searching") {
+        setState("searching");
+      } else if (data.status === "matched" || data.status === "in_progress") {
+        if (data.artisan) {
+          setMatchedArtisan({
+            name: data.artisan.full_name || "Artisan",
+            rating: data.artisan.rating || 0,
+            reviews: data.artisan.review_count || 0,
+            phone: data.artisan.phone || "",
+          });
+        }
+        setState("matched");
+      } else if (data.status === "price_proposed" && data.proposed_price) {
+        navigation.replace("PriceConfirmation", {
+          bookingId: resumeBookingId,
+          serviceName,
+          artisanName: data.artisan?.full_name || "",
+          categoryId,
+          depositAmount: data.deposit_amount || data.max_price,
+          proposedPrice: data.proposed_price,
+          paymentIntentId: data.stripe_payment_intent_id || "",
+        });
+      }
+    })();
+  }, [resumeBookingId]);
 
   // 2-minute free cancellation countdown
   useEffect(() => {

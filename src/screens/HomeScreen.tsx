@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -11,16 +11,46 @@ import {
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import { useTranslation } from "react-i18next";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { CATEGORIES } from "../constants/categories";
 import { COLORS, SPACING, RADIUS } from "../constants/theme";
 import CategoryCard from "../components/CategoryCard";
 import LanguageSelector from "../components/LanguageSelector";
 import EmergencyButton from "../components/EmergencyButton";
+import { supabase } from "../lib/supabase";
 
 export default function HomeScreen() {
   const { t } = useTranslation();
   const navigation = useNavigation<any>();
+
+  // Check for active booking and redirect to tracking screen
+  useFocusEffect(
+    React.useCallback(() => {
+      (async () => {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) return;
+
+        const { data: activeBooking } = await supabase
+          .from("bookings")
+          .select("id, category_id, service_id, service_name, price_range, status")
+          .eq("client_id", user.id)
+          .in("status", ["searching", "matched", "in_progress", "price_proposed"])
+          .order("created_at", { ascending: false })
+          .limit(1)
+          .single();
+
+        if (activeBooking) {
+          navigation.navigate("EmergencyBooking", {
+            categoryId: activeBooking.category_id,
+            serviceId: activeBooking.service_id,
+            serviceName: activeBooking.service_name,
+            priceRange: activeBooking.price_range,
+            resumeBookingId: activeBooking.id,
+          });
+        }
+      })();
+    }, [])
+  );
 
   return (
     <SafeAreaView style={styles.container}>
