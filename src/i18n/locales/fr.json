@@ -257,7 +257,7 @@
     "cancelFreeDesc": "L'annulation est gratuite pendant les 2 premières minutes.",
     "cancelFree": "Annuler gratuitement",
     "yesCancel": "Oui, annuler",
-    "cancelFeeWarning": "L'annulation après 2 min peut entraîner des frais de déplacement."
+    "cancelFeeWarning": "Après 2 min, l'annulation entraîne 75€ de frais de déplacement."
   },
   "auth": {
     "login": "Se connecter",
