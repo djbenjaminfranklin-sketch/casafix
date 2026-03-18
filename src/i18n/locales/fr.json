@@ -252,7 +252,12 @@
     "addressRequired": "Veuillez entrer votre adresse pour que l'artisan puisse vous trouver.",
     "lateCancel": "Annulation gratuite si l'artisan est en retard",
     "punctuality": "Ponctualité",
-    "showQrToArtisan": "Montrez ce code à l'artisan"
+    "showQrToArtisan": "Montrez ce code à l'artisan",
+    "cancelTitle": "Annuler la demande ?",
+    "cancelFreeDesc": "L'annulation est gratuite pendant les 2 premières minutes.",
+    "cancelFree": "Annuler gratuitement",
+    "yesCancel": "Oui, annuler",
+    "cancelFeeWarning": "L'annulation après 2 min peut entraîner des frais de déplacement."
   },
   "auth": {
     "login": "Se connecter",

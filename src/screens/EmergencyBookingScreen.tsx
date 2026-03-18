@@ -79,6 +79,8 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
   const [aiDiagnostic, setAiDiagnostic] = useState<DiagnosticResult | null>(null);
   const [analyzingAi, setAnalyzingAi] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [cancelCountdown, setCancelCountdown] = useState(120); // 2 minutes
+  const [canCancelFree, setCanCancelFree] = useState(true);
   const [matchedArtisan, setMatchedArtisan] = useState<{
     name: string;
     rating: number;
@@ -128,6 +130,27 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
       }
     );
   }, []);
+
+  // 2-minute free cancellation countdown
+  useEffect(() => {
+    if (state !== "searching" || !bookingId) return;
+
+    setCancelCountdown(120);
+    setCanCancelFree(true);
+
+    const interval = setInterval(() => {
+      setCancelCountdown((prev) => {
+        if (prev <= 1) {
+          clearInterval(interval);
+          setCanCancelFree(false);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [state, bookingId]);
 
   // Search pulse animation
   useEffect(() => {
@@ -538,6 +561,41 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
               <AnimatedDot delay={200} />
               <AnimatedDot delay={400} />
             </View>
+
+            {/* Free cancellation countdown */}
+            {canCancelFree && (
+              <TouchableOpacity
+                style={styles.freeCancelBtn}
+                onPress={() => {
+                  Alert.alert(
+                    t("booking.cancelTitle"),
+                    t("booking.cancelFreeDesc"),
+                    [
+                      { text: t("priceConfirm.no"), style: "cancel" },
+                      {
+                        text: t("booking.yesCancel"),
+                        style: "destructive",
+                        onPress: async () => {
+                          if (bookingId) {
+                            await supabase.from("bookings").update({ status: "cancelled" }).eq("id", bookingId);
+                          }
+                          navigation.goBack();
+                        },
+                      },
+                    ]
+                  );
+                }}
+                activeOpacity={0.8}
+              >
+                <Text style={styles.freeCancelText}>
+                  {t("booking.cancelFree")} ({Math.floor(cancelCountdown / 60)}:{String(cancelCountdown % 60).padStart(2, "0")})
+                </Text>
+              </TouchableOpacity>
+            )}
+
+            {!canCancelFree && (
+              <Text style={styles.cancelExpired}>{t("booking.cancelFeeWarning")}</Text>
+            )}
           </View>
         )}
 
@@ -828,6 +886,26 @@ const styles = StyleSheet.create({
   addressInput: {
     backgroundColor: "#FFFFFF", borderRadius: RADIUS.sm, padding: 12,
     fontSize: 14, color: "#1f2937", borderWidth: 1, borderColor: "#e5e7eb",
+  },
+  freeCancelBtn: {
+    marginTop: SPACING.md,
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: RADIUS.md,
+    borderWidth: 2,
+    borderColor: "#e5e7eb",
+  },
+  freeCancelText: {
+    fontSize: 14,
+    fontWeight: "600",
+    color: "#6b7280",
+    textAlign: "center",
+  },
+  cancelExpired: {
+    fontSize: 12,
+    color: "#9ca3af",
+    textAlign: "center",
+    marginTop: SPACING.sm,
   },
   qrCard: {
     backgroundColor: "#FFFFFF", alignItems: "center", justifyContent: "center",
