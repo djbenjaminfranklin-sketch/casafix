@@ -10,7 +10,6 @@ import {
   TextInput,
   ActivityIndicator,
   RefreshControl,
-  ScrollView,
   Alert,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
@@ -259,21 +258,6 @@ export default function AdminBookingsScreen() {
         )}
       </View>
 
-      {/* Status Filter - scrollable with visible text */}
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.filterScroll} contentContainerStyle={styles.filterContainer}>
-        {STATUS_FILTERS.map((status) => (
-          <TouchableOpacity
-            key={status}
-            style={[styles.filterChip, statusFilter === status && styles.filterChipActive]}
-            onPress={() => setStatusFilter(status)}
-          >
-            <Text style={[styles.filterText, statusFilter === status && styles.filterTextActive]}>
-              {getStatusLabel(status)}
-            </Text>
-          </TouchableOpacity>
-        ))}
-      </ScrollView>
-
       {/* List */}
       {loading ? (
         <View style={styles.loadingContainer}>
@@ -287,6 +271,21 @@ export default function AdminBookingsScreen() {
           contentContainerStyle={styles.listContent}
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={ADMIN_ACCENT} />
+          }
+          ListHeaderComponent={
+            <View style={styles.filterRow}>
+              {STATUS_FILTERS.map((status) => (
+                <TouchableOpacity
+                  key={status}
+                  style={[styles.filterChip, statusFilter === status && styles.filterChipActive]}
+                  onPress={() => setStatusFilter(status)}
+                >
+                  <Text style={[styles.filterText, statusFilter === status && styles.filterTextActive]}>
+                    {getStatusLabel(status)}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </View>
           }
           ListEmptyComponent={
             <View style={styles.emptyContainer}>
@@ -328,8 +327,10 @@ const styles = StyleSheet.create({
     marginHorizontal: SPACING.md, paddingHorizontal: SPACING.md, height: 44, gap: 8,
   },
   searchInput: { flex: 1, fontSize: 15, color: "#ffffff" },
-  filterScroll: { flexGrow: 0 },
-  filterContainer: { paddingHorizontal: SPACING.md, paddingVertical: SPACING.md, gap: 8, alignItems: "center" },
+  filterRow: {
+    flexDirection: "row", flexWrap: "wrap",
+    paddingHorizontal: SPACING.sm, paddingBottom: SPACING.md, gap: 8,
+  },
   filterChip: {
     paddingHorizontal: 16, paddingVertical: 10, borderRadius: 20,
     backgroundColor: ADMIN_CARD, marginRight: 6,
