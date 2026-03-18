@@ -38,6 +38,7 @@ import AdminStatsScreen from "../screens/admin/AdminStatsScreen";
 import AdminClientsScreen from "../screens/admin/AdminClientsScreen";
 import AdminClientDetailScreen from "../screens/admin/AdminClientDetailScreen";
 import AdminMessageScreen from "../screens/admin/AdminMessageScreen";
+import AdminInvoicesScreen from "../screens/admin/AdminInvoicesScreen";
 
 type RootStackParamList = {
   Auth: undefined;
@@ -69,6 +70,7 @@ type RootStackParamList = {
   AdminClients: undefined;
   AdminClientDetail: { clientId: string };
   AdminMessage: undefined;
+  AdminInvoices: undefined;
 };
 
 const Tab = createBottomTabNavigator();
@@ -293,6 +295,11 @@ export default function RootNavigator() {
       <Stack.Screen
         name="AdminMessage"
         component={AdminMessageScreen}
+        options={{ animation: "slide_from_right" }}
+      />
+      <Stack.Screen
+        name="AdminInvoices"
+        component={AdminInvoicesScreen}
         options={{ animation: "slide_from_right" }}
       />
         </>

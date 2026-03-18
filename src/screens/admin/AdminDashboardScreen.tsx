@@ -127,6 +127,12 @@ export default function AdminDashboardScreen() {
       color: "#f59e0b",
     },
     {
+      icon: "receipt-outline",
+      label: "Factures",
+      screen: "AdminInvoices",
+      color: "#10b981",
+    },
+    {
       icon: "stats-chart-outline",
       label: t("admin.stats"),
       screen: "AdminStats",
