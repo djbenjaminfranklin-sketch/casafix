@@ -10,6 +10,8 @@ import {
   TextInput,
   ActivityIndicator,
   RefreshControl,
+  ScrollView,
+  Alert,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import { useTranslation } from "react-i18next";
@@ -38,16 +40,8 @@ const STATUS_COLORS: Record<string, string> = {
 };
 
 const STATUS_FILTERS = [
-  "all",
-  "pending",
-  "searching",
-  "matched",
-  "in_progress",
-  "price_proposed",
-  "work_in_progress",
-  "completed",
-  "disputed",
-  "cancelled",
+  "all", "pending", "searching", "matched", "in_progress",
+  "price_proposed", "work_in_progress", "completed", "disputed", "cancelled",
 ];
 
 export default function AdminBookingsScreen() {
@@ -58,77 +52,49 @@ export default function AdminBookingsScreen() {
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [bookings, setBookings] = useState<any[]>([]);
-  const [page, setPage] = useState(0);
-  const [hasMore, setHasMore] = useState(true);
-  const [loadingMore, setLoadingMore] = useState(false);
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+  const [selectMode, setSelectMode] = useState(false);
 
-  const fetchBookings = useCallback(
-    async (pageNum: number = 0, append: boolean = false) => {
-      try {
-        let query = supabase
-          .from("bookings")
-          .select(`
-            *,
-            client:profiles!bookings_client_id_fkey(full_name),
-            artisan:artisans!bookings_artisan_id_fkey(full_name)
-          `)
-          .order("created_at", { ascending: false })
-          .range(pageNum * PAGE_SIZE, (pageNum + 1) * PAGE_SIZE - 1);
+  const fetchBookings = useCallback(async () => {
+    try {
+      let query = supabase
+        .from("bookings")
+        .select("*")
+        .order("created_at", { ascending: false })
+        .limit(100);
 
-        if (statusFilter !== "all") {
-          query = query.eq("status", statusFilter);
-        }
-
-        if (search.trim()) {
-          query = query.ilike("service_name", `%${search.trim()}%`);
-        }
-
-        const { data, error } = await query;
-        if (error) throw error;
-
-        const results = data || [];
-        setHasMore(results.length === PAGE_SIZE);
-
-        if (append) {
-          setBookings((prev) => [...prev, ...results]);
-        } else {
-          setBookings(results);
-        }
-      } catch (error) {
-        console.error("Error fetching bookings:", error);
-      } finally {
-        setLoading(false);
-        setRefreshing(false);
-        setLoadingMore(false);
+      if (statusFilter !== "all") {
+        query = query.eq("status", statusFilter);
       }
-    },
-    [statusFilter, search]
-  );
+
+      if (search.trim()) {
+        query = query.ilike("service_name", `%${search.trim()}%`);
+      }
+
+      const { data, error } = await query;
+      if (error) throw error;
+      setBookings(data || []);
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+      setLoading(false);
+      setRefreshing(false);
+    }
+  }, [statusFilter, search]);
 
   useEffect(() => {
-    setPage(0);
     setLoading(true);
-    fetchBookings(0);
+    fetchBookings();
   }, [fetchBookings]);
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
-    setPage(0);
-    fetchBookings(0);
+    fetchBookings();
   }, [fetchBookings]);
 
-  const loadMore = useCallback(() => {
-    if (!hasMore || loadingMore) return;
-    setLoadingMore(true);
-    const nextPage = page + 1;
-    setPage(nextPage);
-    fetchBookings(nextPage, true);
-  }, [hasMore, loadingMore, page, fetchBookings]);
-
-  const getStatusColor = (status: string) => STATUS_COLORS[status] || "#6b7280";
-
   const getStatusLabel = (status: string) => {
-    const statusLabels: Record<string, string> = {
+    const labels: Record<string, string> = {
+      all: t("admin.all"),
       pending: t("admin.pending"),
       searching: t("admin.searching"),
       matched: t("admin.matched"),
@@ -139,57 +105,101 @@ export default function AdminBookingsScreen() {
       disputed: t("admin.disputed"),
       cancelled: t("admin.cancelled"),
     };
-    return statusLabels[status] || status;
+    return labels[status] || status;
   };
 
-  const renderBooking = ({ item }: { item: any }) => (
-    <TouchableOpacity
-      style={styles.bookingCard}
-      onPress={() => navigation.navigate("AdminBookingDetail", { bookingId: item.id })}
-      activeOpacity={0.7}
-    >
-      <View style={styles.bookingHeader}>
-        <Text style={styles.serviceName} numberOfLines={1}>
-          {item.service_name}
-        </Text>
-        <View style={[styles.statusBadge, { backgroundColor: getStatusColor(item.status) + "20" }]}>
-          <Text style={[styles.statusText, { color: getStatusColor(item.status) }]}>
-            {getStatusLabel(item.status)}
-          </Text>
-        </View>
-      </View>
+  const toggleSelect = (id: string) => {
+    setSelectedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  };
 
-      <View style={styles.bookingDetails}>
-        <View style={styles.detailRow}>
-          <Icon name="person-outline" size={14} color="#9ca3af" />
-          <Text style={styles.detailText}>
-            {t("admin.client")}: {item.client?.full_name || "N/A"}
-          </Text>
-        </View>
-        <View style={styles.detailRow}>
-          <Icon name="construct-outline" size={14} color="#9ca3af" />
-          <Text style={styles.detailText}>
-            {t("admin.artisan")}: {item.artisan?.full_name || "N/A"}
-          </Text>
-        </View>
-        <View style={styles.detailRowSpaced}>
-          <View style={styles.detailRow}>
-            <Icon name="calendar-outline" size={14} color="#9ca3af" />
-            <Text style={styles.detailText}>
-              {new Date(item.created_at).toLocaleDateString("fr-FR")}
-            </Text>
+  const selectAll = () => {
+    if (selectedIds.size === bookings.length) {
+      setSelectedIds(new Set());
+    } else {
+      setSelectedIds(new Set(bookings.map((b) => b.id)));
+    }
+  };
+
+  const deleteSelected = () => {
+    if (selectedIds.size === 0) return;
+    Alert.alert(
+      `Supprimer ${selectedIds.size} réservation(s) ?`,
+      "Cette action est irréversible.",
+      [
+        { text: t("admin.cancel"), style: "cancel" },
+        {
+          text: "Supprimer",
+          style: "destructive",
+          onPress: async () => {
+            const ids = Array.from(selectedIds);
+            await supabase.from("bookings").delete().in("id", ids);
+            setSelectedIds(new Set());
+            setSelectMode(false);
+            fetchBookings();
+          },
+        },
+      ]
+    );
+  };
+
+  const renderBooking = ({ item }: { item: any }) => {
+    const isSelected = selectedIds.has(item.id);
+    return (
+      <TouchableOpacity
+        style={[styles.bookingCard, isSelected && styles.bookingCardSelected]}
+        onPress={() => {
+          if (selectMode) {
+            toggleSelect(item.id);
+          } else {
+            navigation.navigate("AdminBookingDetail", { bookingId: item.id });
+          }
+        }}
+        onLongPress={() => {
+          setSelectMode(true);
+          toggleSelect(item.id);
+        }}
+        activeOpacity={0.7}
+      >
+        <View style={styles.bookingRow}>
+          {selectMode && (
+            <View style={[styles.checkbox, isSelected && styles.checkboxActive]}>
+              {isSelected && <Icon name="checkmark" size={14} color="#ffffff" />}
+            </View>
+          )}
+
+          <View style={styles.bookingInfo}>
+            <View style={styles.bookingHeader}>
+              <Text style={styles.serviceName} numberOfLines={1}>{item.service_name}</Text>
+              <View style={[styles.statusBadge, { backgroundColor: (STATUS_COLORS[item.status] || "#6b7280") + "20" }]}>
+                <Text style={[styles.statusText, { color: STATUS_COLORS[item.status] || "#6b7280" }]}>
+                  {getStatusLabel(item.status)}
+                </Text>
+              </View>
+            </View>
+
+            <View style={styles.bookingDetails}>
+              <View style={styles.detailRow}>
+                <Icon name="calendar-outline" size={13} color="#9ca3af" />
+                <Text style={styles.detailText}>
+                  {new Date(item.created_at).toLocaleDateString("fr-FR")}
+                </Text>
+              </View>
+              {item.max_price != null && (
+                <Text style={styles.priceText}>max {item.max_price}€</Text>
+              )}
+            </View>
           </View>
-          {item.final_price != null && (
-            <Text style={styles.priceText}>{item.final_price} EUR</Text>
-          )}
-          {item.final_price == null && item.max_price != null && (
-            <Text style={styles.priceTextMuted}>max {item.max_price} EUR</Text>
-          )}
+
+          {!selectMode && <Icon name="chevron-forward" size={16} color="#6b7280" />}
         </View>
-      </View>
-      <Icon name="chevron-forward" size={16} color="#6b7280" style={styles.chevron} />
-    </TouchableOpacity>
-  );
+      </TouchableOpacity>
+    );
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -201,7 +211,36 @@ export default function AdminBookingsScreen() {
           <Icon name="arrow-back" size={24} color="#ffffff" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>{t("admin.bookings")}</Text>
+        <View style={{ flex: 1 }} />
+        <TouchableOpacity
+          onPress={() => {
+            if (selectMode) {
+              setSelectMode(false);
+              setSelectedIds(new Set());
+            } else {
+              setSelectMode(true);
+            }
+          }}
+        >
+          <Text style={styles.selectBtn}>{selectMode ? "Annuler" : "Sélectionner"}</Text>
+        </TouchableOpacity>
       </View>
+
+      {/* Bulk actions bar */}
+      {selectMode && selectedIds.size > 0 && (
+        <View style={styles.bulkBar}>
+          <TouchableOpacity onPress={selectAll} style={styles.bulkBtn}>
+            <Icon name="checkbox-outline" size={18} color="#ffffff" />
+            <Text style={styles.bulkBtnText}>
+              {selectedIds.size === bookings.length ? "Tout désélectionner" : "Tout sélectionner"}
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={deleteSelected} style={[styles.bulkBtn, { backgroundColor: "#ef4444" }]}>
+            <Icon name="trash" size={18} color="#ffffff" />
+            <Text style={styles.bulkBtnText}>Supprimer ({selectedIds.size})</Text>
+          </TouchableOpacity>
+        </View>
+      )}
 
       {/* Search */}
       <View style={styles.searchContainer}>
@@ -220,38 +259,20 @@ export default function AdminBookingsScreen() {
         )}
       </View>
 
-      {/* Status Filter */}
-      <FlatList
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        data={STATUS_FILTERS}
-        keyExtractor={(item) => item}
-        contentContainerStyle={styles.filterContainer}
-        renderItem={({ item }) => {
-          const filterLabels: Record<string, string> = {
-            all: t("admin.all"),
-            pending: t("admin.pending"),
-            searching: t("admin.searching"),
-            matched: t("admin.matched"),
-            in_progress: t("admin.inProgress"),
-            price_proposed: t("admin.priceProposed"),
-            work_in_progress: t("admin.workInProgress"),
-            completed: t("admin.completed"),
-            disputed: t("admin.disputed"),
-            cancelled: t("admin.cancelled"),
-          };
-          return (
-            <TouchableOpacity
-              style={[styles.filterChip, statusFilter === item && styles.filterChipActive]}
-              onPress={() => setStatusFilter(item)}
-            >
-              <Text style={[styles.filterText, statusFilter === item && styles.filterTextActive]}>
-                {filterLabels[item] || item}
-              </Text>
-            </TouchableOpacity>
-          );
-        }}
-      />
+      {/* Status Filter - scrollable with visible text */}
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.filterScroll} contentContainerStyle={styles.filterContainer}>
+        {STATUS_FILTERS.map((status) => (
+          <TouchableOpacity
+            key={status}
+            style={[styles.filterChip, statusFilter === status && styles.filterChipActive]}
+            onPress={() => setStatusFilter(status)}
+          >
+            <Text style={[styles.filterText, statusFilter === status && styles.filterTextActive]}>
+              {getStatusLabel(status)}
+            </Text>
+          </TouchableOpacity>
+        ))}
+      </ScrollView>
 
       {/* List */}
       {loading ? (
@@ -267,13 +288,6 @@ export default function AdminBookingsScreen() {
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={ADMIN_ACCENT} />
           }
-          onEndReached={loadMore}
-          onEndReachedThreshold={0.3}
-          ListFooterComponent={
-            loadingMore ? (
-              <ActivityIndicator size="small" color={ADMIN_ACCENT} style={{ paddingVertical: 16 }} />
-            ) : null
-          }
           ListEmptyComponent={
             <View style={styles.emptyContainer}>
               <Icon name="calendar-outline" size={48} color="#6b7280" />
@@ -287,147 +301,69 @@ export default function AdminBookingsScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: ADMIN_DARK,
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
+  container: { flex: 1, backgroundColor: ADMIN_DARK },
+  loadingContainer: { flex: 1, justifyContent: "center", alignItems: "center" },
   header: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingHorizontal: SPACING.md,
-    paddingVertical: SPACING.md,
-    gap: 12,
+    flexDirection: "row", alignItems: "center",
+    paddingHorizontal: SPACING.md, paddingVertical: SPACING.md, gap: 12,
   },
   backButton: {
-    width: 36,
-    height: 36,
-    borderRadius: 10,
-    backgroundColor: ADMIN_CARD,
-    alignItems: "center",
-    justifyContent: "center",
+    width: 36, height: 36, borderRadius: 10,
+    backgroundColor: ADMIN_CARD, alignItems: "center", justifyContent: "center",
   },
-  headerTitle: {
-    fontSize: 22,
-    fontWeight: "800",
-    color: "#ffffff",
+  headerTitle: { fontSize: 22, fontWeight: "800", color: "#ffffff" },
+  selectBtn: { fontSize: 14, fontWeight: "600", color: ADMIN_ACCENT },
+  bulkBar: {
+    flexDirection: "row", justifyContent: "space-between", alignItems: "center",
+    paddingHorizontal: SPACING.md, paddingVertical: SPACING.sm, gap: SPACING.sm,
   },
+  bulkBtn: {
+    flexDirection: "row", alignItems: "center", gap: 6,
+    backgroundColor: ADMIN_CARD, paddingHorizontal: 14, paddingVertical: 8, borderRadius: 10,
+  },
+  bulkBtnText: { fontSize: 13, fontWeight: "600", color: "#ffffff" },
   searchContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: ADMIN_CARD,
-    borderRadius: RADIUS.md,
-    marginHorizontal: SPACING.md,
-    paddingHorizontal: SPACING.md,
-    height: 44,
-    gap: 8,
+    flexDirection: "row", alignItems: "center",
+    backgroundColor: ADMIN_CARD, borderRadius: RADIUS.md,
+    marginHorizontal: SPACING.md, paddingHorizontal: SPACING.md, height: 44, gap: 8,
   },
-  searchInput: {
-    flex: 1,
-    fontSize: 15,
-    color: "#ffffff",
-  },
-  filterContainer: {
-    paddingHorizontal: SPACING.md,
-    paddingVertical: SPACING.md,
-    gap: 8,
-  },
+  searchInput: { flex: 1, fontSize: 15, color: "#ffffff" },
+  filterScroll: { maxHeight: 50 },
+  filterContainer: { paddingHorizontal: SPACING.md, paddingVertical: SPACING.sm, gap: 8 },
   filterChip: {
-    paddingHorizontal: 14,
-    paddingVertical: 8,
-    borderRadius: 20,
-    backgroundColor: ADMIN_CARD,
-    marginRight: 8,
+    paddingHorizontal: 14, paddingVertical: 8, borderRadius: 20,
+    backgroundColor: ADMIN_CARD, marginRight: 4,
   },
-  filterChipActive: {
-    backgroundColor: ADMIN_ACCENT,
-  },
-  filterText: {
-    fontSize: 12,
-    fontWeight: "600",
-    color: "#9ca3af",
-    textTransform: "capitalize",
-  },
-  filterTextActive: {
-    color: "#ffffff",
-  },
-  listContent: {
-    padding: SPACING.md,
-    paddingBottom: SPACING.xl,
-  },
+  filterChipActive: { backgroundColor: ADMIN_ACCENT },
+  filterText: { fontSize: 13, fontWeight: "600", color: "#9ca3af" },
+  filterTextActive: { color: "#ffffff" },
+  listContent: { padding: SPACING.md, paddingBottom: SPACING.xl },
   bookingCard: {
-    backgroundColor: ADMIN_CARD,
-    borderRadius: RADIUS.lg,
-    padding: SPACING.md,
-    marginBottom: SPACING.sm,
+    backgroundColor: ADMIN_CARD, borderRadius: RADIUS.lg,
+    padding: SPACING.md, marginBottom: SPACING.sm,
   },
+  bookingCardSelected: { borderWidth: 2, borderColor: ADMIN_ACCENT },
+  bookingRow: { flexDirection: "row", alignItems: "center", gap: 10 },
+  checkbox: {
+    width: 24, height: 24, borderRadius: 6,
+    borderWidth: 2, borderColor: "#6b7280",
+    alignItems: "center", justifyContent: "center",
+  },
+  checkboxActive: { backgroundColor: ADMIN_ACCENT, borderColor: ADMIN_ACCENT },
+  bookingInfo: { flex: 1 },
   bookingHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: SPACING.sm,
+    flexDirection: "row", justifyContent: "space-between",
+    alignItems: "center", marginBottom: 6,
   },
-  serviceName: {
-    fontSize: 15,
-    fontWeight: "700",
-    color: "#ffffff",
-    flex: 1,
-    marginRight: 8,
-  },
-  statusBadge: {
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 8,
-  },
-  statusText: {
-    fontSize: 11,
-    fontWeight: "700",
-    textTransform: "uppercase",
-  },
+  serviceName: { fontSize: 15, fontWeight: "700", color: "#ffffff", flex: 1, marginRight: 8 },
+  statusBadge: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 8 },
+  statusText: { fontSize: 11, fontWeight: "700", textTransform: "uppercase" },
   bookingDetails: {
-    gap: 6,
+    flexDirection: "row", justifyContent: "space-between", alignItems: "center",
   },
-  detailRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 6,
-  },
-  detailRowSpaced: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
-  detailText: {
-    fontSize: 13,
-    color: "#9ca3af",
-  },
-  priceText: {
-    fontSize: 15,
-    fontWeight: "800",
-    color: "#10b981",
-  },
-  priceTextMuted: {
-    fontSize: 13,
-    fontWeight: "600",
-    color: "#6b7280",
-  },
-  chevron: {
-    position: "absolute",
-    right: SPACING.md,
-    top: "50%",
-  },
-  emptyContainer: {
-    alignItems: "center",
-    justifyContent: "center",
-    paddingVertical: 60,
-    gap: 12,
-  },
-  emptyText: {
-    fontSize: 15,
-    color: "#6b7280",
-  },
+  detailRow: { flexDirection: "row", alignItems: "center", gap: 4 },
+  detailText: { fontSize: 12, color: "#9ca3af" },
+  priceText: { fontSize: 13, fontWeight: "700", color: "#f59e0b" },
+  emptyContainer: { alignItems: "center", justifyContent: "center", paddingVertical: 60, gap: 12 },
+  emptyText: { fontSize: 15, color: "#6b7280" },
 });
