@@ -42,12 +42,7 @@ export default function AdminDisputesScreen() {
     try {
       let query = supabase
         .from("reports")
-        .select(`
-          *,
-          reporter:profiles!reports_reporter_id_fkey(full_name),
-          reported:profiles!reports_reported_id_fkey(full_name),
-          booking:bookings(id, service_name, status, final_price)
-        `)
+        .select("*")
         .order("created_at", { ascending: false });
 
       if (activeTab === "pending") {

@@ -760,7 +760,7 @@ export default function AdminBookingDetailScreen() {
             disabled={actionLoading}
           >
             <Icon name="trash" size={20} color="#ffffff" />
-            <Text style={styles.actionButtonText}>{t("admin.deleteBooking") || "Supprimer la réservation"}</Text>
+            <Text style={styles.actionButtonText}>{t("admin.deleteBooking")}</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>

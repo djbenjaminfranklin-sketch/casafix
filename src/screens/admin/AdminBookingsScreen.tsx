@@ -127,12 +127,12 @@ export default function AdminBookingsScreen() {
   const deleteSelected = () => {
     if (selectedIds.size === 0) return;
     Alert.alert(
-      `Supprimer ${selectedIds.size} réservation(s) ?`,
-      "Cette action est irréversible.",
+      t("admin.deleteConfirm"),
+      t("admin.actionConfirm"),
       [
         { text: t("admin.cancel"), style: "cancel" },
         {
-          text: "Supprimer",
+          text: t("admin.deleteBooking"),
           style: "destructive",
           onPress: async () => {
             const ids = Array.from(selectedIds);
@@ -221,7 +221,7 @@ export default function AdminBookingsScreen() {
             }
           }}
         >
-          <Text style={styles.selectBtn}>{selectMode ? "Annuler" : "Sélectionner"}</Text>
+          <Text style={styles.selectBtn}>{selectMode ? t("admin.cancel") : t("admin.select")}</Text>
         </TouchableOpacity>
       </View>
 
@@ -231,12 +231,12 @@ export default function AdminBookingsScreen() {
           <TouchableOpacity onPress={selectAll} style={styles.bulkBtn}>
             <Icon name="checkbox-outline" size={18} color="#ffffff" />
             <Text style={styles.bulkBtnText}>
-              {selectedIds.size === bookings.length ? "Tout désélectionner" : "Tout sélectionner"}
+              {selectedIds.size === bookings.length ? t("admin.deselectAll") : t("admin.selectAll")}
             </Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={deleteSelected} style={[styles.bulkBtn, { backgroundColor: "#ef4444" }]}>
             <Icon name="trash" size={18} color="#ffffff" />
-            <Text style={styles.bulkBtnText}>Supprimer ({selectedIds.size})</Text>
+            <Text style={styles.bulkBtnText}>{t("admin.deleteBooking")} ({selectedIds.size})</Text>
           </TouchableOpacity>
         </View>
       )}

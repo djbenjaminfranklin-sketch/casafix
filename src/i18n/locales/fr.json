@@ -716,6 +716,10 @@
     "pendingConfirmation": "Validation en attente",
     "workCompleted": "Travaux terminés",
     "no": "Non",
-    "yes": "Oui"
+    "yes": "Oui",
+    "select": "Sélectionner",
+    "selectAll": "Tout sélectionner",
+    "deselectAll": "Tout désélectionner",
+    "deleteBooking": "Supprimer"
   }
 }

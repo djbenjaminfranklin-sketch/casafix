@@ -67,7 +67,7 @@ export default function AdminArtisanDetailScreen() {
           .order("created_at", { ascending: false }),
         supabase
           .from("reviews")
-          .select("*, client:profiles!reviews_client_id_fkey(full_name)")
+          .select("*")
           .eq("artisan_id", artisanId)
           .order("created_at", { ascending: false })
           .limit(10),
