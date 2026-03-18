@@ -12,13 +12,17 @@ import {
   Alert,
   RefreshControl,
   Linking,
+  Modal,
+  Dimensions,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import { useTranslation } from "react-i18next";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { SPACING, RADIUS } from "../../constants/theme";
+import { CATEGORIES } from "../../constants/categories";
 import { supabase } from "../../lib/supabase";
 
+const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get("window");
 const ADMIN_DARK = "#1e1e2e";
 const ADMIN_CARD = "#2a2a3d";
 const ADMIN_ACCENT = "#7c3aed";
@@ -49,6 +53,7 @@ export default function AdminArtisanDetailScreen() {
   const [activeBookings, setActiveBookings] = useState<any[]>([]);
   const [reviews, setReviews] = useState<any[]>([]);
   const [actionLoading, setActionLoading] = useState(false);
+  const [fullscreenImage, setFullscreenImage] = useState<string | null>(null);
 
   const fetchArtisan = useCallback(async () => {
     try {
@@ -256,8 +261,13 @@ export default function AdminArtisanDetailScreen() {
 
         {/* Profile Section */}
         <View style={styles.profileSection}>
-          {artisan.avatar_url ? (
-            <Image source={{ uri: artisan.avatar_url }} style={styles.avatar} />
+          {(artisan.avatar_storage_url || artisan.avatar_url) ? (
+            <TouchableOpacity
+              onPress={() => setFullscreenImage(artisan.avatar_storage_url || artisan.avatar_url)}
+              activeOpacity={0.8}
+            >
+              <Image source={{ uri: artisan.avatar_storage_url || artisan.avatar_url }} style={styles.avatar} />
+            </TouchableOpacity>
           ) : (
             <View style={styles.avatarPlaceholder}>
               <Icon name="person" size={40} color="#9ca3af" />
@@ -326,17 +336,54 @@ export default function AdminArtisanDetailScreen() {
             <Text style={styles.infoLabel}>{t("admin.address")}</Text>
             <Text style={styles.infoValue}>{artisan.business_address || "N/A"}</Text>
           </View>
+          <View style={styles.infoCard}>
+            <Text style={styles.infoLabel}>{t("admin.ivaRate")}</Text>
+            <Text style={styles.infoValue}>{artisan.iva_rate != null ? `${artisan.iva_rate}%` : "N/A"}</Text>
+          </View>
         </View>
 
-        {/* ID Document */}
-        {artisan.id_document_url && (
+        {/* ID Documents */}
+        {(artisan.id_document_url || artisan.id_document_verso_url) && (
           <View style={styles.documentSection}>
             <Text style={styles.sectionTitle}>{t("admin.idDocument")}</Text>
-            <Image
-              source={{ uri: artisan.id_document_url }}
-              style={styles.documentImage}
-              resizeMode="contain"
-            />
+            {artisan.id_document_url && (
+              <View style={styles.documentCard}>
+                <Text style={styles.documentLabel}>{t("admin.idRecto")}</Text>
+                <TouchableOpacity
+                  onPress={() => setFullscreenImage(artisan.id_document_url)}
+                  activeOpacity={0.8}
+                >
+                  <Image
+                    source={{ uri: artisan.id_document_url }}
+                    style={styles.documentImage}
+                    resizeMode="contain"
+                  />
+                  <View style={styles.fullscreenHint}>
+                    <Icon name="expand-outline" size={14} color="#9ca3af" />
+                    <Text style={styles.fullscreenHintText}>{t("admin.viewFullscreen")}</Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
+            )}
+            {artisan.id_document_verso_url && (
+              <View style={styles.documentCard}>
+                <Text style={styles.documentLabel}>{t("admin.idVerso")}</Text>
+                <TouchableOpacity
+                  onPress={() => setFullscreenImage(artisan.id_document_verso_url)}
+                  activeOpacity={0.8}
+                >
+                  <Image
+                    source={{ uri: artisan.id_document_verso_url }}
+                    style={styles.documentImage}
+                    resizeMode="contain"
+                  />
+                  <View style={styles.fullscreenHint}>
+                    <Icon name="expand-outline" size={14} color="#9ca3af" />
+                    <Text style={styles.fullscreenHintText}>{t("admin.viewFullscreen")}</Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
+            )}
           </View>
         )}
 
@@ -345,11 +392,23 @@ export default function AdminArtisanDetailScreen() {
           <View style={styles.categoriesSection}>
             <Text style={styles.sectionTitle}>{t("admin.categoriesTitle")}</Text>
             <View style={styles.categoriesGrid}>
-              {artisan.categories.map((cat: string, idx: number) => (
-                <View key={idx} style={styles.categoryChip}>
-                  <Text style={styles.categoryChipText}>{cat}</Text>
-                </View>
-              ))}
+              {artisan.categories.map((catId: string, idx: number) => {
+                const catDef = CATEGORIES.find((c) => c.id === catId);
+                return (
+                  <View
+                    key={idx}
+                    style={[
+                      styles.categoryChip,
+                      catDef && { backgroundColor: catDef.bg, borderColor: catDef.color, borderWidth: 1 },
+                    ]}
+                  >
+                    {catDef && <Icon name={catDef.icon} size={14} color={catDef.color} />}
+                    <Text style={[styles.categoryChipText, catDef && { color: catDef.color }]}>
+                      {t(`categories.${catId}`)}
+                    </Text>
+                  </View>
+                );
+              })}
             </View>
           </View>
         )}
@@ -521,6 +580,30 @@ export default function AdminArtisanDetailScreen() {
           </TouchableOpacity>
         </View>
       </ScrollView>
+
+      {/* Fullscreen Image Modal */}
+      <Modal
+        visible={!!fullscreenImage}
+        transparent
+        animationType="fade"
+        onRequestClose={() => setFullscreenImage(null)}
+      >
+        <View style={styles.modalOverlay}>
+          <TouchableOpacity
+            style={styles.modalCloseButton}
+            onPress={() => setFullscreenImage(null)}
+          >
+            <Icon name="close" size={28} color="#ffffff" />
+          </TouchableOpacity>
+          {fullscreenImage && (
+            <Image
+              source={{ uri: fullscreenImage }}
+              style={styles.modalImage}
+              resizeMode="contain"
+            />
+          )}
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 }
@@ -655,11 +738,31 @@ const styles = StyleSheet.create({
     letterSpacing: 1,
     marginBottom: SPACING.sm,
   },
+  documentCard: {
+    marginBottom: SPACING.md,
+  },
+  documentLabel: {
+    fontSize: 13,
+    fontWeight: "600",
+    color: "#d1d5db",
+    marginBottom: SPACING.xs,
+  },
   documentImage: {
     width: "100%",
     height: 200,
     borderRadius: RADIUS.lg,
     backgroundColor: ADMIN_CARD,
+  },
+  fullscreenHint: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 4,
+    marginTop: 6,
+  },
+  fullscreenHintText: {
+    fontSize: 12,
+    color: "#9ca3af",
   },
   categoriesSection: {
     marginHorizontal: SPACING.md,
@@ -671,6 +774,9 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   categoryChip: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
     backgroundColor: ADMIN_ACCENT + "30",
     borderRadius: 8,
     paddingHorizontal: 12,
@@ -824,5 +930,27 @@ const styles = StyleSheet.create({
   },
   deleteButton: {
     backgroundColor: "#ef4444",
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(0, 0, 0, 0.95)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  modalCloseButton: {
+    position: "absolute",
+    top: 60,
+    right: 20,
+    zIndex: 10,
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: "rgba(255, 255, 255, 0.2)",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  modalImage: {
+    width: SCREEN_WIDTH - 32,
+    height: SCREEN_HEIGHT * 0.7,
   },
 });

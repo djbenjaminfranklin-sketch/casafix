@@ -31,6 +31,7 @@ export type Artisan = {
   full_name: string;
   phone: string;
   avatar_url: string | null;
+  avatar_storage_url: string | null;
   bio: string | null;
   rating: number;
   review_count: number;
@@ -40,7 +41,15 @@ export type Artisan = {
   longitude: number | null;
   radius_km: number;
   stripe_account_id: string | null;
+  nie_nif: string | null;
+  autonomo_number: string | null;
   business_address: string | null;
+  iva_rate: number;
+  id_document_url: string | null;
+  id_document_verso_url: string | null;
+  id_document_type: "nie" | "passport" | "id_card" | null;
+  is_verified: boolean;
+  suspended_until: string | null;
   created_at: string;
   updated_at: string;
 };

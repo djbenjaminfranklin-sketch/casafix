@@ -1,0 +1,10 @@
+-- Storage bucket for artisan documents (ID photos, avatars)
+-- NOTE: This bucket must be created via the Supabase dashboard or CLI:
+--   1. Go to Supabase Dashboard > Storage
+--   2. Create a new bucket named "artisan-documents"
+--   3. Set it to Public
+--   4. Add a policy allowing authenticated users to upload to their own folder:
+--      (auth.uid()::text = (storage.foldername(name))[1])
+--
+-- Or via Supabase CLI:
+--   supabase storage create artisan-documents --public
