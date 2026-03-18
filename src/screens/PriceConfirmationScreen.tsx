@@ -9,9 +9,11 @@ import {
   Alert,
   ActivityIndicator,
   ScrollView,
+  Platform,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import { useTranslation } from "react-i18next";
+import { PlatformPayButton, isPlatformPaySupported } from "@stripe/stripe-react-native";
 import { supabase } from "../lib/supabase";
 import { capturePayment, chargeRemaining } from "../lib/stripe";
 import { COLORS, SPACING, RADIUS } from "../constants/theme";
@@ -40,6 +42,16 @@ export default function PriceConfirmationScreen({ route, navigation }: Props) {
 
   const [loading, setLoading] = useState(false);
   const [confirmed, setConfirmed] = useState(false);
+  const [applePaySupported, setApplePaySupported] = useState(false);
+
+  // Check Apple Pay support
+  React.useEffect(() => {
+    if (Platform.OS === "ios") {
+      isPlatformPaySupported().then((supported) => {
+        setApplePaySupported(supported);
+      });
+    }
+  }, []);
 
   const remainingAmount = Math.max(proposedPrice - depositAmount, 0);
   const needsAdditionalCharge = remainingAmount > 0;
@@ -293,21 +305,33 @@ export default function PriceConfirmationScreen({ route, navigation }: Props) {
         <TouchableOpacity style={styles.cancelBtn} onPress={handleCancel} activeOpacity={0.8}>
           <Text style={styles.cancelBtnText}>{t("priceConfirm.refuse")}</Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          style={[styles.acceptBtn, loading && styles.acceptBtnDisabled]}
-          onPress={handleAccept}
-          disabled={loading}
-          activeOpacity={0.85}
-        >
-          {loading ? (
-            <ActivityIndicator color="#FFFFFF" />
-          ) : (
-            <>
-              <Icon name="card" size={20} color="#FFFFFF" />
-              <Text style={styles.acceptBtnText}>{t("priceConfirm.accept")} {proposedPrice}€</Text>
-            </>
+
+        <View style={styles.payButtons}>
+          {applePaySupported && (
+            <PlatformPayButton
+              type={"pay" as any}
+              onPress={handleAccept}
+              style={styles.applePayBtn}
+              disabled={loading}
+            />
           )}
-        </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[styles.acceptBtn, loading && styles.acceptBtnDisabled]}
+            onPress={handleAccept}
+            disabled={loading}
+            activeOpacity={0.85}
+          >
+            {loading ? (
+              <ActivityIndicator color="#FFFFFF" />
+            ) : (
+              <>
+                <Icon name="card" size={20} color="#FFFFFF" />
+                <Text style={styles.acceptBtnText}>{t("priceConfirm.accept")} {proposedPrice}€</Text>
+              </>
+            )}
+          </TouchableOpacity>
+        </View>
       </View>
     </SafeAreaView>
   );
@@ -375,13 +399,19 @@ const styles = StyleSheet.create({
     borderTopWidth: 1, borderTopColor: "#f3f4f6",
   },
   cancelBtn: {
-    flex: 1, alignItems: "center", justifyContent: "center",
-    paddingVertical: 14, borderRadius: RADIUS.md,
+    alignItems: "center", justifyContent: "center",
+    paddingVertical: 14, paddingHorizontal: 20, borderRadius: RADIUS.md,
     borderWidth: 2, borderColor: "#e5e7eb",
   },
   cancelBtnText: { fontSize: 14, fontWeight: "600", color: "#6b7280" },
+  payButtons: {
+    flex: 1, gap: 8,
+  },
+  applePayBtn: {
+    width: "100%", height: 48,
+  },
   acceptBtn: {
-    flex: 2, flexDirection: "row", alignItems: "center", justifyContent: "center",
+    flexDirection: "row", alignItems: "center", justifyContent: "center",
     backgroundColor: COLORS.primary, paddingVertical: 14, borderRadius: RADIUS.md, gap: 8,
   },
   acceptBtnDisabled: { opacity: 0.6 },
