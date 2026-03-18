@@ -398,6 +398,9 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
         await uploadAllMedia(booking.id, user.id, media);
       }
     }
+
+    // Trigger push notifications to matching artisans
+    supabase.functions.invoke("process-notifications").catch(() => {});
   };
 
   const pulseScale = pulseAnim.interpolate({

@@ -310,6 +310,9 @@ export default function AppointmentBookingScreen({ route, navigation }: Props) {
               }
             }
 
+            // Trigger push notifications to matching artisans
+            supabase.functions.invoke("process-notifications").catch(() => {});
+
             setSubmitting(false);
             setConfirmed(true);
           }}
