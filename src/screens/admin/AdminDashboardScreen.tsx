@@ -70,24 +70,28 @@ export default function AdminDashboardScreen() {
       value: stats.totalBookings,
       icon: "calendar",
       color: "#3b82f6",
+      screen: "AdminBookings",
     },
     {
       label: t("admin.activeArtisans"),
       value: stats.activeArtisans,
       icon: "construct",
       color: "#10b981",
+      screen: "AdminArtisans",
     },
     {
       label: t("admin.pendingVerifications"),
       value: stats.pendingVerifications,
       icon: "time",
       color: "#f59e0b",
+      screen: "AdminArtisans",
     },
     {
       label: t("admin.openDisputes"),
       value: stats.openDisputes,
       icon: "warning",
       color: "#ef4444",
+      screen: "AdminDisputes",
     },
   ];
 
@@ -99,16 +103,28 @@ export default function AdminDashboardScreen() {
       color: "#10b981",
     },
     {
+      icon: "people-outline",
+      label: t("admin.clients"),
+      screen: "AdminClients",
+      color: "#3b82f6",
+    },
+    {
       icon: "calendar-outline",
       label: t("admin.bookings"),
       screen: "AdminBookings",
-      color: "#3b82f6",
+      color: "#8b5cf6",
     },
     {
       icon: "warning-outline",
       label: t("admin.disputes"),
       screen: "AdminDisputes",
       color: "#ef4444",
+    },
+    {
+      icon: "chatbubble-outline",
+      label: t("admin.messages"),
+      screen: "AdminMessage",
+      color: "#f59e0b",
     },
     {
       icon: "stats-chart-outline",
@@ -147,13 +163,18 @@ export default function AdminDashboardScreen() {
         {/* Stats Cards */}
         <View style={styles.statsGrid}>
           {statsCards.map((card, index) => (
-            <View key={index} style={styles.statCard}>
+            <TouchableOpacity
+              key={index}
+              style={styles.statCard}
+              onPress={() => navigation.navigate(card.screen)}
+              activeOpacity={0.7}
+            >
               <View style={[styles.statIconContainer, { backgroundColor: card.color + "20" }]}>
                 <Icon name={card.icon} size={20} color={card.color} />
               </View>
               <Text style={styles.statValue}>{card.value}</Text>
               <Text style={styles.statLabel}>{card.label}</Text>
-            </View>
+            </TouchableOpacity>
           ))}
         </View>
 

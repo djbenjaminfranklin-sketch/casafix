@@ -11,6 +11,7 @@ import {
   ActivityIndicator,
   Image,
   RefreshControl,
+  ScrollView,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import { useTranslation } from "react-i18next";
@@ -164,7 +165,11 @@ export default function AdminArtisansScreen() {
       </View>
 
       {/* Tabs */}
-      <View style={styles.tabsContainer}>
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.tabsContainer}
+      >
         {tabs.map((tab) => (
           <TouchableOpacity
             key={tab.key}
@@ -176,7 +181,7 @@ export default function AdminArtisansScreen() {
             </Text>
           </TouchableOpacity>
         ))}
-      </View>
+      </ScrollView>
 
       {/* List */}
       {loading ? (
@@ -253,6 +258,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     paddingHorizontal: SPACING.md,
     marginTop: SPACING.md,
+    paddingBottom: SPACING.sm,
     gap: 8,
   },
   tab: {

@@ -127,15 +127,34 @@ export default function AdminBookingsScreen() {
 
   const getStatusColor = (status: string) => STATUS_COLORS[status] || "#6b7280";
 
+  const getStatusLabel = (status: string) => {
+    const statusLabels: Record<string, string> = {
+      pending: t("admin.pending"),
+      searching: t("admin.searching"),
+      matched: t("admin.matched"),
+      in_progress: t("admin.inProgress"),
+      price_proposed: t("admin.priceProposed"),
+      work_in_progress: t("admin.workInProgress"),
+      completed: t("admin.completed"),
+      disputed: t("admin.disputed"),
+      cancelled: t("admin.cancelled"),
+    };
+    return statusLabels[status] || status;
+  };
+
   const renderBooking = ({ item }: { item: any }) => (
-    <View style={styles.bookingCard}>
+    <TouchableOpacity
+      style={styles.bookingCard}
+      onPress={() => navigation.navigate("AdminBookingDetail", { bookingId: item.id })}
+      activeOpacity={0.7}
+    >
       <View style={styles.bookingHeader}>
         <Text style={styles.serviceName} numberOfLines={1}>
           {item.service_name}
         </Text>
         <View style={[styles.statusBadge, { backgroundColor: getStatusColor(item.status) + "20" }]}>
           <Text style={[styles.statusText, { color: getStatusColor(item.status) }]}>
-            {item.status}
+            {getStatusLabel(item.status)}
           </Text>
         </View>
       </View>
@@ -144,13 +163,13 @@ export default function AdminBookingsScreen() {
         <View style={styles.detailRow}>
           <Icon name="person-outline" size={14} color="#9ca3af" />
           <Text style={styles.detailText}>
-            Client: {item.client?.full_name || "N/A"}
+            {t("admin.client")}: {item.client?.full_name || "N/A"}
           </Text>
         </View>
         <View style={styles.detailRow}>
           <Icon name="construct-outline" size={14} color="#9ca3af" />
           <Text style={styles.detailText}>
-            Artisan: {item.artisan?.full_name || "Non attribue"}
+            {t("admin.artisan")}: {item.artisan?.full_name || "N/A"}
           </Text>
         </View>
         <View style={styles.detailRowSpaced}>
@@ -168,7 +187,8 @@ export default function AdminBookingsScreen() {
           )}
         </View>
       </View>
-    </View>
+      <Icon name="chevron-forward" size={16} color="#6b7280" style={styles.chevron} />
+    </TouchableOpacity>
   );
 
   return (
@@ -207,16 +227,30 @@ export default function AdminBookingsScreen() {
         data={STATUS_FILTERS}
         keyExtractor={(item) => item}
         contentContainerStyle={styles.filterContainer}
-        renderItem={({ item }) => (
-          <TouchableOpacity
-            style={[styles.filterChip, statusFilter === item && styles.filterChipActive]}
-            onPress={() => setStatusFilter(item)}
-          >
-            <Text style={[styles.filterText, statusFilter === item && styles.filterTextActive]}>
-              {item === "all" ? t("admin.all") : item}
-            </Text>
-          </TouchableOpacity>
-        )}
+        renderItem={({ item }) => {
+          const filterLabels: Record<string, string> = {
+            all: t("admin.all"),
+            pending: t("admin.pending"),
+            searching: t("admin.searching"),
+            matched: t("admin.matched"),
+            in_progress: t("admin.inProgress"),
+            price_proposed: t("admin.priceProposed"),
+            work_in_progress: t("admin.workInProgress"),
+            completed: t("admin.completed"),
+            disputed: t("admin.disputed"),
+            cancelled: t("admin.cancelled"),
+          };
+          return (
+            <TouchableOpacity
+              style={[styles.filterChip, statusFilter === item && styles.filterChipActive]}
+              onPress={() => setStatusFilter(item)}
+            >
+              <Text style={[styles.filterText, statusFilter === item && styles.filterTextActive]}>
+                {filterLabels[item] || item}
+              </Text>
+            </TouchableOpacity>
+          );
+        }}
       />
 
       {/* List */}
@@ -380,6 +414,11 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: "600",
     color: "#6b7280",
+  },
+  chevron: {
+    position: "absolute",
+    right: SPACING.md,
+    top: "50%",
   },
   emptyContainer: {
     alignItems: "center",

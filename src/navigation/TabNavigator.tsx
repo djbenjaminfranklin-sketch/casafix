@@ -32,8 +32,12 @@ import AdminDashboardScreen from "../screens/admin/AdminDashboardScreen";
 import AdminArtisansScreen from "../screens/admin/AdminArtisansScreen";
 import AdminArtisanDetailScreen from "../screens/admin/AdminArtisanDetailScreen";
 import AdminBookingsScreen from "../screens/admin/AdminBookingsScreen";
+import AdminBookingDetailScreen from "../screens/admin/AdminBookingDetailScreen";
 import AdminDisputesScreen from "../screens/admin/AdminDisputesScreen";
 import AdminStatsScreen from "../screens/admin/AdminStatsScreen";
+import AdminClientsScreen from "../screens/admin/AdminClientsScreen";
+import AdminClientDetailScreen from "../screens/admin/AdminClientDetailScreen";
+import AdminMessageScreen from "../screens/admin/AdminMessageScreen";
 
 type RootStackParamList = {
   Auth: undefined;
@@ -59,8 +63,12 @@ type RootStackParamList = {
   AdminArtisans: undefined;
   AdminArtisanDetail: { artisanId: string };
   AdminBookings: undefined;
+  AdminBookingDetail: { bookingId: string };
   AdminDisputes: undefined;
   AdminStats: undefined;
+  AdminClients: undefined;
+  AdminClientDetail: { clientId: string };
+  AdminMessage: undefined;
 };
 
 const Tab = createBottomTabNavigator();
@@ -265,6 +273,26 @@ export default function RootNavigator() {
       <Stack.Screen
         name="AdminStats"
         component={AdminStatsScreen}
+        options={{ animation: "slide_from_right" }}
+      />
+      <Stack.Screen
+        name="AdminBookingDetail"
+        component={AdminBookingDetailScreen}
+        options={{ animation: "slide_from_right" }}
+      />
+      <Stack.Screen
+        name="AdminClients"
+        component={AdminClientsScreen}
+        options={{ animation: "slide_from_right" }}
+      />
+      <Stack.Screen
+        name="AdminClientDetail"
+        component={AdminClientDetailScreen}
+        options={{ animation: "slide_from_right" }}
+      />
+      <Stack.Screen
+        name="AdminMessage"
+        component={AdminMessageScreen}
         options={{ animation: "slide_from_right" }}
       />
         </>

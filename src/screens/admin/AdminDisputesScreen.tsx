@@ -84,10 +84,10 @@ export default function AdminDisputesScreen() {
       reject: t("admin.reject"),
     };
 
-    Alert.alert(titles[action], `Confirmer cette action ?`, [
-      { text: "Non", style: "cancel" },
+    Alert.alert(titles[action], t("admin.actionConfirm"), [
+      { text: t("admin.cancel"), style: "cancel" },
       {
-        text: "Oui",
+        text: t("admin.validate"),
         style: action === "reject" ? "destructive" : "default",
         onPress: async () => {
           setActionLoading(reportId);
@@ -202,19 +202,32 @@ export default function AdminDisputesScreen() {
           <View style={styles.expandedContent}>
             {item.description ? (
               <View style={styles.descriptionBox}>
+                <Text style={styles.descriptionLabel}>{t("report.descriptionLabel")}</Text>
                 <Text style={styles.descriptionText}>{item.description}</Text>
               </View>
             ) : null}
 
             {item.booking && (
               <View style={styles.bookingInfo}>
-                <Text style={styles.bookingLabel}>
-                  Service: {item.booking.service_name}
-                </Text>
-                {item.booking.final_price != null && (
+                <View style={styles.bookingInfoRow}>
+                  <Icon name="briefcase-outline" size={14} color="#9ca3af" />
                   <Text style={styles.bookingLabel}>
-                    Prix: {item.booking.final_price} EUR
+                    {t("admin.service")}: {item.booking.service_name}
                   </Text>
+                </View>
+                <View style={styles.bookingInfoRow}>
+                  <Icon name="flag-outline" size={14} color="#9ca3af" />
+                  <Text style={styles.bookingLabel}>
+                    {t("admin.status")}: {item.booking.status}
+                  </Text>
+                </View>
+                {item.booking.final_price != null && (
+                  <View style={styles.bookingInfoRow}>
+                    <Icon name="cash-outline" size={14} color="#9ca3af" />
+                    <Text style={styles.bookingLabel}>
+                      {t("admin.price")}: {item.booking.final_price} EUR
+                    </Text>
+                  </View>
                 )}
               </View>
             )}
@@ -229,7 +242,10 @@ export default function AdminDisputesScreen() {
                   {actionLoading === item.id ? (
                     <ActivityIndicator size="small" color="#ffffff" />
                   ) : (
-                    <Text style={styles.actionBtnText}>{t("admin.refundClient")}</Text>
+                    <>
+                      <Icon name="card-outline" size={14} color="#ffffff" />
+                      <Text style={styles.actionBtnText}>{t("admin.refundClient")}</Text>
+                    </>
                   )}
                 </TouchableOpacity>
                 <TouchableOpacity
@@ -240,7 +256,10 @@ export default function AdminDisputesScreen() {
                   {actionLoading === item.id ? (
                     <ActivityIndicator size="small" color="#ffffff" />
                   ) : (
-                    <Text style={styles.actionBtnText}>{t("admin.payArtisan")}</Text>
+                    <>
+                      <Icon name="checkmark-circle-outline" size={14} color="#ffffff" />
+                      <Text style={styles.actionBtnText}>{t("admin.payArtisan")}</Text>
+                    </>
                   )}
                 </TouchableOpacity>
                 <TouchableOpacity
@@ -251,7 +270,10 @@ export default function AdminDisputesScreen() {
                   {actionLoading === item.id ? (
                     <ActivityIndicator size="small" color="#ffffff" />
                   ) : (
-                    <Text style={styles.actionBtnText}>{t("admin.reject")}</Text>
+                    <>
+                      <Icon name="close-circle-outline" size={14} color="#ffffff" />
+                      <Text style={styles.actionBtnText}>{t("admin.reject")}</Text>
+                    </>
                   )}
                 </TouchableOpacity>
               </View>
@@ -438,6 +460,14 @@ const styles = StyleSheet.create({
     padding: SPACING.md,
     marginBottom: SPACING.md,
   },
+  descriptionLabel: {
+    fontSize: 11,
+    fontWeight: "700",
+    color: "#9ca3af",
+    textTransform: "uppercase",
+    letterSpacing: 0.5,
+    marginBottom: 6,
+  },
   descriptionText: {
     fontSize: 13,
     color: "#d1d5db",
@@ -445,11 +475,19 @@ const styles = StyleSheet.create({
   },
   bookingInfo: {
     marginBottom: SPACING.md,
-    gap: 4,
+    backgroundColor: "#1e1e2e",
+    borderRadius: RADIUS.md,
+    padding: SPACING.md,
+    gap: 8,
+  },
+  bookingInfoRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
   },
   bookingLabel: {
     fontSize: 13,
-    color: "#9ca3af",
+    color: "#d1d5db",
   },
   actionsRow: {
     flexDirection: "row",
@@ -457,10 +495,12 @@ const styles = StyleSheet.create({
   },
   actionBtn: {
     flex: 1,
+    flexDirection: "row",
     paddingVertical: 10,
     borderRadius: RADIUS.md,
     alignItems: "center",
     justifyContent: "center",
+    gap: 4,
   },
   actionBtnText: {
     fontSize: 11,
