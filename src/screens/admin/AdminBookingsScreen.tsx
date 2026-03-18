@@ -328,8 +328,8 @@ const styles = StyleSheet.create({
     marginHorizontal: SPACING.md, paddingHorizontal: SPACING.md, height: 44, gap: 8,
   },
   searchInput: { flex: 1, fontSize: 15, color: "#ffffff" },
-  filterScroll: { maxHeight: 50 },
-  filterContainer: { paddingHorizontal: SPACING.md, paddingVertical: SPACING.sm, gap: 8 },
+  filterScroll: { flexGrow: 0 },
+  filterContainer: { paddingHorizontal: SPACING.md, paddingVertical: SPACING.md, gap: 8, alignItems: "center" },
   filterChip: {
     paddingHorizontal: 16, paddingVertical: 10, borderRadius: 20,
     backgroundColor: ADMIN_CARD, marginRight: 6,
