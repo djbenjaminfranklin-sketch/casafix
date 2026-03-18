@@ -118,6 +118,12 @@ export default function ArtisanCard({
         )}
       </View>
 
+      {/* Recommended badge */}
+      <View style={styles.recommendedBadge}>
+        <Icon name="shield-checkmark" size={14} color="#16a34a" />
+        <Text style={styles.recommendedText}>{t("booking.recommendedInArea")}</Text>
+      </View>
+
       {/* Last review comment */}
       {lastReviewComment ? (
         <View style={styles.reviewBox}>
@@ -209,6 +215,22 @@ const styles = StyleSheet.create({
   },
   heartBtn: {
     padding: 4,
+  },
+  recommendedBadge: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
+    backgroundColor: "#dcfce7",
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 20,
+    alignSelf: "flex-start",
+    marginTop: SPACING.sm,
+  },
+  recommendedText: {
+    fontSize: 12,
+    fontWeight: "600",
+    color: "#16a34a",
   },
   reviewBox: {
     flexDirection: "row",
