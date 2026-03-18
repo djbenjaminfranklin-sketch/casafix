@@ -347,7 +347,14 @@
     "empty": "No messages yet",
     "placeholder": "Type a message..."
   },
-  "favorites": { "empty": "No favourites yet", "emptyDesc": "Artisans you mark as favourites will appear here" },
+  "favorites": {
+    "empty": "No favourites yet",
+    "emptyDesc": "Artisans you mark as favourites will appear here",
+    "remove": "Remove from favourites",
+    "added": "Added to favourites",
+    "removed": "Removed from favourites",
+    "categories": "Specialties"
+  },
   "media": {
     "title": "Photos and videos",
     "subtitle": "Add photos or videos of the issue so the artisan can prepare",

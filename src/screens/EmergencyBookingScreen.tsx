@@ -24,8 +24,10 @@ import { CATEGORIES } from "../constants/categories";
 import { COLORS, SPACING, RADIUS } from "../constants/theme";
 import MediaPicker from "../components/MediaPicker";
 import DiagnosticCard from "../components/DiagnosticCard";
+import ArtisanCard from "../components/ArtisanCard";
 import { MediaItem, uploadAllMedia } from "../services/media";
 import { createBooking, subscribeToBooking, getBookingWithArtisan } from "../services/bookings";
+import { addFavorite, removeFavorite, isFavorite } from "../services/favorites";
 import { supabase } from "../lib/supabase";
 import { Booking } from "../lib/database.types";
 import { analyzeProblem, DiagnosticResult } from "../services/ai-diagnostic";
@@ -64,10 +66,14 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
   const [cancelCountdown, setCancelCountdown] = useState(120); // 2 minutes
   const [canCancelFree, setCanCancelFree] = useState(true);
   const [matchedArtisan, setMatchedArtisan] = useState<{
+    id: string;
     name: string;
     rating: number;
     reviews: number;
     phone: string;
+    isAvailable: boolean;
+    lastReviewComment: string | null;
+    isFavorited: boolean;
   } | null>(null);
   const [arrivalCode, setArrivalCode] = useState("");
   const [manualAddress, setManualAddress] = useState("");
@@ -76,6 +82,49 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
     latitude: 36.5105,
     longitude: -4.8826,
   });
+
+  // Helper: fetch full artisan details (last review + favorite status)
+  const fetchFullArtisanDetails = async (artisanData: any, artisanId: string) => {
+    // Fetch last review
+    let lastReviewComment: string | null = null;
+    const { data: reviews } = await supabase
+      .from("reviews")
+      .select("comment")
+      .eq("artisan_id", artisanId)
+      .order("created_at", { ascending: false })
+      .limit(1);
+    if (reviews && reviews.length > 0 && reviews[0].comment) {
+      lastReviewComment = reviews[0].comment;
+    }
+
+    // Check favorite status
+    const favorited = await isFavorite(artisanId);
+
+    return {
+      id: artisanId,
+      name: artisanData.full_name || "Artisan",
+      rating: artisanData.rating || 0,
+      reviews: artisanData.review_count || 0,
+      phone: artisanData.phone || "",
+      isAvailable: artisanData.is_available ?? true,
+      lastReviewComment,
+      isFavorited: favorited,
+    };
+  };
+
+  // Toggle favorite for matched artisan
+  const handleToggleFavorite = async () => {
+    if (!matchedArtisan) return;
+    if (matchedArtisan.isFavorited) {
+      await removeFavorite(matchedArtisan.id);
+      setMatchedArtisan({ ...matchedArtisan, isFavorited: false });
+      Alert.alert("", t("favorites.removed"));
+    } else {
+      await addFavorite(matchedArtisan.id);
+      setMatchedArtisan({ ...matchedArtisan, isFavorited: true });
+      Alert.alert("", t("favorites.added"));
+    }
+  };
 
   // Artisan live position
   const [artisanPosition, setArtisanPosition] = useState({
@@ -127,12 +176,8 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
         setState("searching");
       } else if (data.status === "matched" || data.status === "in_progress") {
         if (data.artisan) {
-          setMatchedArtisan({
-            name: data.artisan.full_name || "Artisan",
-            rating: data.artisan.rating || 0,
-            reviews: data.artisan.review_count || 0,
-            phone: data.artisan.phone || "",
-          });
+          const artisanDetails = await fetchFullArtisanDetails(data.artisan, data.artisan.id);
+          setMatchedArtisan(artisanDetails);
         }
         setState("matched");
       } else if (data.status === "price_proposed" && data.proposed_price) {
@@ -258,12 +303,8 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
       if (updatedBooking.status === "matched" && updatedBooking.artisan_id) {
         const { data: fullBooking } = await getBookingWithArtisan(bookingId);
         if (fullBooking?.artisan) {
-          setMatchedArtisan({
-            name: fullBooking.artisan.full_name || "Artisan",
-            rating: fullBooking.artisan.rating || 0,
-            reviews: fullBooking.artisan.review_count || 0,
-            phone: fullBooking.artisan.phone || "",
-          });
+          const artisanDetails = await fetchFullArtisanDetails(fullBooking.artisan, fullBooking.artisan.id);
+          setMatchedArtisan(artisanDetails);
         }
         setState("matched");
       }
@@ -606,24 +647,20 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
               </Text>
             </View>
 
-            {/* Artisan info */}
-            <View style={styles.artisanRow}>
-              <View style={styles.artisanAvatar}>
-                <Icon name="person" size={24} color="#FFFFFF" />
-              </View>
-              <View style={styles.artisanInfo}>
-                <Text style={styles.artisanName}>{matchedArtisan?.name || "Artisan"}</Text>
-                <View style={styles.ratingRow}>
-                  <Icon name="star" size={14} color="#F59E0B" />
-                  <Text style={styles.ratingText}>
-                    {matchedArtisan?.rating || 0} ({matchedArtisan?.reviews || 0})
-                  </Text>
-                  <View style={styles.punctualityBadge}>
-                    <Icon name="timer-outline" size={12} color="#16a34a" />
-                    <Text style={styles.punctualityText}>{100}%</Text>
-                  </View>
-                </View>
-              </View>
+            {/* Artisan info card */}
+            <ArtisanCard
+              name={matchedArtisan?.name || "Artisan"}
+              rating={matchedArtisan?.rating || 0}
+              reviewCount={matchedArtisan?.reviews || 0}
+              phone={matchedArtisan?.phone || ""}
+              lastReviewComment={matchedArtisan?.lastReviewComment}
+              isAvailable={matchedArtisan?.isAvailable}
+              isFavorited={matchedArtisan?.isFavorited}
+              onToggleFavorite={handleToggleFavorite}
+            />
+
+            {/* ETA box */}
+            <View style={styles.etaBoxRow}>
               <View style={styles.etaBox}>
                 <Icon name="car" size={16} color={COLORS.primary} />
                 <Text style={styles.etaText}>{etaMinutes} min</Text>
@@ -831,24 +868,9 @@ const styles = StyleSheet.create({
     flexDirection: "row", alignItems: "center", gap: 8, marginBottom: SPACING.md,
   },
   matchedTitle: { fontSize: 17, fontWeight: "700", color: "#16a34a" },
-  artisanRow: {
-    flexDirection: "row", alignItems: "center", gap: 12,
-    backgroundColor: "#f9f9f9", padding: 12, borderRadius: RADIUS.md, marginBottom: SPACING.sm,
+  etaBoxRow: {
+    flexDirection: "row", justifyContent: "center", marginBottom: SPACING.sm,
   },
-  artisanAvatar: {
-    width: 48, height: 48, borderRadius: 24, backgroundColor: COLORS.primary,
-    alignItems: "center", justifyContent: "center",
-  },
-  artisanInfo: { flex: 1 },
-  artisanName: { fontSize: 16, fontWeight: "700", color: "#1f2937" },
-  ratingRow: { flexDirection: "row", alignItems: "center", gap: 4, marginTop: 2, flexWrap: "wrap" },
-  ratingText: { fontSize: 13, color: "#6b7280" },
-  punctualityBadge: {
-    flexDirection: "row", alignItems: "center", gap: 3,
-    backgroundColor: "#dcfce7", paddingHorizontal: 6, paddingVertical: 2, borderRadius: 8,
-    marginLeft: 4,
-  },
-  punctualityText: { fontSize: 11, fontWeight: "600", color: "#16a34a" },
   etaBox: {
     alignItems: "center", gap: 4, backgroundColor: "#FEF2F2",
     paddingHorizontal: 12, paddingVertical: 8, borderRadius: RADIUS.sm,

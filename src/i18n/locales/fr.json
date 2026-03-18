@@ -360,7 +360,14 @@
     "empty": "Aucun message",
     "placeholder": "Écrire un message..."
   },
-  "favorites": { "empty": "Aucun favori", "emptyDesc": "Les artisans que vous marquez comme favoris apparaîtront ici" },
+  "favorites": {
+    "empty": "Aucun favori",
+    "emptyDesc": "Les artisans que vous marquez comme favoris apparaîtront ici",
+    "remove": "Retirer des favoris",
+    "added": "Ajouté aux favoris",
+    "removed": "Retiré des favoris",
+    "categories": "Spécialités"
+  },
   "media": {
     "title": "Photos et vidéos",
     "subtitle": "Ajoutez des photos ou vidéos du problème pour que l'artisan puisse anticiper",
