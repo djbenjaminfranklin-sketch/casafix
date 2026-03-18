@@ -38,6 +38,7 @@ export async function createBooking(params: {
       max_price: maxPrice,
       scheduled_date: params.scheduledDate || null,
       scheduled_slot: params.scheduledSlot || null,
+      status: "searching",
       client_latitude: params.latitude || null,
       client_longitude: params.longitude || null,
       description: params.description || null,
