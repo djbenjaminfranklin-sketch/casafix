@@ -8,6 +8,7 @@ type AuthContextType = {
   session: Session | null;
   user: User | null;
   profile: Profile | null;
+  isAdmin: boolean;
   loading: boolean;
   signUp: (email: string, password: string, fullName: string) => Promise<{ error: any }>;
   signIn: (email: string, password: string) => Promise<{ error: any }>;
@@ -23,6 +24,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
   const [user, setUser] = useState<User | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -59,6 +61,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       .eq("id", userId)
       .single();
     setProfile(data);
+    setIsAdmin(data?.is_admin === true);
     setLoading(false);
   }
 
@@ -154,6 +157,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   async function signOut() {
     await supabase.auth.signOut();
     setProfile(null);
+    setIsAdmin(false);
   }
 
   async function updateProfile(updates: Partial<Profile>) {
@@ -169,7 +173,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <AuthContext.Provider
-      value={{ session, user, profile, loading, signUp, signIn, signInWithApple, signInWithGoogle, signOut, updateProfile }}
+      value={{ session, user, profile, isAdmin, loading, signUp, signIn, signInWithApple, signInWithGoogle, signOut, updateProfile }}
     >
       {children}
     </AuthContext.Provider>

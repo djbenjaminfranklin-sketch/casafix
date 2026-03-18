@@ -21,6 +21,7 @@ export type Profile = {
   address: string | null;
   city: string | null;
   preferred_language: string;
+  is_admin: boolean;
   created_at: string;
   updated_at: string;
 };

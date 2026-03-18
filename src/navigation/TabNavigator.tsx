@@ -28,6 +28,12 @@ import NotificationsSettingsScreen from "../screens/NotificationsSettingsScreen"
 import PaymentScreen from "../screens/PaymentScreen";
 import HelpScreen from "../screens/HelpScreen";
 import InvoiceScreen from "../screens/InvoiceScreen";
+import AdminDashboardScreen from "../screens/admin/AdminDashboardScreen";
+import AdminArtisansScreen from "../screens/admin/AdminArtisansScreen";
+import AdminArtisanDetailScreen from "../screens/admin/AdminArtisanDetailScreen";
+import AdminBookingsScreen from "../screens/admin/AdminBookingsScreen";
+import AdminDisputesScreen from "../screens/admin/AdminDisputesScreen";
+import AdminStatsScreen from "../screens/admin/AdminStatsScreen";
 
 type RootStackParamList = {
   Auth: undefined;
@@ -49,6 +55,12 @@ type RootStackParamList = {
   Payment: undefined;
   Help: undefined;
   Invoice: { bookingId: string };
+  AdminDashboard: undefined;
+  AdminArtisans: undefined;
+  AdminArtisanDetail: { artisanId: string };
+  AdminBookings: undefined;
+  AdminDisputes: undefined;
+  AdminStats: undefined;
 };
 
 const Tab = createBottomTabNavigator();
@@ -59,11 +71,13 @@ const TAB_ICONS: Record<string, { active: string; inactive: string }> = {
   MyBookingsTab: { active: "clipboard", inactive: "clipboard-outline" },
   Messages: { active: "chatbubble", inactive: "chatbubble-outline" },
   Favorites: { active: "heart", inactive: "heart-outline" },
+  Admin: { active: "shield", inactive: "shield-outline" },
   Profile: { active: "person", inactive: "person-outline" },
 };
 
 function TabsScreen() {
   const { t } = useTranslation();
+  const { isAdmin } = useAuth();
 
   return (
     <Tab.Navigator
@@ -95,11 +109,19 @@ function TabsScreen() {
         component={MessagesScreen}
         options={{ tabBarLabel: t("nav.messages") }}
       />
-      <Tab.Screen
-        name="Favorites"
-        component={FavoritesScreen}
-        options={{ tabBarLabel: t("nav.favorites") }}
-      />
+      {isAdmin ? (
+        <Tab.Screen
+          name="Admin"
+          component={AdminDashboardScreen}
+          options={{ tabBarLabel: t("admin.title") }}
+        />
+      ) : (
+        <Tab.Screen
+          name="Favorites"
+          component={FavoritesScreen}
+          options={{ tabBarLabel: t("nav.favorites") }}
+        />
+      )}
       <Tab.Screen
         name="Profile"
         component={ProfileScreen}
@@ -213,6 +235,36 @@ export default function RootNavigator() {
       <Stack.Screen
         name="Invoice"
         component={InvoiceScreen}
+        options={{ animation: "slide_from_right" }}
+      />
+      <Stack.Screen
+        name="AdminDashboard"
+        component={AdminDashboardScreen}
+        options={{ animation: "slide_from_right" }}
+      />
+      <Stack.Screen
+        name="AdminArtisans"
+        component={AdminArtisansScreen}
+        options={{ animation: "slide_from_right" }}
+      />
+      <Stack.Screen
+        name="AdminArtisanDetail"
+        component={AdminArtisanDetailScreen}
+        options={{ animation: "slide_from_right" }}
+      />
+      <Stack.Screen
+        name="AdminBookings"
+        component={AdminBookingsScreen}
+        options={{ animation: "slide_from_right" }}
+      />
+      <Stack.Screen
+        name="AdminDisputes"
+        component={AdminDisputesScreen}
+        options={{ animation: "slide_from_right" }}
+      />
+      <Stack.Screen
+        name="AdminStats"
+        component={AdminStatsScreen}
         options={{ animation: "slide_from_right" }}
       />
         </>
