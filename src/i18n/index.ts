@@ -9,6 +9,11 @@ import no from "./locales/no.json";
 import da from "./locales/da.json";
 import nl from "./locales/nl.json";
 import de from "./locales/de.json";
+import ar from "./locales/ar.json";
+import pl from "./locales/pl.json";
+import ro from "./locales/ro.json";
+import ru from "./locales/ru.json";
+import it from "./locales/it.json";
 
 export const LANGUAGES = [
   { code: "es", label: "ES", flag: "🇪🇸" },
@@ -19,6 +24,11 @@ export const LANGUAGES = [
   { code: "da", label: "DA", flag: "🇩🇰" },
   { code: "nl", label: "NL", flag: "🇳🇱" },
   { code: "de", label: "DE", flag: "🇩🇪" },
+  { code: "ar", label: "AR", flag: "🇸🇦" },
+  { code: "pl", label: "PL", flag: "🇵🇱" },
+  { code: "ro", label: "RO", flag: "🇷🇴" },
+  { code: "ru", label: "RU", flag: "🇷🇺" },
+  { code: "it", label: "IT", flag: "🇮🇹" },
 ] as const;
 
 i18n.use(initReactI18next).init({
@@ -31,6 +41,11 @@ i18n.use(initReactI18next).init({
     da: { translation: da },
     nl: { translation: nl },
     de: { translation: de },
+    ar: { translation: ar },
+    pl: { translation: pl },
+    ro: { translation: ro },
+    ru: { translation: ru },
+    it: { translation: it },
   },
   lng: "es",
   fallbackLng: "en",
