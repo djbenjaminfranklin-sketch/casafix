@@ -20,7 +20,6 @@ import PriceConfirmationScreen from "../screens/PriceConfirmationScreen";
 import WorkCompletionScreen from "../screens/WorkCompletionScreen";
 import MyBookingsScreen from "../screens/MyBookingsScreen";
 import ChatScreen from "../screens/ChatScreen";
-import SearchScreen from "../screens/SearchScreen";
 import MessagesScreen from "../screens/MessagesScreen";
 import FavoritesScreen from "../screens/FavoritesScreen";
 import ReportScreen from "../screens/ReportScreen";

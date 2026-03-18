@@ -6,7 +6,8 @@
   "emergency": "Notfall",
   "emergencySubtitle": "Schnelle Hilfe 24/7",
   "emergencyTitle": "Notdienste",
-  "nav": { "home": "Start", "search": "Suche", "messages": "Nachrichten", "favorites": "Favoriten", "profile": "Profil" },
+  "nav": { "home": "Start", "search": "Suche", "messages": "Nachrichten", "myBookings": "Meine Buchungen",
+    "favorites": "Favoriten", "profile": "Profil" },
   "categories": {
     "plumbing": "Klempnerarbeiten", "electrical": "Elektrik", "locksmith": "Schlüsseldienst",
     "heating": "Heizung", "ac": "Klimaanlage", "pest": "Schädlingsbekämpfung",

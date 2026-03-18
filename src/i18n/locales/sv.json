@@ -6,7 +6,8 @@
   "emergency": "Akut",
   "emergencySubtitle": "Snabb respons 24/7",
   "emergencyTitle": "Akuttjänster",
-  "nav": { "home": "Hem", "search": "Sök", "messages": "Meddelanden", "favorites": "Favoriter", "profile": "Profil" },
+  "nav": { "home": "Hem", "search": "Sök", "messages": "Meddelanden", "myBookings": "Mina Bokningar",
+    "favorites": "Favoriter", "profile": "Profil" },
   "categories": {
     "plumbing": "VVS", "electrical": "El", "locksmith": "Låssmed",
     "heating": "Värme", "ac": "Luftkonditionering", "pest": "Skadedjursbekämpning",

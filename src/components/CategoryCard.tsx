@@ -19,7 +19,6 @@ const CATEGORY_IMAGES: Record<string, any> = {
   appliances: require("../assets/categories/appliances.jpg"),
   glazing: require("../assets/categories/glazing.jpg"),
   smallworks: require("../assets/categories/smallworks.jpg"),
-  renovation: require("../assets/categories/renovation.jpg"),
   pool: require("../assets/categories/pool.jpg"),
   garden: require("../assets/categories/garden.jpg"),
 };

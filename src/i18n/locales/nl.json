@@ -6,7 +6,8 @@
   "emergency": "Noodgeval",
   "emergencySubtitle": "Snelle respons 24/7",
   "emergencyTitle": "Nooddiensten",
-  "nav": { "home": "Home", "search": "Zoeken", "messages": "Berichten", "favorites": "Favorieten", "profile": "Profiel" },
+  "nav": { "home": "Home", "search": "Zoeken", "messages": "Berichten", "myBookings": "Mijn Boekingen",
+    "favorites": "Favorieten", "profile": "Profiel" },
   "categories": {
     "plumbing": "Loodgieterwerk", "electrical": "Elektriciteit", "locksmith": "Slotenmakerij",
     "heating": "Verwarming", "ac": "Airconditioning", "pest": "Ongediertebestrijding",

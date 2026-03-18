@@ -6,7 +6,8 @@
   "emergency": "Nødsituation",
   "emergencySubtitle": "Hurtig respons 24/7",
   "emergencyTitle": "Nødtjenester",
-  "nav": { "home": "Hjem", "search": "Søg", "messages": "Beskeder", "favorites": "Favoritter", "profile": "Profil" },
+  "nav": { "home": "Hjem", "search": "Søg", "messages": "Beskeder", "myBookings": "Mine Reservationer",
+    "favorites": "Favoritter", "profile": "Profil" },
   "categories": {
     "plumbing": "VVS", "electrical": "Elektriker", "locksmith": "Låsesmed",
     "heating": "Varme", "ac": "Aircondition", "pest": "Skadedyrsbekæmpelse",

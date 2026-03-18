@@ -6,7 +6,8 @@
   "emergency": "Nødsituasjon",
   "emergencySubtitle": "Rask respons 24/7",
   "emergencyTitle": "Nødtjenester",
-  "nav": { "home": "Hjem", "search": "Søk", "messages": "Meldinger", "favorites": "Favoritter", "profile": "Profil" },
+  "nav": { "home": "Hjem", "search": "Søk", "messages": "Meldinger", "myBookings": "Mine Bestillinger",
+    "favorites": "Favoritter", "profile": "Profil" },
   "categories": {
     "plumbing": "Rørlegger", "electrical": "Elektriker", "locksmith": "Låsesmed",
     "heating": "Oppvarming", "ac": "Klimaanlegg", "pest": "Skadedyrbekjempelse",

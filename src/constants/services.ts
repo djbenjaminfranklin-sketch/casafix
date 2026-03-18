@@ -357,38 +357,6 @@ export const SERVICES: CategoryServices[] = [
     ],
   },
   {
-    categoryId: "renovation",
-    subcategories: [
-      {
-        id: "painting",
-        icon: "color-palette",
-        services: [
-          { id: "room_painting", priceRange: "15–25 €/m²" },
-          { id: "facade_painting", priceRange: "20–35 €/m²" },
-          { id: "ceiling_painting", priceRange: "15–25 €/m²" },
-        ],
-      },
-      {
-        id: "tiling",
-        icon: "grid",
-        services: [
-          { id: "floor_tiling", priceRange: "30–50 €/m²" },
-          { id: "wall_tiling", priceRange: "35–55 €/m²" },
-          { id: "tile_repair", priceRange: "100–200 €" },
-        ],
-      },
-      {
-        id: "general_renovation",
-        icon: "home",
-        services: [
-          { id: "bathroom_renovation", priceRange: "3000–8000 €" },
-          { id: "kitchen_renovation", priceRange: "4000–12000 €" },
-          { id: "full_renovation", priceRange: "__onQuote__" },
-        ],
-      },
-    ],
-  },
-  {
     categoryId: "pool",
     subcategories: [
       {
