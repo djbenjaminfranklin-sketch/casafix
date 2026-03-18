@@ -11,6 +11,7 @@ import {
   Image,
   Alert,
   RefreshControl,
+  Linking,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import { useTranslation } from "react-i18next";
@@ -22,6 +23,21 @@ const ADMIN_DARK = "#1e1e2e";
 const ADMIN_CARD = "#2a2a3d";
 const ADMIN_ACCENT = "#7c3aed";
 
+const STATUS_COLORS: Record<string, string> = {
+  pending: "#f59e0b",
+  searching: "#3b82f6",
+  matched: "#8b5cf6",
+  in_progress: "#3b82f6",
+  price_proposed: "#f59e0b",
+  price_accepted: "#10b981",
+  work_in_progress: "#3b82f6",
+  pending_client_confirmation: "#f59e0b",
+  work_completed: "#10b981",
+  completed: "#10b981",
+  disputed: "#ef4444",
+  cancelled: "#6b7280",
+};
+
 export default function AdminArtisanDetailScreen() {
   const { t } = useTranslation();
   const navigation = useNavigation<any>();
@@ -30,17 +46,32 @@ export default function AdminArtisanDetailScreen() {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [artisan, setArtisan] = useState<any>(null);
+  const [activeBookings, setActiveBookings] = useState<any[]>([]);
+  const [reviews, setReviews] = useState<any[]>([]);
   const [actionLoading, setActionLoading] = useState(false);
 
   const fetchArtisan = useCallback(async () => {
     try {
-      const { data, error } = await supabase
-        .from("artisans")
-        .select("*")
-        .eq("id", artisanId)
-        .single();
-      if (error) throw error;
-      setArtisan(data);
+      const [artisanRes, bookingsRes, reviewsRes] = await Promise.all([
+        supabase.from("artisans").select("*").eq("id", artisanId).single(),
+        supabase
+          .from("bookings")
+          .select("*, client:profiles!bookings_client_id_fkey(full_name)")
+          .eq("artisan_id", artisanId)
+          .not("status", "in", '("completed","cancelled")')
+          .order("created_at", { ascending: false }),
+        supabase
+          .from("reviews")
+          .select("*, client:profiles!reviews_client_id_fkey(full_name)")
+          .eq("artisan_id", artisanId)
+          .order("created_at", { ascending: false })
+          .limit(10),
+      ]);
+
+      if (artisanRes.error) throw artisanRes.error;
+      setArtisan(artisanRes.data);
+      setActiveBookings(bookingsRes.data || []);
+      setReviews(reviewsRes.data || []);
     } catch (error) {
       console.error("Error fetching artisan:", error);
     } finally {
@@ -62,7 +93,7 @@ export default function AdminArtisanDetailScreen() {
 
   const handleValidate = () => {
     Alert.alert(t("admin.validate"), t("admin.validateConfirm"), [
-      { text: "Non", style: "cancel" },
+      { text: t("admin.no"), style: "cancel" },
       {
         text: t("admin.validate"),
         onPress: async () => {
@@ -85,7 +116,7 @@ export default function AdminArtisanDetailScreen() {
 
   const handleSuspend = () => {
     Alert.alert(t("admin.suspend"), t("admin.suspendConfirm"), [
-      { text: "Non", style: "cancel" },
+      { text: t("admin.no"), style: "cancel" },
       {
         text: t("admin.suspend"),
         style: "destructive",
@@ -111,7 +142,7 @@ export default function AdminArtisanDetailScreen() {
 
   const handleReactivate = () => {
     Alert.alert(t("admin.reactivate"), t("admin.reactivateConfirm"), [
-      { text: "Non", style: "cancel" },
+      { text: t("admin.no"), style: "cancel" },
       {
         text: t("admin.reactivate"),
         onPress: async () => {
@@ -132,6 +163,58 @@ export default function AdminArtisanDetailScreen() {
     ]);
   };
 
+  const handleDelete = () => {
+    Alert.alert(t("admin.deleteArtisan"), t("admin.deleteArtisanConfirm"), [
+      { text: t("admin.no"), style: "cancel" },
+      {
+        text: t("admin.deleteArtisan"),
+        style: "destructive",
+        onPress: async () => {
+          setActionLoading(true);
+          try {
+            await supabase.from("artisans").delete().eq("id", artisanId);
+            Alert.alert(t("admin.artisanDeleted"));
+            navigation.goBack();
+          } catch (error) {
+            console.error("Error deleting artisan:", error);
+          } finally {
+            setActionLoading(false);
+          }
+        },
+      },
+    ]);
+  };
+
+  const handleCall = () => {
+    if (artisan?.phone) {
+      Linking.openURL(`tel:${artisan.phone}`);
+    }
+  };
+
+  const handleEmail = () => {
+    if (artisan?.email) {
+      Linking.openURL(`mailto:${artisan.email}`);
+    }
+  };
+
+  const getStatusLabel = (status: string) => {
+    const statusLabels: Record<string, string> = {
+      pending: t("admin.pending"),
+      searching: t("admin.searching"),
+      matched: t("admin.matched"),
+      in_progress: t("admin.inProgress"),
+      price_proposed: t("admin.priceProposed"),
+      price_accepted: t("admin.priceAccepted"),
+      work_in_progress: t("admin.workInProgress"),
+      pending_client_confirmation: t("admin.pendingConfirmation"),
+      work_completed: t("admin.workCompleted"),
+      completed: t("admin.completed"),
+      disputed: t("admin.disputed"),
+      cancelled: t("admin.cancelled"),
+    };
+    return statusLabels[status] || status;
+  };
+
   if (loading) {
     return (
       <SafeAreaView style={styles.container}>
@@ -148,7 +231,7 @@ export default function AdminArtisanDetailScreen() {
       <SafeAreaView style={styles.container}>
         <StatusBar barStyle="light-content" backgroundColor={ADMIN_DARK} />
         <View style={styles.loadingContainer}>
-          <Text style={{ color: "#9ca3af" }}>Artisan introuvable</Text>
+          <Text style={{ color: "#9ca3af" }}>{t("admin.artisanNotFound")}</Text>
         </View>
       </SafeAreaView>
     );
@@ -168,6 +251,7 @@ export default function AdminArtisanDetailScreen() {
           <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
             <Icon name="arrow-back" size={24} color="#ffffff" />
           </TouchableOpacity>
+          <Text style={styles.headerTitle}>{t("admin.artisanDetail")}</Text>
         </View>
 
         {/* Profile Section */}
@@ -196,26 +280,50 @@ export default function AdminArtisanDetailScreen() {
           </View>
         </View>
 
+        {/* Contact Buttons */}
+        <View style={styles.contactRow}>
+          {artisan.phone && (
+            <TouchableOpacity
+              style={[styles.contactButton, { backgroundColor: "#10b981" }]}
+              onPress={handleCall}
+              activeOpacity={0.7}
+            >
+              <Icon name="call-outline" size={18} color="#ffffff" />
+              <Text style={styles.contactButtonText}>{t("admin.callArtisan")}</Text>
+            </TouchableOpacity>
+          )}
+          {artisan.email && (
+            <TouchableOpacity
+              style={[styles.contactButton, { backgroundColor: "#3b82f6" }]}
+              onPress={handleEmail}
+              activeOpacity={0.7}
+            >
+              <Icon name="mail-outline" size={18} color="#ffffff" />
+              <Text style={styles.contactButtonText}>{t("admin.emailArtisan")}</Text>
+            </TouchableOpacity>
+          )}
+        </View>
+
         {/* Info Cards */}
         <View style={styles.infoSection}>
           <View style={styles.infoCard}>
-            <Text style={styles.infoLabel}>Telephone</Text>
+            <Text style={styles.infoLabel}>{t("admin.phone")}</Text>
             <Text style={styles.infoValue}>{artisan.phone || "N/A"}</Text>
           </View>
           <View style={styles.infoCard}>
-            <Text style={styles.infoLabel}>Email</Text>
+            <Text style={styles.infoLabel}>{t("admin.email")}</Text>
             <Text style={styles.infoValue}>{artisan.email || "N/A"}</Text>
           </View>
           <View style={styles.infoCard}>
-            <Text style={styles.infoLabel}>NIE / NIF</Text>
+            <Text style={styles.infoLabel}>{t("admin.nieNif")}</Text>
             <Text style={styles.infoValue}>{artisan.nie_nif || "N/A"}</Text>
           </View>
           <View style={styles.infoCard}>
-            <Text style={styles.infoLabel}>N. Autonomo</Text>
+            <Text style={styles.infoLabel}>{t("admin.autonomoNumber")}</Text>
             <Text style={styles.infoValue}>{artisan.autonomo_number || "N/A"}</Text>
           </View>
           <View style={styles.infoCard}>
-            <Text style={styles.infoLabel}>Adresse</Text>
+            <Text style={styles.infoLabel}>{t("admin.address")}</Text>
             <Text style={styles.infoValue}>{artisan.business_address || "N/A"}</Text>
           </View>
         </View>
@@ -223,7 +331,7 @@ export default function AdminArtisanDetailScreen() {
         {/* ID Document */}
         {artisan.id_document_url && (
           <View style={styles.documentSection}>
-            <Text style={styles.sectionTitle}>Document d'identite</Text>
+            <Text style={styles.sectionTitle}>{t("admin.idDocument")}</Text>
             <Image
               source={{ uri: artisan.id_document_url }}
               style={styles.documentImage}
@@ -233,31 +341,117 @@ export default function AdminArtisanDetailScreen() {
         )}
 
         {/* Categories */}
-        <View style={styles.categoriesSection}>
-          <Text style={styles.sectionTitle}>Categories</Text>
-          <View style={styles.categoriesGrid}>
-            {(artisan.categories || []).map((cat: string, idx: number) => (
-              <View key={idx} style={styles.categoryChip}>
-                <Text style={styles.categoryChipText}>{cat}</Text>
-              </View>
-            ))}
+        {artisan.categories && artisan.categories.length > 0 && (
+          <View style={styles.categoriesSection}>
+            <Text style={styles.sectionTitle}>{t("admin.categoriesTitle")}</Text>
+            <View style={styles.categoriesGrid}>
+              {artisan.categories.map((cat: string, idx: number) => (
+                <View key={idx} style={styles.categoryChip}>
+                  <Text style={styles.categoryChipText}>{cat}</Text>
+                </View>
+              ))}
+            </View>
           </View>
-        </View>
+        )}
 
-        {/* Rating */}
+        {/* Rating & Registration */}
         <View style={styles.ratingSection}>
           <View style={styles.ratingCard}>
             <Icon name="star" size={24} color="#f59e0b" />
             <Text style={styles.ratingValue}>{artisan.rating?.toFixed(1) || "0.0"}</Text>
-            <Text style={styles.ratingCount}>({artisan.review_count || 0} avis)</Text>
+            <Text style={styles.ratingCount}>({artisan.review_count || 0} {t("admin.reviews").toLowerCase()})</Text>
           </View>
           <View style={styles.ratingCard}>
             <Icon name="calendar" size={24} color="#3b82f6" />
             <Text style={styles.ratingValue}>
               {new Date(artisan.created_at).toLocaleDateString("fr-FR")}
             </Text>
-            <Text style={styles.ratingCount}>Inscription</Text>
+            <Text style={styles.ratingCount}>{t("admin.inscription")}</Text>
           </View>
+        </View>
+
+        {/* Active Bookings */}
+        <View style={styles.bookingsSection}>
+          <Text style={styles.sectionTitle}>{t("admin.activeBookings")}</Text>
+          {activeBookings.length === 0 ? (
+            <View style={styles.emptyCard}>
+              <Text style={styles.emptyText}>{t("admin.noActiveBookings")}</Text>
+            </View>
+          ) : (
+            activeBookings.map((booking) => (
+              <TouchableOpacity
+                key={booking.id}
+                style={styles.bookingCard}
+                onPress={() => navigation.navigate("AdminBookingDetail", { bookingId: booking.id })}
+                activeOpacity={0.7}
+              >
+                <View style={styles.bookingHeader}>
+                  <Text style={styles.bookingService} numberOfLines={1}>
+                    {booking.service_name}
+                  </Text>
+                  <View
+                    style={[
+                      styles.statusBadge,
+                      { backgroundColor: (STATUS_COLORS[booking.status] || "#6b7280") + "20" },
+                    ]}
+                  >
+                    <Text
+                      style={[
+                        styles.statusText,
+                        { color: STATUS_COLORS[booking.status] || "#6b7280" },
+                      ]}
+                    >
+                      {getStatusLabel(booking.status)}
+                    </Text>
+                  </View>
+                </View>
+                <View style={styles.bookingMeta}>
+                  <Text style={styles.bookingClient}>
+                    {t("admin.client")}: {booking.client?.full_name || "N/A"}
+                  </Text>
+                  <Text style={styles.bookingDate}>
+                    {new Date(booking.created_at).toLocaleDateString("fr-FR")}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            ))
+          )}
+        </View>
+
+        {/* Reviews */}
+        <View style={styles.reviewsSection}>
+          <Text style={styles.sectionTitle}>{t("admin.reviews")}</Text>
+          {reviews.length === 0 ? (
+            <View style={styles.emptyCard}>
+              <Text style={styles.emptyText}>{t("admin.noReviews")}</Text>
+            </View>
+          ) : (
+            reviews.map((review) => (
+              <View key={review.id} style={styles.reviewCard}>
+                <View style={styles.reviewHeader}>
+                  <View style={styles.reviewStars}>
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <Icon
+                        key={star}
+                        name={star <= review.rating ? "star" : "star-outline"}
+                        size={14}
+                        color="#f59e0b"
+                      />
+                    ))}
+                  </View>
+                  <Text style={styles.reviewDate}>
+                    {new Date(review.created_at).toLocaleDateString("fr-FR")}
+                  </Text>
+                </View>
+                <Text style={styles.reviewAuthor}>
+                  {review.client?.full_name || "N/A"}
+                </Text>
+                {review.comment && (
+                  <Text style={styles.reviewComment}>{review.comment}</Text>
+                )}
+              </View>
+            ))
+          )}
         </View>
 
         {/* Action Buttons */}
@@ -310,6 +504,21 @@ export default function AdminArtisanDetailScreen() {
               )}
             </TouchableOpacity>
           )}
+
+          <TouchableOpacity
+            style={[styles.actionButton, styles.deleteButton]}
+            onPress={handleDelete}
+            disabled={actionLoading}
+          >
+            {actionLoading ? (
+              <ActivityIndicator size="small" color="#ffffff" />
+            ) : (
+              <>
+                <Icon name="trash" size={20} color="#ffffff" />
+                <Text style={styles.actionButtonText}>{t("admin.deleteArtisan")}</Text>
+              </>
+            )}
+          </TouchableOpacity>
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -331,6 +540,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: SPACING.md,
     paddingVertical: SPACING.md,
+    gap: 12,
   },
   backButton: {
     width: 36,
@@ -339,6 +549,11 @@ const styles = StyleSheet.create({
     backgroundColor: ADMIN_CARD,
     alignItems: "center",
     justifyContent: "center",
+  },
+  headerTitle: {
+    fontSize: 22,
+    fontWeight: "800",
+    color: "#ffffff",
   },
   profileSection: {
     alignItems: "center",
@@ -380,8 +595,28 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: "600",
   },
+  contactRow: {
+    flexDirection: "row",
+    marginHorizontal: SPACING.md,
+    gap: SPACING.sm,
+  },
+  contactButton: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: RADIUS.lg,
+    paddingVertical: 14,
+    gap: 8,
+  },
+  contactButtonText: {
+    fontSize: 14,
+    fontWeight: "700",
+    color: "#ffffff",
+  },
   infoSection: {
     marginHorizontal: SPACING.md,
+    marginTop: SPACING.lg,
     backgroundColor: ADMIN_CARD,
     borderRadius: RADIUS.lg,
     overflow: "hidden",
@@ -469,6 +704,96 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: "#9ca3af",
   },
+  bookingsSection: {
+    marginHorizontal: SPACING.md,
+    marginTop: SPACING.xl,
+  },
+  emptyCard: {
+    backgroundColor: ADMIN_CARD,
+    borderRadius: RADIUS.lg,
+    padding: SPACING.lg,
+    alignItems: "center",
+  },
+  emptyText: {
+    fontSize: 14,
+    color: "#6b7280",
+  },
+  bookingCard: {
+    backgroundColor: ADMIN_CARD,
+    borderRadius: RADIUS.lg,
+    padding: SPACING.md,
+    marginBottom: SPACING.sm,
+  },
+  bookingHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  bookingService: {
+    fontSize: 14,
+    fontWeight: "700",
+    color: "#ffffff",
+    flex: 1,
+    marginRight: 8,
+  },
+  statusBadge: {
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 8,
+  },
+  statusText: {
+    fontSize: 10,
+    fontWeight: "700",
+    textTransform: "uppercase",
+  },
+  bookingMeta: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 6,
+  },
+  bookingClient: {
+    fontSize: 12,
+    color: "#9ca3af",
+  },
+  bookingDate: {
+    fontSize: 12,
+    color: "#6b7280",
+  },
+  reviewsSection: {
+    marginHorizontal: SPACING.md,
+    marginTop: SPACING.xl,
+  },
+  reviewCard: {
+    backgroundColor: ADMIN_CARD,
+    borderRadius: RADIUS.lg,
+    padding: SPACING.md,
+    marginBottom: SPACING.sm,
+  },
+  reviewHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  reviewStars: {
+    flexDirection: "row",
+    gap: 2,
+  },
+  reviewDate: {
+    fontSize: 11,
+    color: "#6b7280",
+  },
+  reviewAuthor: {
+    fontSize: 13,
+    fontWeight: "600",
+    color: "#ffffff",
+    marginTop: 6,
+  },
+  reviewComment: {
+    fontSize: 13,
+    color: "#9ca3af",
+    lineHeight: 20,
+    marginTop: 4,
+  },
   actionsSection: {
     marginHorizontal: SPACING.md,
     marginTop: SPACING.xl,
@@ -492,9 +817,12 @@ const styles = StyleSheet.create({
     backgroundColor: "#10b981",
   },
   suspendButton: {
-    backgroundColor: "#ef4444",
+    backgroundColor: "#f59e0b",
   },
   reactivateButton: {
     backgroundColor: "#3b82f6",
+  },
+  deleteButton: {
+    backgroundColor: "#ef4444",
   },
 });

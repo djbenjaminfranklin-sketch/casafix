@@ -152,7 +152,7 @@ export default function AdminArtisansScreen() {
         <Icon name="search" size={18} color="#9ca3af" />
         <TextInput
           style={styles.searchInput}
-          placeholder="Rechercher..."
+          placeholder={t("admin.searchArtisans")}
           placeholderTextColor="#6b7280"
           value={search}
           onChangeText={setSearch}
@@ -200,7 +200,7 @@ export default function AdminArtisansScreen() {
           ListEmptyComponent={
             <View style={styles.emptyContainer}>
               <Icon name="people-outline" size={48} color="#6b7280" />
-              <Text style={styles.emptyText}>Aucun artisan</Text>
+              <Text style={styles.emptyText}>{t("admin.noArtisans")}</Text>
             </View>
           }
         />

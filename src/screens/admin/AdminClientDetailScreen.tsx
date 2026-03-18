@@ -240,7 +240,7 @@ export default function AdminClientDetailScreen() {
               activeOpacity={0.7}
             >
               <Icon name="mail-outline" size={18} color="#ffffff" />
-              <Text style={styles.contactButtonText}>Email</Text>
+              <Text style={styles.contactButtonText}>{t("admin.email")}</Text>
             </TouchableOpacity>
           )}
           {client.phone && (

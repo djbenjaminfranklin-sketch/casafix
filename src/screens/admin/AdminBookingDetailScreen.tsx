@@ -16,6 +16,7 @@ import {
 import Icon from "react-native-vector-icons/Ionicons";
 import { useTranslation } from "react-i18next";
 import { useNavigation, useRoute } from "@react-navigation/native";
+import MapView, { Marker } from "react-native-maps";
 import { SPACING, RADIUS } from "../../constants/theme";
 import { supabase } from "../../lib/supabase";
 
@@ -53,6 +54,8 @@ const ALL_STATUSES = [
   "cancelled",
 ];
 
+const ACTIVE_STATUSES = ["searching", "matched", "in_progress", "price_proposed", "price_accepted", "work_in_progress"];
+
 export default function AdminBookingDetailScreen() {
   const { t } = useTranslation();
   const navigation = useNavigation<any>();
@@ -70,8 +73,8 @@ export default function AdminBookingDetailScreen() {
         .from("bookings")
         .select(`
           *,
-          client:profiles!bookings_client_id_fkey(id, full_name, email, phone),
-          artisan:artisans!bookings_artisan_id_fkey(id, full_name, email, phone)
+          client:profiles!bookings_client_id_fkey(id, full_name, email, phone, address),
+          artisan:artisans!bookings_artisan_id_fkey(id, full_name, email, phone, latitude, longitude)
         `)
         .eq("id", bookingId)
         .single();
@@ -102,20 +105,20 @@ export default function AdminBookingDetailScreen() {
       matched: t("admin.matched"),
       in_progress: t("admin.inProgress"),
       price_proposed: t("admin.priceProposed"),
+      price_accepted: t("admin.priceAccepted"),
       work_in_progress: t("admin.workInProgress"),
+      pending_client_confirmation: t("admin.pendingConfirmation"),
+      work_completed: t("admin.workCompleted"),
       completed: t("admin.completed"),
       disputed: t("admin.disputed"),
       cancelled: t("admin.cancelled"),
-      price_accepted: t("admin.completed"),
-      pending_client_confirmation: t("admin.pending"),
-      work_completed: t("admin.completed"),
     };
     return statusLabels[status] || status;
   };
 
   const handleCancelBooking = () => {
     Alert.alert(t("admin.cancelBooking"), t("admin.cancelConfirm"), [
-      { text: t("admin.cancel"), style: "cancel" },
+      { text: t("admin.no"), style: "cancel" },
       {
         text: t("admin.cancelBooking"),
         style: "destructive",
@@ -140,7 +143,7 @@ export default function AdminBookingDetailScreen() {
 
   const handleReassign = () => {
     Alert.alert(t("admin.reassign"), t("admin.reassignConfirm"), [
-      { text: t("admin.cancel"), style: "cancel" },
+      { text: t("admin.no"), style: "cancel" },
       {
         text: t("admin.reassign"),
         onPress: async () => {
@@ -163,8 +166,8 @@ export default function AdminBookingDetailScreen() {
   };
 
   const handleForceStatus = (newStatus: string) => {
-    Alert.alert(t("admin.forceStatus"), `${t("admin.actionConfirm")} → ${getStatusLabel(newStatus)}`, [
-      { text: t("admin.cancel"), style: "cancel" },
+    Alert.alert(t("admin.forceStatus"), `${t("admin.actionConfirm")} \u2192 ${getStatusLabel(newStatus)}`, [
+      { text: t("admin.no"), style: "cancel" },
       {
         text: t("admin.validate"),
         onPress: async () => {
@@ -196,6 +199,27 @@ export default function AdminBookingDetailScreen() {
       Linking.openURL(`tel:${target.phone}`);
     }
   };
+
+  const handleChatClient = () => {
+    if (!booking) return;
+    navigation.navigate("Chat", {
+      bookingId: booking.id,
+      artisanName: booking.client?.full_name || t("admin.client"),
+    });
+  };
+
+  const handleChatArtisan = () => {
+    if (!booking || !booking.artisan) return;
+    navigation.navigate("Chat", {
+      bookingId: booking.id,
+      artisanName: booking.artisan?.full_name || t("admin.artisan"),
+    });
+  };
+
+  const isActiveBooking = booking && ACTIVE_STATUSES.includes(booking.status);
+  const hasClientLocation = booking?.client_latitude && booking?.client_longitude;
+  const hasArtisanLocation = booking?.artisan?.latitude && booking?.artisan?.longitude;
+  const showMap = isActiveBooking && (hasClientLocation || hasArtisanLocation);
 
   if (loading) {
     return (
@@ -239,6 +263,9 @@ export default function AdminBookingDetailScreen() {
         {/* Service & Status */}
         <View style={styles.serviceSection}>
           <Text style={styles.serviceName}>{booking.service_name}</Text>
+          {booking.category_id && (
+            <Text style={styles.categoryText}>{booking.category_id}</Text>
+          )}
           <View
             style={[
               styles.statusBadge,
@@ -256,59 +283,7 @@ export default function AdminBookingDetailScreen() {
           </View>
         </View>
 
-        {/* Details */}
-        <View style={styles.infoSection}>
-          <View style={styles.infoCard}>
-            <Text style={styles.infoLabel}>{t("admin.service")}</Text>
-            <Text style={styles.infoValue}>{booking.service_name}</Text>
-          </View>
-          <View style={styles.infoCard}>
-            <Text style={styles.infoLabel}>{t("admin.status")}</Text>
-            <Text style={styles.infoValue}>{getStatusLabel(booking.status)}</Text>
-          </View>
-          <View style={styles.infoCard}>
-            <Text style={styles.infoLabel}>{t("admin.date")}</Text>
-            <Text style={styles.infoValue}>
-              {new Date(booking.created_at).toLocaleDateString("fr-FR", {
-                day: "2-digit",
-                month: "long",
-                year: "numeric",
-                hour: "2-digit",
-                minute: "2-digit",
-              })}
-            </Text>
-          </View>
-          {booking.max_price != null && (
-            <View style={styles.infoCard}>
-              <Text style={styles.infoLabel}>{t("payment.maxPrice")}</Text>
-              <Text style={styles.infoValue}>{booking.max_price} EUR</Text>
-            </View>
-          )}
-          {booking.final_price != null && (
-            <View style={styles.infoCard}>
-              <Text style={styles.infoLabel}>{t("admin.price")}</Text>
-              <Text style={[styles.infoValue, { color: "#10b981" }]}>
-                {booking.final_price} EUR
-              </Text>
-            </View>
-          )}
-          {booking.appointment_date && (
-            <View style={styles.infoCard}>
-              <Text style={styles.infoLabel}>{t("booking.chooseDate")}</Text>
-              <Text style={styles.infoValue}>
-                {new Date(booking.appointment_date).toLocaleDateString("fr-FR", {
-                  day: "2-digit",
-                  month: "long",
-                  year: "numeric",
-                  hour: "2-digit",
-                  minute: "2-digit",
-                })}
-              </Text>
-            </View>
-          )}
-        </View>
-
-        {/* Client Info */}
+        {/* Client Info Card */}
         <View style={styles.personSection}>
           <Text style={styles.sectionTitle}>{t("admin.client")}</Text>
           <View style={styles.personCard}>
@@ -324,17 +299,12 @@ export default function AdminBookingDetailScreen() {
                 {booking.client?.phone && (
                   <Text style={styles.personSub}>{booking.client.phone}</Text>
                 )}
+                {booking.client?.address && (
+                  <Text style={styles.personSub}>{booking.client.address}</Text>
+                )}
               </View>
             </View>
             <View style={styles.personActions}>
-              {booking.client?.email && (
-                <TouchableOpacity
-                  style={styles.smallBtn}
-                  onPress={() => handleContact("email", "client")}
-                >
-                  <Icon name="mail-outline" size={16} color="#3b82f6" />
-                </TouchableOpacity>
-              )}
               {booking.client?.phone && (
                 <TouchableOpacity
                   style={styles.smallBtn}
@@ -343,47 +313,183 @@ export default function AdminBookingDetailScreen() {
                   <Icon name="call-outline" size={16} color="#10b981" />
                 </TouchableOpacity>
               )}
-            </View>
-          </View>
-        </View>
-
-        {/* Artisan Info */}
-        <View style={styles.personSection}>
-          <Text style={styles.sectionTitle}>{t("admin.artisan")}</Text>
-          <View style={styles.personCard}>
-            <View style={styles.personInfo}>
-              <View style={[styles.personIconBg, { backgroundColor: "#10b98120" }]}>
-                <Icon name="construct" size={18} color="#10b981" />
-              </View>
-              <View style={styles.personDetails}>
-                <Text style={styles.personName}>{booking.artisan?.full_name || "N/A"}</Text>
-                {booking.artisan?.email && (
-                  <Text style={styles.personSub}>{booking.artisan.email}</Text>
-                )}
-                {booking.artisan?.phone && (
-                  <Text style={styles.personSub}>{booking.artisan.phone}</Text>
-                )}
-              </View>
-            </View>
-            <View style={styles.personActions}>
-              {booking.artisan?.email && (
+              {booking.client?.email && (
                 <TouchableOpacity
                   style={styles.smallBtn}
-                  onPress={() => handleContact("email", "artisan")}
+                  onPress={() => handleContact("email", "client")}
                 >
                   <Icon name="mail-outline" size={16} color="#3b82f6" />
                 </TouchableOpacity>
               )}
-              {booking.artisan?.phone && (
-                <TouchableOpacity
-                  style={styles.smallBtn}
-                  onPress={() => handleContact("phone", "artisan")}
-                >
-                  <Icon name="call-outline" size={16} color="#10b981" />
-                </TouchableOpacity>
-              )}
             </View>
           </View>
+        </View>
+
+        {/* Artisan Info Card */}
+        {booking.artisan && (
+          <View style={styles.personSection}>
+            <Text style={styles.sectionTitle}>{t("admin.artisan")}</Text>
+            <View style={styles.personCard}>
+              <View style={styles.personInfo}>
+                <View style={[styles.personIconBg, { backgroundColor: "#10b98120" }]}>
+                  <Icon name="construct" size={18} color="#10b981" />
+                </View>
+                <View style={styles.personDetails}>
+                  <Text style={styles.personName}>{booking.artisan?.full_name || "N/A"}</Text>
+                  {booking.artisan?.email && (
+                    <Text style={styles.personSub}>{booking.artisan.email}</Text>
+                  )}
+                  {booking.artisan?.phone && (
+                    <Text style={styles.personSub}>{booking.artisan.phone}</Text>
+                  )}
+                </View>
+              </View>
+              <View style={styles.personActions}>
+                {booking.artisan?.phone && (
+                  <TouchableOpacity
+                    style={styles.smallBtn}
+                    onPress={() => handleContact("phone", "artisan")}
+                  >
+                    <Icon name="call-outline" size={16} color="#10b981" />
+                  </TouchableOpacity>
+                )}
+                {booking.artisan?.email && (
+                  <TouchableOpacity
+                    style={styles.smallBtn}
+                    onPress={() => handleContact("email", "artisan")}
+                  >
+                    <Icon name="mail-outline" size={16} color="#3b82f6" />
+                  </TouchableOpacity>
+                )}
+              </View>
+            </View>
+          </View>
+        )}
+
+        {/* Live Map */}
+        {showMap && (
+          <View style={styles.mapSection}>
+            <Text style={styles.sectionTitle}>{t("admin.liveMap")}</Text>
+            <View style={styles.mapContainer}>
+              <MapView
+                style={styles.map}
+                initialRegion={{
+                  latitude: booking.client_latitude || booking.artisan?.latitude || 36.7213,
+                  longitude: booking.client_longitude || booking.artisan?.longitude || -4.4214,
+                  latitudeDelta: 0.05,
+                  longitudeDelta: 0.05,
+                }}
+              >
+                {hasClientLocation && (
+                  <Marker
+                    coordinate={{
+                      latitude: booking.client_latitude,
+                      longitude: booking.client_longitude,
+                    }}
+                    title={t("admin.clientPosition")}
+                    description={booking.client?.full_name || ""}
+                    pinColor="#3b82f6"
+                  />
+                )}
+                {hasArtisanLocation && (
+                  <Marker
+                    coordinate={{
+                      latitude: booking.artisan.latitude,
+                      longitude: booking.artisan.longitude,
+                    }}
+                    title={t("admin.artisanPosition")}
+                    description={booking.artisan?.full_name || ""}
+                    pinColor="#ef4444"
+                  />
+                )}
+              </MapView>
+            </View>
+          </View>
+        )}
+
+        {/* Price Info */}
+        <View style={styles.infoSection}>
+          <View style={styles.infoCard}>
+            <Text style={styles.infoLabel}>{t("admin.service")}</Text>
+            <Text style={styles.infoValue}>{booking.service_name}</Text>
+          </View>
+          {booking.category_id && (
+            <View style={styles.infoCard}>
+              <Text style={styles.infoLabel}>{t("admin.category")}</Text>
+              <Text style={styles.infoValue}>{booking.category_id}</Text>
+            </View>
+          )}
+          <View style={styles.infoCard}>
+            <Text style={styles.infoLabel}>{t("admin.status")}</Text>
+            <Text style={styles.infoValue}>{getStatusLabel(booking.status)}</Text>
+          </View>
+          {booking.max_price != null && (
+            <View style={styles.infoCard}>
+              <Text style={styles.infoLabel}>{t("admin.maxPrice")}</Text>
+              <Text style={styles.infoValue}>{booking.max_price} EUR</Text>
+            </View>
+          )}
+          {booking.proposed_price != null && (
+            <View style={styles.infoCard}>
+              <Text style={styles.infoLabel}>{t("admin.proposedPrice")}</Text>
+              <Text style={[styles.infoValue, { color: "#f59e0b" }]}>
+                {booking.proposed_price} EUR
+              </Text>
+            </View>
+          )}
+          {booking.final_price != null && (
+            <View style={styles.infoCard}>
+              <Text style={styles.infoLabel}>{t("admin.finalPrice")}</Text>
+              <Text style={[styles.infoValue, { color: "#10b981" }]}>
+                {booking.final_price} EUR
+              </Text>
+            </View>
+          )}
+          <View style={styles.infoCard}>
+            <Text style={styles.infoLabel}>{t("admin.createdAt")}</Text>
+            <Text style={styles.infoValue}>
+              {new Date(booking.created_at).toLocaleDateString("fr-FR", {
+                day: "2-digit",
+                month: "long",
+                year: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
+              })}
+            </Text>
+          </View>
+          {booking.appointment_date && (
+            <View style={styles.infoCard}>
+              <Text style={styles.infoLabel}>{t("admin.scheduledDate")}</Text>
+              <Text style={styles.infoValue}>
+                {new Date(booking.appointment_date).toLocaleDateString("fr-FR", {
+                  day: "2-digit",
+                  month: "long",
+                  year: "numeric",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}
+              </Text>
+            </View>
+          )}
+          {booking.scheduled_date && !booking.appointment_date && (
+            <View style={styles.infoCard}>
+              <Text style={styles.infoLabel}>{t("admin.scheduledDate")}</Text>
+              <Text style={styles.infoValue}>
+                {new Date(booking.scheduled_date).toLocaleDateString("fr-FR", {
+                  day: "2-digit",
+                  month: "long",
+                  year: "numeric",
+                })}
+                {booking.scheduled_slot ? ` - ${booking.scheduled_slot}` : ""}
+              </Text>
+            </View>
+          )}
+          {booking.client?.address && (
+            <View style={styles.infoCard}>
+              <Text style={styles.infoLabel}>{t("admin.clientAddress")}</Text>
+              <Text style={styles.infoValue}>{booking.client.address}</Text>
+            </View>
+          )}
         </View>
 
         {/* Photos */}
@@ -455,11 +561,20 @@ export default function AdminBookingDetailScreen() {
                 </View>
               </View>
             )}
+            {booking.proposed_price != null && (
+              <View style={styles.timelineItem}>
+                <View style={[styles.timelineDot, { backgroundColor: "#f59e0b" }]} />
+                <View style={styles.timelineContent}>
+                  <Text style={styles.timelineEvent}>{t("admin.priceProposed")}</Text>
+                  <Text style={styles.timelineDate}>{booking.proposed_price} EUR</Text>
+                </View>
+              </View>
+            )}
             {booking.final_price != null && (
               <View style={styles.timelineItem}>
                 <View style={[styles.timelineDot, { backgroundColor: "#10b981" }]} />
                 <View style={styles.timelineContent}>
-                  <Text style={styles.timelineEvent}>{t("admin.priceProposed")}</Text>
+                  <Text style={styles.timelineEvent}>{t("admin.priceAccepted")}</Text>
                   <Text style={styles.timelineDate}>{booking.final_price} EUR</Text>
                 </View>
               </View>
@@ -477,6 +592,14 @@ export default function AdminBookingDetailScreen() {
                 <View style={[styles.timelineDot, { backgroundColor: "#ef4444" }]} />
                 <View style={styles.timelineContent}>
                   <Text style={styles.timelineEvent}>{t("admin.cancelled")}</Text>
+                </View>
+              </View>
+            )}
+            {booking.status === "disputed" && (
+              <View style={styles.timelineItem}>
+                <View style={[styles.timelineDot, { backgroundColor: "#ef4444" }]} />
+                <View style={styles.timelineContent}>
+                  <Text style={styles.timelineEvent}>{t("admin.disputed")}</Text>
                 </View>
               </View>
             )}
@@ -521,23 +644,28 @@ export default function AdminBookingDetailScreen() {
 
         {/* Action Buttons */}
         <View style={styles.actionsSection}>
-          {booking.status !== "cancelled" && (
+          {/* Chat buttons */}
+          <TouchableOpacity
+            style={[styles.actionButton, { backgroundColor: ADMIN_ACCENT }]}
+            onPress={handleChatClient}
+            disabled={actionLoading}
+          >
+            <Icon name="chatbubble-outline" size={20} color="#ffffff" />
+            <Text style={styles.actionButtonText}>{t("admin.chatClient")}</Text>
+          </TouchableOpacity>
+
+          {booking.artisan && (
             <TouchableOpacity
-              style={[styles.actionButton, { backgroundColor: "#ef4444" }]}
-              onPress={handleCancelBooking}
+              style={[styles.actionButton, { backgroundColor: "#10b981" }]}
+              onPress={handleChatArtisan}
               disabled={actionLoading}
             >
-              {actionLoading ? (
-                <ActivityIndicator size="small" color="#ffffff" />
-              ) : (
-                <>
-                  <Icon name="close-circle" size={20} color="#ffffff" />
-                  <Text style={styles.actionButtonText}>{t("admin.cancelBooking")}</Text>
-                </>
-              )}
+              <Icon name="chatbubble-outline" size={20} color="#ffffff" />
+              <Text style={styles.actionButtonText}>{t("admin.chatArtisan")}</Text>
             </TouchableOpacity>
           )}
 
+          {/* Reassign button */}
           {booking.artisan_id && booking.status !== "cancelled" && booking.status !== "completed" && (
             <TouchableOpacity
               style={[styles.actionButton, { backgroundColor: "#f59e0b" }]}
@@ -555,6 +683,7 @@ export default function AdminBookingDetailScreen() {
             </TouchableOpacity>
           )}
 
+          {/* View invoice button */}
           {booking.status === "completed" && (
             <TouchableOpacity
               style={[styles.actionButton, { backgroundColor: "#3b82f6" }]}
@@ -563,6 +692,24 @@ export default function AdminBookingDetailScreen() {
             >
               <Icon name="document-text" size={20} color="#ffffff" />
               <Text style={styles.actionButtonText}>{t("admin.viewInvoice")}</Text>
+            </TouchableOpacity>
+          )}
+
+          {/* Cancel button */}
+          {booking.status !== "cancelled" && booking.status !== "completed" && (
+            <TouchableOpacity
+              style={[styles.actionButton, { backgroundColor: "#ef4444" }]}
+              onPress={handleCancelBooking}
+              disabled={actionLoading}
+            >
+              {actionLoading ? (
+                <ActivityIndicator size="small" color="#ffffff" />
+              ) : (
+                <>
+                  <Icon name="close-circle" size={20} color="#ffffff" />
+                  <Text style={styles.actionButtonText}>{t("admin.cancelBooking")}</Text>
+                </>
+              )}
             </TouchableOpacity>
           )}
         </View>
@@ -611,6 +758,12 @@ const styles = StyleSheet.create({
     fontWeight: "800",
     color: "#ffffff",
     textAlign: "center",
+  },
+  categoryText: {
+    fontSize: 13,
+    color: "#9ca3af",
+    marginTop: 4,
+    textTransform: "capitalize",
   },
   statusBadge: {
     paddingHorizontal: 14,
@@ -710,6 +863,19 @@ const styles = StyleSheet.create({
     backgroundColor: "#3a3a4d",
     alignItems: "center",
     justifyContent: "center",
+  },
+  mapSection: {
+    marginHorizontal: SPACING.md,
+    marginTop: SPACING.lg,
+  },
+  mapContainer: {
+    borderRadius: RADIUS.lg,
+    overflow: "hidden",
+    height: 200,
+  },
+  map: {
+    width: "100%",
+    height: "100%",
   },
   mediaSection: {
     marginHorizontal: SPACING.md,

@@ -328,7 +328,7 @@ export default function AdminDisputesScreen() {
           ListEmptyComponent={
             <View style={styles.emptyContainer}>
               <Icon name="shield-checkmark-outline" size={48} color="#6b7280" />
-              <Text style={styles.emptyText}>Aucun litige</Text>
+              <Text style={styles.emptyText}>{t("admin.noDisputes")}</Text>
             </View>
           }
         />

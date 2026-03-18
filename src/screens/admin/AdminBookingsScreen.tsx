@@ -208,7 +208,7 @@ export default function AdminBookingsScreen() {
         <Icon name="search" size={18} color="#9ca3af" />
         <TextInput
           style={styles.searchInput}
-          placeholder="Rechercher un service..."
+          placeholder={t("admin.searchBookings")}
           placeholderTextColor="#6b7280"
           value={search}
           onChangeText={setSearch}
@@ -277,7 +277,7 @@ export default function AdminBookingsScreen() {
           ListEmptyComponent={
             <View style={styles.emptyContainer}>
               <Icon name="calendar-outline" size={48} color="#6b7280" />
-              <Text style={styles.emptyText}>Aucune reservation</Text>
+              <Text style={styles.emptyText}>{t("admin.noBookings")}</Text>
             </View>
           }
         />
