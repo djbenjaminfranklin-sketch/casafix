@@ -8,7 +8,6 @@ export const CATEGORIES = [
   { id: "appliances", icon: "settings", color: "#7c3aed", bg: "#f5f3ff" },
   { id: "glazing", icon: "albums", color: "#0891b2", bg: "#cffafe" },
   { id: "smallworks", icon: "construct", color: "#b45309", bg: "#fef3c7" },
-  { id: "renovation", icon: "hammer", color: "#9333ea", bg: "#f3e8ff" },
   { id: "pool", icon: "water", color: "#0891b2", bg: "#cffafe" },
   { id: "garden", icon: "leaf", color: "#16a34a", bg: "#dcfce7" },
 ] as const;
