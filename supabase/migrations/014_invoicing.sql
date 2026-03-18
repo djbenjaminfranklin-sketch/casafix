@@ -1,5 +1,6 @@
 -- Add business address to artisans
 ALTER TABLE artisans ADD COLUMN IF NOT EXISTS business_address TEXT;
+ALTER TABLE artisans ADD COLUMN IF NOT EXISTS iva_rate NUMERIC DEFAULT 21;
 
 -- Create invoices table
 CREATE TABLE IF NOT EXISTS invoices (
@@ -61,9 +62,9 @@ BEGIN
     SELECT * INTO v_client FROM profiles WHERE id = v_booking.client_id;
     SELECT * INTO v_artisan FROM artisans WHERE id = v_booking.artisan_id;
     
-    -- Calculate amounts (IVA 21% in Spain)
+    -- Calculate amounts using artisan's IVA rate
     v_total := COALESCE(v_booking.final_price, v_booking.proposed_price, 0);
-    v_subtotal := ROUND(v_total / 1.21, 2);
+    v_subtotal := ROUND(v_total / (1 + COALESCE(v_artisan.iva_rate, 21) / 100), 2);
     v_iva := v_total - v_subtotal;
     v_commission := ROUND(v_total * 0.18, 2); -- 15% + 3%
     v_net := v_total - v_commission;
@@ -84,7 +85,7 @@ BEGIN
       COALESCE(v_client.full_name, ''), v_client.address,
       COALESCE(v_artisan.full_name, ''), v_artisan.business_address, v_artisan.nie_nif, v_artisan.autonomo_number,
       v_booking.service_name, COALESCE(v_booking.updated_at, NOW()),
-      v_subtotal, 21, v_iva, v_total,
+      v_subtotal, COALESCE(v_artisan.iva_rate, 21), v_iva, v_total,
       v_commission, v_net
     );
   END IF;
