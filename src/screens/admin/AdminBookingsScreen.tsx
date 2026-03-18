@@ -331,11 +331,11 @@ const styles = StyleSheet.create({
   filterScroll: { maxHeight: 50 },
   filterContainer: { paddingHorizontal: SPACING.md, paddingVertical: SPACING.sm, gap: 8 },
   filterChip: {
-    paddingHorizontal: 14, paddingVertical: 8, borderRadius: 20,
-    backgroundColor: ADMIN_CARD, marginRight: 4,
+    paddingHorizontal: 16, paddingVertical: 10, borderRadius: 20,
+    backgroundColor: ADMIN_CARD, marginRight: 6,
   },
   filterChipActive: { backgroundColor: ADMIN_ACCENT },
-  filterText: { fontSize: 13, fontWeight: "600", color: "#9ca3af" },
+  filterText: { fontSize: 14, fontWeight: "600", color: "#9ca3af" },
   filterTextActive: { color: "#ffffff" },
   listContent: { padding: SPACING.md, paddingBottom: SPACING.xl },
   bookingCard: {
