@@ -33,13 +33,6 @@ const { width } = Dimensions.get("window");
 
 type BookingState = "confirm" | "searching" | "matched" | "arriving";
 
-// Simulated artisan data
-const MOCK_ARTISAN = {
-  name: "Carlos M.",
-  rating: 4.8,
-  reviews: 127,
-  punctuality: 98,
-};
 
 type Props = {
   route: {
@@ -85,6 +78,12 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
   const [aiDiagnostic, setAiDiagnostic] = useState<DiagnosticResult | null>(null);
   const [analyzingAi, setAnalyzingAi] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [matchedArtisan, setMatchedArtisan] = useState<{
+    name: string;
+    rating: number;
+    reviews: number;
+    phone: string;
+  } | null>(null);
   const [manualAddress, setManualAddress] = useState("");
   const [locationFailed, setLocationFailed] = useState(false);
   const [userLocation, setUserLocation] = useState({
@@ -153,15 +152,9 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
       pulse.start();
       pulse2.start();
 
-      // Simulate match after 4 seconds
-      const timer = setTimeout(() => {
-        pulse.stop();
-        pulse2.stop();
-        setState("matched");
-      }, 4000);
+      // No more simulation - wait for real artisan match via realtime subscription
 
       return () => {
-        clearTimeout(timer);
         pulse.stop();
         pulse2.stop();
       };
@@ -203,6 +196,20 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
     if (!bookingId) return;
 
     const unsubscribe = subscribeToBooking(bookingId, async (updatedBooking: Booking) => {
+      // Artisan accepted the booking
+      if (updatedBooking.status === "matched" && updatedBooking.artisan_id) {
+        const { data: fullBooking } = await getBookingWithArtisan(bookingId);
+        if (fullBooking?.artisan) {
+          setMatchedArtisan({
+            name: fullBooking.artisan.full_name || "Artisan",
+            rating: fullBooking.artisan.rating || 0,
+            reviews: fullBooking.artisan.review_count || 0,
+            phone: fullBooking.artisan.phone || "",
+          });
+        }
+        setState("matched");
+      }
+
       if (updatedBooking.status === "price_proposed" && updatedBooking.proposed_price) {
         // Fetch artisan details
         const { data: fullBooking } = await getBookingWithArtisan(bookingId);
@@ -360,7 +367,7 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
         {(state === "matched" || state === "arriving") && artisanPosition.latitude !== 0 && (
           <Marker
             coordinate={artisanPosition}
-            title={MOCK_ARTISAN.name}
+            title={matchedArtisan?.name || "Artisan"}
             anchor={{ x: 0.5, y: 0.5 }}
           >
             <View style={styles.artisanMarkerOuter}>
@@ -539,15 +546,15 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
                 <Icon name="person" size={24} color="#FFFFFF" />
               </View>
               <View style={styles.artisanInfo}>
-                <Text style={styles.artisanName}>{MOCK_ARTISAN.name}</Text>
+                <Text style={styles.artisanName}>{matchedArtisan?.name || "Artisan"}</Text>
                 <View style={styles.ratingRow}>
                   <Icon name="star" size={14} color="#F59E0B" />
                   <Text style={styles.ratingText}>
-                    {MOCK_ARTISAN.rating} ({MOCK_ARTISAN.reviews})
+                    {matchedArtisan?.rating || 0} ({matchedArtisan?.reviews || 0})
                   </Text>
                   <View style={styles.punctualityBadge}>
                     <Icon name="timer-outline" size={12} color="#16a34a" />
-                    <Text style={styles.punctualityText}>{MOCK_ARTISAN.punctuality}%</Text>
+                    <Text style={styles.punctualityText}>{100}%</Text>
                   </View>
                 </View>
               </View>
@@ -569,7 +576,7 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
                 style={styles.callBtn}
                 activeOpacity={0.8}
                 onPress={() => {
-                  const phone = "tel:+34600000000";
+                  const phone = `tel:${matchedArtisan?.phone || ""}`;
                   Linking.canOpenURL(phone).then((supported) => {
                     if (supported) {
                       Linking.openURL(phone);
@@ -589,7 +596,7 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
                   if (bookingId) {
                     navigation.navigate("Chat", {
                       bookingId,
-                      artisanName: MOCK_ARTISAN.name,
+                      artisanName: matchedArtisan?.name || "Artisan",
                     });
                   }
                 }}
@@ -608,7 +615,7 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
                 navigation.navigate("Report", {
                   bookingId,
                   reportedUserId: data?.artisan?.id || "",
-                  reportedUserName: data?.artisan?.full_name || MOCK_ARTISAN.name,
+                  reportedUserName: data?.artisan?.full_name || matchedArtisan?.name || "Artisan",
                 });
               }}
               activeOpacity={0.7}

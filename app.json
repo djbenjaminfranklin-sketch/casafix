@@ -1,4 +1,9 @@
 {
   "name": "CasaFix",
-  "displayName": "CasaFix"
+  "displayName": "CasaFix",
+  "extra": {
+    "eas": {
+      "projectId": "868fd659-2e07-4478-a5d6-2c02e7ca4a42"
+    }
+  }
 }
