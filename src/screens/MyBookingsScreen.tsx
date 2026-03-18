@@ -176,6 +176,18 @@ export default function MyBookingsScreen({ navigation }: Props) {
             )}
           </View>
         </View>
+
+        {(item.status === "completed" || item.status === "work_completed") && (
+          <TouchableOpacity
+            style={styles.invoiceBtn}
+            onPress={() => navigation.navigate("Invoice", { bookingId: item.id })}
+            activeOpacity={0.7}
+          >
+            <Icon name="document-text-outline" size={16} color={COLORS.primary} />
+            <Text style={styles.invoiceBtnText}>{t("invoice.title")}</Text>
+            <Icon name="chevron-forward" size={14} color={COLORS.primary} />
+          </TouchableOpacity>
+        )}
       </TouchableOpacity>
     );
   }
@@ -293,6 +305,21 @@ const styles = StyleSheet.create({
   statusText: { fontSize: 10, fontWeight: "600" },
   bookingPrice: { fontSize: 15, fontWeight: "700", color: COLORS.primary },
   bookingPriceRange: { fontSize: 12, color: COLORS.textLight },
+  invoiceBtn: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
+    marginTop: 10,
+    paddingTop: 10,
+    borderTopWidth: 1,
+    borderTopColor: "#f3f4f6",
+  },
+  invoiceBtnText: {
+    fontSize: 13,
+    fontWeight: "600",
+    color: COLORS.primary,
+    flex: 1,
+  },
   empty: { alignItems: "center", paddingTop: 80 },
   emptyText: { fontSize: 14, color: "#9ca3af", marginTop: 12 },
 });

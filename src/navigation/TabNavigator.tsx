@@ -27,6 +27,7 @@ import MyAccountScreen from "../screens/MyAccountScreen";
 import NotificationsSettingsScreen from "../screens/NotificationsSettingsScreen";
 import PaymentScreen from "../screens/PaymentScreen";
 import HelpScreen from "../screens/HelpScreen";
+import InvoiceScreen from "../screens/InvoiceScreen";
 
 type RootStackParamList = {
   Auth: undefined;
@@ -47,6 +48,7 @@ type RootStackParamList = {
   NotificationsSettings: undefined;
   Payment: undefined;
   Help: undefined;
+  Invoice: { bookingId: string };
 };
 
 const Tab = createBottomTabNavigator();
@@ -206,6 +208,11 @@ export default function RootNavigator() {
       <Stack.Screen
         name="Help"
         component={HelpScreen}
+        options={{ animation: "slide_from_right" }}
+      />
+      <Stack.Screen
+        name="Invoice"
+        component={InvoiceScreen}
         options={{ animation: "slide_from_right" }}
       />
         </>

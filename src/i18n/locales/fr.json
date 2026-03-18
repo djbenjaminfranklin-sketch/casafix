@@ -552,6 +552,22 @@
     "methodNote": "Votre carte est enregistrée de manière sécurisée lors de votre première réservation",
     "poweredBy": "Paiements sécurisés par"
   },
+  "invoice": {
+    "title": "Facture",
+    "invoiceNumber": "Facture N\u00b0",
+    "date": "Date",
+    "provider": "Prestataire",
+    "client": "Client",
+    "service": "Service",
+    "subtotal": "Montant HT",
+    "iva": "IVA",
+    "total": "Total TTC",
+    "paidByCard": "Paiement effectu\u00e9 par carte bancaire",
+    "commission": "Commission CasaFix",
+    "yourShare": "Votre part",
+    "noInvoice": "Facture non disponible",
+    "loading": "Chargement de la facture..."
+  },
   "help": {
     "contactTitle": "Nous contacter",
     "email": "Email",
