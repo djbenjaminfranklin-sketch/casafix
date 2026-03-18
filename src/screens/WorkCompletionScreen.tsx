@@ -14,6 +14,7 @@ import { useTranslation } from "react-i18next";
 import { supabase } from "../lib/supabase";
 import { releaseToArtisan } from "../lib/stripe";
 import { COLORS, SPACING, RADIUS } from "../constants/theme";
+import { getInvoiceByBooking, Invoice } from "../services/invoices";
 
 type Props = {
   route: {
@@ -35,6 +36,8 @@ export default function WorkCompletionScreen({ route, navigation }: Props) {
   const [loading, setLoading] = useState(false);
   const [completed, setCompleted] = useState(false);
   const [hoursLeft, setHoursLeft] = useState(48);
+  const [invoice, setInvoice] = useState<Invoice | null>(null);
+  const [showInvoice, setShowInvoice] = useState(false);
 
   // Calculate countdown
   useEffect(() => {
@@ -78,6 +81,10 @@ export default function WorkCompletionScreen({ route, navigation }: Props) {
 
             setLoading(false);
             setCompleted(true);
+
+            // Fetch the auto-generated invoice
+            const { data: inv } = await getInvoiceByBooking(bookingId);
+            if (inv) setInvoice(inv);
           },
         },
       ]
@@ -125,6 +132,48 @@ export default function WorkCompletionScreen({ route, navigation }: Props) {
               <Text style={styles.finalPrice}>{finalPrice}€</Text>
             </View>
           </View>
+
+          {/* Invoice section */}
+          {invoice && !showInvoice && (
+            <TouchableOpacity
+              style={styles.invoiceBtn}
+              onPress={() => setShowInvoice(true)}
+              activeOpacity={0.85}
+            >
+              <Icon name="document-text-outline" size={20} color={COLORS.primary} />
+              <Text style={styles.invoiceBtnText}>{t("completion.viewInvoice")}</Text>
+            </TouchableOpacity>
+          )}
+
+          {invoice && showInvoice && (
+            <View style={styles.invoiceCard}>
+              <View style={styles.invoiceHeader}>
+                <Icon name="document-text" size={20} color={COLORS.primary} />
+                <Text style={styles.invoiceTitle}>{t("completion.invoiceGenerated")}</Text>
+              </View>
+              <View style={styles.invoiceRow}>
+                <Text style={styles.invoiceLabel}>N°</Text>
+                <Text style={styles.invoiceValue}>{invoice.invoice_number}</Text>
+              </View>
+              <View style={styles.invoiceRow}>
+                <Text style={styles.invoiceLabel}>{t("priceConfirm.service")}</Text>
+                <Text style={styles.invoiceValue}>{invoice.service_name}</Text>
+              </View>
+              <View style={styles.invoiceRow}>
+                <Text style={styles.invoiceLabel}>HT</Text>
+                <Text style={styles.invoiceValue}>{invoice.subtotal}€</Text>
+              </View>
+              <View style={styles.invoiceRow}>
+                <Text style={styles.invoiceLabel}>IVA ({invoice.iva_rate}%)</Text>
+                <Text style={styles.invoiceValue}>{invoice.iva_amount}€</Text>
+              </View>
+              <View style={styles.receiptDivider} />
+              <View style={styles.invoiceRow}>
+                <Text style={[styles.invoiceLabel, styles.finalLabel]}>Total TTC</Text>
+                <Text style={styles.finalPrice}>{invoice.total}€</Text>
+              </View>
+            </View>
+          )}
 
           <TouchableOpacity
             style={styles.reviewBtn}
@@ -334,4 +383,26 @@ const styles = StyleSheet.create({
   reviewBtnText: { fontSize: 15, fontWeight: "700", color: "#FFFFFF" },
   homeBtn: { paddingVertical: 12, paddingHorizontal: 30 },
   homeBtnText: { fontSize: 14, fontWeight: "600", color: COLORS.textLight },
+  // Invoice
+  invoiceBtn: {
+    flexDirection: "row", alignItems: "center", justifyContent: "center",
+    gap: 8, paddingVertical: 12, borderRadius: RADIUS.md,
+    borderWidth: 1.5, borderColor: COLORS.primary, marginBottom: SPACING.sm, width: "100%",
+  },
+  invoiceBtnText: { fontSize: 15, fontWeight: "600", color: COLORS.primary },
+  invoiceCard: {
+    width: "100%", backgroundColor: "#f0f9ff", borderRadius: RADIUS.lg,
+    padding: SPACING.md, marginBottom: SPACING.md,
+    borderWidth: 1, borderColor: "#bae6fd",
+  },
+  invoiceHeader: {
+    flexDirection: "row", alignItems: "center", gap: 8, marginBottom: SPACING.sm,
+  },
+  invoiceTitle: { fontSize: 14, fontWeight: "700", color: COLORS.primary },
+  invoiceRow: {
+    flexDirection: "row", justifyContent: "space-between", alignItems: "center",
+    paddingVertical: 4,
+  },
+  invoiceLabel: { fontSize: 13, color: COLORS.textLight },
+  invoiceValue: { fontSize: 14, fontWeight: "500", color: "#1f2937" },
 });

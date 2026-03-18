@@ -27,11 +27,14 @@ export default function MyAccountScreen({ navigation }: Props) {
 
   const [fullName, setFullName] = useState(profile?.full_name || "");
   const [phone, setPhone] = useState(profile?.phone || "");
+  const [address, setAddress] = useState(profile?.address || "");
   const [saving, setSaving] = useState(false);
   const [edited, setEdited] = useState(false);
 
   const hasChanges =
-    fullName !== (profile?.full_name || "") || phone !== (profile?.phone || "");
+    fullName !== (profile?.full_name || "") ||
+    phone !== (profile?.phone || "") ||
+    address !== (profile?.address || "");
 
   function isValidPhone(p: string): boolean {
     const cleaned = p.replace(/[\s\-\(\)]/g, "");
@@ -46,7 +49,7 @@ export default function MyAccountScreen({ navigation }: Props) {
     }
     setSaving(true);
     try {
-      await updateProfile({ full_name: fullName.trim(), phone: phone.trim() });
+      await updateProfile({ full_name: fullName.trim(), phone: phone.trim(), address: address.trim() });
       setEdited(false);
       Alert.alert("", t("account.saved"));
     } catch {
@@ -144,6 +147,19 @@ export default function MyAccountScreen({ navigation }: Props) {
           keyboardType="phone-pad"
         />
 
+        <Text style={styles.label}>{t("account.address")}</Text>
+        <TextInput
+          style={styles.input}
+          value={address}
+          onChangeText={(v) => {
+            setAddress(v);
+            setEdited(true);
+          }}
+          placeholder={t("account.addressPlaceholder")}
+          placeholderTextColor={COLORS.textLight}
+        />
+        <Text style={styles.addressHint}>{t("account.addressRequired")}</Text>
+
         <Text style={styles.label}>{t("auth.email")}</Text>
         <View style={[styles.input, styles.inputDisabled]}>
           <Text style={styles.disabledText}>{user?.email}</Text>
@@ -231,6 +247,7 @@ const styles = StyleSheet.create({
     color: "#1f2937",
   },
   inputDisabled: { backgroundColor: "#f3f4f6" },
+  addressHint: { fontSize: 12, color: COLORS.textLight, marginTop: 4 },
   disabledText: { fontSize: 15, color: COLORS.textLight },
   saveBtn: {
     backgroundColor: COLORS.primary,

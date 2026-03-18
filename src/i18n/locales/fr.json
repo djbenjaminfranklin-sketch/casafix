@@ -420,7 +420,9 @@
     "disputeSentDesc": "Notre équipe vous contactera dans les 24h.",
     "workDone": "Travail validé !",
     "artisanPaid": "Le paiement a été libéré à l'artisan. Merci d'utiliser CasaFix !",
-    "released": "Montant libéré"
+    "released": "Montant libéré",
+    "viewInvoice": "Voir la facture",
+    "invoiceGenerated": "Facture générée automatiquement"
   },
   "pricing": {
     "onQuote": "Sur devis"
@@ -520,7 +522,10 @@
     "deleteTitle": "Supprimer votre compte ?",
     "deleteConfirm": "Cette action est irréversible. Toutes vos données seront supprimées.",
     "deleteError": "Erreur lors de la suppression du compte",
-    "invalidPhone": "Numéro de téléphone invalide. Format attendu : +34 600 000 000"
+    "invalidPhone": "Numéro de téléphone invalide. Format attendu : +34 600 000 000",
+    "address": "Adresse",
+    "addressPlaceholder": "Rue, numéro, code postal, ville",
+    "addressRequired": "L'adresse est nécessaire pour la facturation"
   },
   "notifications": {
     "pushTitle": "Notifications push",

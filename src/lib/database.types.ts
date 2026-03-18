@@ -39,6 +39,7 @@ export type Artisan = {
   longitude: number | null;
   radius_km: number;
   stripe_account_id: string | null;
+  business_address: string | null;
   created_at: string;
   updated_at: string;
 };
