@@ -69,18 +69,40 @@ export default function AdminBookingDetailScreen() {
 
   const fetchBooking = useCallback(async () => {
     try {
-      const { data, error } = await supabase
+      // Fetch booking
+      const { data: bookingData, error: bookingError } = await supabase
         .from("bookings")
-        .select(`
-          *,
-          client:profiles!bookings_client_id_fkey(id, full_name, email, phone, address),
-          artisan:artisans!bookings_artisan_id_fkey(id, full_name, email, phone, latitude, longitude)
-        `)
+        .select("*")
         .eq("id", bookingId)
         .single();
 
-      if (error) throw error;
-      setBooking(data);
+      if (bookingError || !bookingData) throw bookingError;
+
+      // Fetch client profile
+      let clientData = null;
+      if (bookingData.client_id) {
+        const { data } = await supabase
+          .from("profiles")
+          .select("id, full_name, phone, address")
+          .eq("id", bookingData.client_id)
+          .single();
+        clientData = data;
+        // Get email from auth
+        const { data: userData } = await supabase.auth.admin?.getUserById?.(bookingData.client_id) || {};
+      }
+
+      // Fetch artisan
+      let artisanData = null;
+      if (bookingData.artisan_id) {
+        const { data } = await supabase
+          .from("artisans")
+          .select("id, full_name, phone, latitude, longitude")
+          .eq("id", bookingData.artisan_id)
+          .single();
+        artisanData = data;
+      }
+
+      setBooking({ ...bookingData, client: clientData, artisan: artisanData });
     } catch (error) {
       console.error("Error fetching booking:", error);
     } finally {
@@ -712,6 +734,34 @@ export default function AdminBookingDetailScreen() {
               )}
             </TouchableOpacity>
           )}
+
+          {/* Delete button */}
+          <TouchableOpacity
+            style={[styles.actionButton, { backgroundColor: "#991b1b", marginTop: SPACING.md }]}
+            onPress={() => {
+              Alert.alert(
+                t("admin.deleteConfirm"),
+                t("admin.actionConfirm"),
+                [
+                  { text: t("admin.cancel"), style: "cancel" },
+                  {
+                    text: t("admin.deleteAccount"),
+                    style: "destructive",
+                    onPress: async () => {
+                      setActionLoading(true);
+                      await supabase.from("bookings").delete().eq("id", bookingId);
+                      setActionLoading(false);
+                      navigation.goBack();
+                    },
+                  },
+                ]
+              );
+            }}
+            disabled={actionLoading}
+          >
+            <Icon name="trash" size={20} color="#ffffff" />
+            <Text style={styles.actionButtonText}>{t("admin.deleteBooking") || "Supprimer la réservation"}</Text>
+          </TouchableOpacity>
         </View>
       </ScrollView>
     </SafeAreaView>
