@@ -259,7 +259,8 @@
     "cancelFree": "Annuler gratuitement",
     "yesCancel": "Oui, annuler",
     "cancelFeeWarning": "Après 2 min, l'annulation entraîne 75€ de frais de déplacement.",
-    "recommendedInArea": "Recommandé dans votre zone"
+    "recommendedInArea": "Recommandé dans votre zone",
+    "activeBooking": "Course en cours"
   },
   "auth": {
     "login": "Se connecter",

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -8,6 +8,7 @@ import {
   SafeAreaView,
   StatusBar,
   Image,
+  TouchableOpacity,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import { useTranslation } from "react-i18next";
@@ -23,14 +24,16 @@ export default function HomeScreen() {
   const { t } = useTranslation();
   const navigation = useNavigation<any>();
 
-  // Check for active booking and redirect to tracking screen
+  const [activeBooking, setActiveBooking] = useState<any>(null);
+
+  // Check for active booking — show banner, don't force redirect
   useFocusEffect(
     React.useCallback(() => {
       (async () => {
         const { data: { user } } = await supabase.auth.getUser();
         if (!user) return;
 
-        const { data: activeBooking } = await supabase
+        const { data } = await supabase
           .from("bookings")
           .select("id, category_id, service_id, service_name, price_range, status")
           .eq("client_id", user.id)
@@ -39,15 +42,7 @@ export default function HomeScreen() {
           .limit(1)
           .single();
 
-        if (activeBooking) {
-          navigation.navigate("EmergencyBooking", {
-            categoryId: activeBooking.category_id,
-            serviceId: activeBooking.service_id,
-            serviceName: activeBooking.service_name,
-            priceRange: activeBooking.price_range,
-            resumeBookingId: activeBooking.id,
-          });
-        }
+        setActiveBooking(data || null);
       })();
     }, [])
   );
@@ -55,6 +50,28 @@ export default function HomeScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="dark-content" backgroundColor={COLORS.background} />
+
+      {/* Active booking banner */}
+      {activeBooking && (
+        <TouchableOpacity
+          style={styles.activeBanner}
+          onPress={() => navigation.navigate("EmergencyBooking", {
+            categoryId: activeBooking.category_id,
+            serviceId: activeBooking.service_id,
+            serviceName: activeBooking.service_name,
+            priceRange: activeBooking.price_range,
+            resumeBookingId: activeBooking.id,
+          })}
+          activeOpacity={0.9}
+        >
+          <View style={styles.activeBannerDot} />
+          <View style={styles.activeBannerInfo}>
+            <Text style={styles.activeBannerTitle}>{t("booking.activeBooking")}</Text>
+            <Text style={styles.activeBannerSubtitle}>{activeBooking.service_name}</Text>
+          </View>
+          <Icon name="chevron-forward" size={20} color="#FFFFFF" />
+        </TouchableOpacity>
+      )}
 
       <FlatList
         data={CATEGORIES}
@@ -175,5 +192,34 @@ const styles = StyleSheet.create({
     paddingHorizontal: SPACING.md,
     marginTop: SPACING.lg,
     marginBottom: SPACING.sm,
+  },
+  activeBanner: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: COLORS.primary,
+    marginHorizontal: SPACING.md,
+    marginTop: SPACING.sm,
+    padding: SPACING.md,
+    borderRadius: RADIUS.md,
+    gap: 12,
+  },
+  activeBannerDot: {
+    width: 12,
+    height: 12,
+    borderRadius: 6,
+    backgroundColor: "#22c55e",
+  },
+  activeBannerInfo: {
+    flex: 1,
+  },
+  activeBannerTitle: {
+    fontSize: 14,
+    fontWeight: "700",
+    color: "#FFFFFF",
+  },
+  activeBannerSubtitle: {
+    fontSize: 12,
+    color: "rgba(255,255,255,0.8)",
+    marginTop: 2,
   },
 });
