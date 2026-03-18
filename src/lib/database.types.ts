@@ -66,6 +66,8 @@ export type Booking = {
   client_longitude: number | null;
   stripe_payment_intent_id: string | null;
   payment_released_at: string | null;
+  arrival_code: string | null;
+  artisan_arrived_at: string | null;
   created_at: string;
   updated_at: string;
 };

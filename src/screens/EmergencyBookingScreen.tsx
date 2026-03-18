@@ -18,6 +18,7 @@ import {
 import MapView, { Marker, Polyline, PROVIDER_DEFAULT } from "react-native-maps";
 import Geolocation from "@react-native-community/geolocation";
 import Icon from "react-native-vector-icons/Ionicons";
+import QRCode from "react-native-qrcode-svg";
 import { useTranslation } from "react-i18next";
 import { CATEGORIES } from "../constants/categories";
 import { COLORS, SPACING, RADIUS } from "../constants/theme";
@@ -84,6 +85,7 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
     reviews: number;
     phone: string;
   } | null>(null);
+  const [arrivalCode, setArrivalCode] = useState("");
   const [manualAddress, setManualAddress] = useState("");
   const [locationFailed, setLocationFailed] = useState(false);
   const [userLocation, setUserLocation] = useState({
@@ -305,6 +307,14 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
 
     if (booking) {
       setBookingId(booking.id);
+
+      // Generate and save arrival code for QR verification
+      const code = Math.random().toString(36).slice(2, 10).toUpperCase();
+      setArrivalCode(code);
+      await supabase
+        .from("bookings")
+        .update({ arrival_code: code })
+        .eq("id", booking.id);
     }
 
     // Upload media if any
@@ -564,6 +574,19 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
               </View>
             </View>
 
+            {/* QR Code for artisan arrival verification */}
+            {arrivalCode && bookingId && (
+              <View style={styles.qrCard}>
+                <QRCode
+                  value={`CASAFIX:${bookingId}:${arrivalCode}`}
+                  size={160}
+                  backgroundColor="#FFFFFF"
+                  color="#1f2937"
+                />
+                <Text style={styles.qrLabel}>{t("booking.showQrToArtisan")}</Text>
+              </View>
+            )}
+
             {/* Service + price */}
             <View style={styles.matchedService}>
               <Text style={styles.matchedServiceName}>{serviceName}</Text>
@@ -805,6 +828,17 @@ const styles = StyleSheet.create({
   addressInput: {
     backgroundColor: "#FFFFFF", borderRadius: RADIUS.sm, padding: 12,
     fontSize: 14, color: "#1f2937", borderWidth: 1, borderColor: "#e5e7eb",
+  },
+  qrCard: {
+    backgroundColor: "#FFFFFF", alignItems: "center", justifyContent: "center",
+    padding: SPACING.lg, borderRadius: RADIUS.md, marginBottom: SPACING.md,
+    borderWidth: 1, borderColor: "#e5e7eb",
+    shadowColor: "#000", shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.08, shadowRadius: 8, elevation: 3,
+  },
+  qrLabel: {
+    fontSize: 14, fontWeight: "600", color: "#4b5563", marginTop: SPACING.sm,
+    textAlign: "center",
   },
   reportLink: {
     flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 6,

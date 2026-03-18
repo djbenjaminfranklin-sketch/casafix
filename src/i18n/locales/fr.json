@@ -251,7 +251,8 @@
     "addressPlaceholder": "Ex: 12 Calle de la Playa, Marbella",
     "addressRequired": "Veuillez entrer votre adresse pour que l'artisan puisse vous trouver.",
     "lateCancel": "Annulation gratuite si l'artisan est en retard",
-    "punctuality": "Ponctualité"
+    "punctuality": "Ponctualité",
+    "showQrToArtisan": "Montrez ce code à l'artisan"
   },
   "auth": {
     "login": "Se connecter",
