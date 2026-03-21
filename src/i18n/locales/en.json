@@ -11,7 +11,8 @@
     "search": "Search",
     "messages": "Messages",
     "favorites": "Favourites",
-    "profile": "Profile"
+    "profile": "Profile",
+    "myBookings": "My bookings"
   },
   "categories": {
     "plumbing": "Plumbing",
@@ -216,7 +217,9 @@
     "explanation": "The maximum amount is pre-authorised on your card. Only the actual price, set by the artisan after the job, will be charged.",
     "preauth": "Pre-authorisation",
     "charged": "Amount charged",
-    "secure": "100% secure payment"
+    "secure": "100% secure payment",
+    "setupError": "Unable to set up payment. Please try again.",
+    "cardRequired": "A payment method is required to book."
   },
   "booking": {
     "chooseType": "Booking type",
@@ -245,7 +248,25 @@
     "today": "Today",
     "guarantee2h": "At your door within 2 hours max",
     "lateCancel": "Free cancellation if the artisan is late",
-    "punctuality": "Punctuality"
+    "punctuality": "Punctuality",
+    "locationError": "Location",
+    "locationErrorDesc": "Unable to get your location. Check your location settings.",
+    "locationDenied": "Location access is required to find an artisan near you.",
+    "enterAddress": "Enter your address",
+    "addressPlaceholder": "E.g. 12 Calle de la Playa, Marbella",
+    "addressRequired": "Please enter your address so the artisan can find you.",
+    "showQrToArtisan": "Show this code to the artisan",
+    "cancelTitle": "Cancel the request?",
+    "cancelFreeDesc": "Cancellation is free during the first 2 minutes.",
+    "cancelFree": "Cancel for free",
+    "yesCancel": "Yes, cancel",
+    "cancelFeeWarning": "After 2 min, cancellation incurs a EUR 75 displacement fee.",
+    "recommendedInArea": "Recommended in your area",
+    "activeBooking": "Active booking",
+    "artisansAvailable": "artisan(s) available",
+    "chooseArtisan": "Choose your artisan",
+    "select": "Select",
+    "waitingMore": "Waiting for more artisans..."
   },
   "auth": {
     "login": "Log in",
@@ -406,7 +427,28 @@
     "disputeSentDesc": "Our team will contact you within 24h.",
     "workDone": "Work validated!",
     "artisanPaid": "Payment has been released to the artisan. Thank you for using CasaFix!",
-    "released": "Amount released"
+    "released": "Amount released",
+    "viewInvoice": "View invoice",
+    "invoiceGenerated": "Invoice generated"
+  },
+  "invoice": {
+    "title": "Invoice",
+    "invoiceNumber": "Invoice number",
+    "date": "Date",
+    "provider": "Provider",
+    "client": "Client",
+    "service": "Service",
+    "subtotal": "Subtotal",
+    "iva": "VAT",
+    "total": "Total",
+    "paidByCard": "Paid by card",
+    "commission": "Commission",
+    "yourShare": "Your share",
+    "noInvoice": "No invoice available",
+    "loading": "Loading..."
+  },
+  "multiday": {
+    "guaranteeReminder": "Warranty reminder"
   },
   "pricing": {
     "onQuote": "On quote"
@@ -472,7 +514,14 @@
     "signOut": "Sign out",
     "signOutTitle": "Sign out",
     "signOutConfirm": "Are you sure you want to sign out?",
-    "deleteAccount": "Delete my account"
+    "deleteAccount": "Delete my account",
+    "deleteTitle": "Delete account",
+    "deleteConfirm": "Are you sure? All your data will be permanently deleted.",
+    "deleteError": "Unable to delete account. Please try again.",
+    "invalidPhone": "Invalid phone number",
+    "address": "Address",
+    "addressPlaceholder": "Enter your address",
+    "addressRequired": "Address is required"
   },
   "notifications": {
     "pushTitle": "Push notifications",

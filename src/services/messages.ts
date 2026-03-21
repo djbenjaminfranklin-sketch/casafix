@@ -1,36 +1,43 @@
 import { supabase } from "../lib/supabase";
 import { Message } from "../lib/database.types";
 
-// Send a message in a booking chat
 export async function sendMessage(bookingId: string, content: string) {
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return { error: { message: "Not authenticated" } };
+  try {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return { error: { message: "Not authenticated" } };
 
-  const { data, error } = await supabase
-    .from("messages")
-    .insert({
-      booking_id: bookingId,
-      sender_id: user.id,
-      content,
-    })
-    .select()
-    .single();
+    const { data, error } = await supabase
+      .from("messages")
+      .insert({
+        booking_id: bookingId,
+        sender_id: user.id,
+        content,
+      })
+      .select()
+      .single();
 
-  return { data, error };
+    return { data, error };
+  } catch (e) {
+    console.warn("sendMessage error:", e);
+    return { data: null, error: e };
+  }
 }
 
-// Get messages for a booking
 export async function getMessages(bookingId: string) {
-  const { data, error } = await supabase
-    .from("messages")
-    .select("*")
-    .eq("booking_id", bookingId)
-    .order("created_at", { ascending: true });
+  try {
+    const { data, error } = await supabase
+      .from("messages")
+      .select("*")
+      .eq("booking_id", bookingId)
+      .order("created_at", { ascending: true });
 
-  return { data: data || [], error };
+    return { data: data || [], error };
+  } catch (e) {
+    console.warn("getMessages error:", e);
+    return { data: [], error: e };
+  }
 }
 
-// Subscribe to new messages (realtime)
 export function subscribeToMessages(
   bookingId: string,
   callback: (message: Message) => void
@@ -56,14 +63,17 @@ export function subscribeToMessages(
   };
 }
 
-// Mark messages as read
 export async function markMessagesAsRead(bookingId: string) {
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return;
+  try {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return;
 
-  await supabase
-    .from("messages")
-    .update({ read: true })
-    .eq("booking_id", bookingId)
-    .neq("sender_id", user.id);
+    await supabase
+      .from("messages")
+      .update({ read: true })
+      .eq("booking_id", bookingId)
+      .neq("sender_id", user.id);
+  } catch (e) {
+    console.warn("markMessagesAsRead error:", e);
+  }
 }

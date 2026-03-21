@@ -14,11 +14,13 @@ import {
   Alert,
   ActivityIndicator,
   TextInput,
+  Modal,
+  Image,
 } from "react-native";
 import MapView, { Marker, PROVIDER_DEFAULT } from "react-native-maps";
 import Geolocation from "@react-native-community/geolocation";
 import Icon from "react-native-vector-icons/Ionicons";
-import QRCode from "react-native-qrcode-svg";
+import QRCodeGen from "qrcode";
 import { useTranslation } from "react-i18next";
 import { CATEGORIES } from "../constants/categories";
 import { COLORS, SPACING, RADIUS } from "../constants/theme";
@@ -27,6 +29,8 @@ import DiagnosticCard from "../components/DiagnosticCard";
 import ArtisanCard from "../components/ArtisanCard";
 import { MediaItem, uploadAllMedia } from "../services/media";
 import { createBooking, subscribeToBooking, getBookingWithArtisan } from "../services/bookings";
+import { createPaymentIntent } from "../lib/stripe";
+import { usePaymentSheet } from "@stripe/stripe-react-native";
 import { addFavorite, removeFavorite, isFavorite } from "../services/favorites";
 import { supabase } from "../lib/supabase";
 import { Booking } from "../lib/database.types";
@@ -34,7 +38,18 @@ import { analyzeProblem, DiagnosticResult } from "../services/ai-diagnostic";
 
 const { width } = Dimensions.get("window");
 
-type BookingState = "confirm" | "searching" | "matched" | "arriving";
+type BookingState = "confirm" | "searching" | "choosing" | "matched" | "arriving";
+
+type ArtisanProposal = {
+  id: string;
+  artisan_id: string;
+  name: string;
+  rating: number;
+  reviews: number;
+  phone: string;
+  avatarUrl: string | null;
+  lastComment: string | null;
+};
 
 
 type Props = {
@@ -53,6 +68,7 @@ type Props = {
 export default function EmergencyBookingScreen({ route, navigation }: Props) {
   const { categoryId, serviceName, priceRange, resumeBookingId } = route.params;
   const { t } = useTranslation();
+  const { initPaymentSheet, presentPaymentSheet } = usePaymentSheet();
   const category = CATEGORIES.find((c) => c.id === categoryId);
   const mapRef = useRef<MapView>(null);
 
@@ -76,6 +92,9 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
     isFavorited: boolean;
   } | null>(null);
   const [arrivalCode, setArrivalCode] = useState("");
+  const [showQRModal, setShowQRModal] = useState(false);
+  const [proposals, setProposals] = useState<ArtisanProposal[]>([]);
+  const [selectingArtisan, setSelectingArtisan] = useState(false);
   const [manualAddress, setManualAddress] = useState("");
   const [locationFailed, setLocationFailed] = useState(false);
   const [userLocation, setUserLocation] = useState({
@@ -194,25 +213,74 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
     })();
   }, [resumeBookingId]);
 
-  // 2-minute free cancellation countdown
+  // 2-minute free cancellation countdown based on booking creation time
+  // Generate QR code matrix
+  const qrMatrix = React.useMemo(() => {
+    if (!arrivalCode || !bookingId) return [];
+    try {
+      const qr = QRCodeGen.create(`CASAFIX:${bookingId}:${arrivalCode}`, { errorCorrectionLevel: "M" });
+      const size = qr.modules.size;
+      const matrix: boolean[][] = [];
+      for (let row = 0; row < size; row++) {
+        const rowData: boolean[] = [];
+        for (let col = 0; col < size; col++) {
+          rowData.push(qr.modules.get(row, col) === 1);
+        }
+        matrix.push(rowData);
+      }
+      return matrix;
+    } catch {
+      return [];
+    }
+  }, [arrivalCode, bookingId]);
+
+  const bookingCreatedRef = useRef<string | null>(null);
+
   useEffect(() => {
     if (state !== "searching" || !bookingId) return;
 
-    setCancelCountdown(120);
-    setCanCancelFree(true);
+    let interval: ReturnType<typeof setInterval> | null = null;
+    let cancelled = false;
 
-    const interval = setInterval(() => {
-      setCancelCountdown((prev) => {
-        if (prev <= 1) {
-          clearInterval(interval);
-          setCanCancelFree(false);
-          return 0;
+    const initTimer = async () => {
+      if (!bookingCreatedRef.current) {
+        const { data } = await supabase
+          .from("bookings")
+          .select("created_at")
+          .eq("id", bookingId)
+          .single();
+        if (data?.created_at) {
+          bookingCreatedRef.current = data.created_at;
         }
-        return prev - 1;
-      });
-    }, 1000);
+      }
 
-    return () => clearInterval(interval);
+      if (cancelled) return;
+
+      const updateCountdown = () => {
+        if (!bookingCreatedRef.current) return;
+        const elapsed = Math.floor(
+          (Date.now() - new Date(bookingCreatedRef.current).getTime()) / 1000
+        );
+        const remaining = Math.max(0, 120 - elapsed);
+        setCancelCountdown(remaining);
+        if (remaining <= 0) {
+          setCanCancelFree(false);
+          if (interval) { clearInterval(interval); interval = null; }
+        }
+      };
+
+      updateCountdown();
+      if (!cancelled) {
+        interval = setInterval(updateCountdown, 1000);
+      }
+    };
+
+    initTimer();
+
+    return () => {
+      cancelled = true;
+      if (interval) clearInterval(interval);
+    };
   }, [state, bookingId]);
 
   // Search pulse animation
@@ -329,6 +397,98 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
     return unsubscribe;
   }, [bookingId, navigation, serviceName]);
 
+  // Subscribe to artisan proposals (multi-artisan)
+  useEffect(() => {
+    if (!bookingId || (state !== "searching" && state !== "choosing")) return;
+
+    const channel = supabase
+      .channel(`proposals-${bookingId}`)
+      .on(
+        "postgres_changes",
+        {
+          event: "INSERT",
+          schema: "public",
+          table: "booking_proposals",
+          filter: `booking_id=eq.${bookingId}`,
+        },
+        async (payload: any) => {
+          const proposal = payload.new;
+          // Fetch artisan details + last review
+          const { data: artisan } = await supabase
+            .from("artisans")
+            .select("id, full_name, rating, review_count, phone, avatar_url")
+            .eq("id", proposal.artisan_id)
+            .single();
+
+          let lastComment: string | null = null;
+          if (artisan) {
+            const { data: lastReview } = await supabase
+              .from("reviews")
+              .select("comment")
+              .eq("artisan_id", artisan.id)
+              .not("comment", "is", null)
+              .order("created_at", { ascending: false })
+              .limit(1)
+              .maybeSingle();
+            lastComment = lastReview?.comment || null;
+          }
+
+          if (artisan) {
+            setProposals((prev) => {
+              if (prev.find((p) => p.artisan_id === artisan.id)) return prev;
+              return [...prev, {
+                id: proposal.id,
+                artisan_id: artisan.id,
+                name: artisan.full_name,
+                rating: artisan.rating || 0,
+                reviews: artisan.review_count || 0,
+                phone: artisan.phone || "",
+                avatarUrl: artisan.avatar_url || null,
+                lastComment,
+              }];
+            });
+            if (state === "searching") {
+              setState("choosing");
+            }
+          }
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [bookingId, state]);
+
+  // Select an artisan from proposals
+  const handleSelectArtisan = async (artisanId: string) => {
+    if (!bookingId || selectingArtisan) return;
+    setSelectingArtisan(true);
+
+    const { error } = await supabase.rpc("client_select_artisan", {
+      p_booking_id: bookingId,
+      p_artisan_id: artisanId,
+    });
+
+    if (!error) {
+      const selected = proposals.find((p) => p.artisan_id === artisanId);
+      if (selected) {
+        setMatchedArtisan({
+          id: selected.artisan_id,
+          name: selected.name,
+          rating: selected.rating,
+          reviews: selected.reviews,
+          phone: selected.phone,
+          isAvailable: true,
+          lastReviewComment: null,
+          isFavorited: false,
+        });
+      }
+      setState("matched");
+    }
+    setSelectingArtisan(false);
+  };
+
   // AI Analysis - before booking
   const handleAnalyze = async () => {
     if (!description.trim()) {
@@ -360,14 +520,13 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
       return;
     }
     setSubmitting(true);
-    setState("searching");
 
     // Build description with address if manual
     const fullDescription = locationFailed && manualAddress.trim()
       ? `[Adresse: ${manualAddress.trim()}] ${description.trim() || ""}`
       : description.trim() || undefined;
 
-    // Create real booking in Supabase
+    // 1. Create booking in Supabase (status: searching)
     const { data: booking } = await createBooking({
       categoryId,
       serviceId: route.params.serviceId,
@@ -379,20 +538,68 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
       description: fullDescription,
     });
 
-    if (booking) {
-      setBookingId(booking.id);
-
-      // Generate and save arrival code for QR verification
-      const code = Math.random().toString(36).slice(2, 10).toUpperCase();
-      setArrivalCode(code);
-      await supabase
-        .from("bookings")
-        .update({ arrival_code: code })
-        .eq("id", booking.id);
+    if (!booking) {
+      Alert.alert(t("common.error"), t("booking.createError"));
+      setSubmitting(false);
+      return;
     }
 
+    // 2. Create PaymentIntent (pre-auth for max_price)
+    const maxPrice = booking.max_price || 150;
+    const piResult = await createPaymentIntent({
+      bookingId: booking.id,
+      amount: Math.round(maxPrice * 100), // cents
+      currency: "eur",
+    });
+
+    if (!piResult) {
+      // Payment setup failed — cancel the booking
+      await supabase.from("bookings").update({ status: "cancelled" }).eq("id", booking.id);
+      Alert.alert(t("common.error"), t("payment.setupError"));
+      setSubmitting(false);
+      return;
+    }
+
+    // 3. Show PaymentSheet for card input
+    const { error: initError } = await initPaymentSheet({
+      paymentIntentClientSecret: piResult.clientSecret,
+      merchantDisplayName: "CasaFix",
+      style: "automatic",
+      applePay: {
+        merchantCountryCode: "ES",
+      },
+    });
+
+    if (initError) {
+      await supabase.from("bookings").update({ status: "cancelled" }).eq("id", booking.id);
+      Alert.alert(t("common.error"), initError.message);
+      setSubmitting(false);
+      return;
+    }
+
+    const { error: sheetError } = await presentPaymentSheet();
+
+    if (sheetError) {
+      // User cancelled the payment sheet
+      await supabase.from("bookings").update({ status: "cancelled" }).eq("id", booking.id);
+      setSubmitting(false);
+      return;
+    }
+
+    // 4. Payment authorized — proceed with booking
+    setState("searching");
+    setBookingId(booking.id);
+
+    // Generate and save arrival code for QR verification
+    const code = Math.random().toString(36).slice(2, 10).toUpperCase();
+    setArrivalCode(code);
+    await supabase
+      .from("bookings")
+      .update({ arrival_code: code, deposit_amount: maxPrice })
+      .eq("id", booking.id);
+
     // Upload media if any
-    if (booking && media.length > 0) {
+    if (media.length > 0) {
       const { data: { user } } = await supabase.auth.getUser();
       if (user) {
         await uploadAllMedia(booking.id, user.id, media);
@@ -501,7 +708,15 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
       )}
 
       {/* Bottom card */}
-      <ScrollView style={styles.bottomCard} bounces={false} showsVerticalScrollIndicator={false}>
+      <ScrollView
+        style={[
+          styles.bottomCard,
+          (state === "matched" || state === "arriving") && styles.bottomCardCompact,
+        ]}
+        bounces={false}
+        showsVerticalScrollIndicator={false}
+        scrollEnabled={state !== "matched" && state !== "arriving"}
+      >
         {state === "confirm" && (
           <>
             {/* Service info */}
@@ -641,58 +856,97 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
           </View>
         )}
 
+        {state === "choosing" && (
+          <View style={styles.choosingCard}>
+            <Text style={styles.choosingTitle}>{proposals.length} {t("booking.artisansAvailable")}</Text>
+            <Text style={styles.choosingSubtitle}>{t("booking.chooseArtisan")}</Text>
+
+            {proposals.map((p) => (
+              <TouchableOpacity
+                key={p.artisan_id}
+                style={styles.proposalCard}
+                activeOpacity={0.8}
+                onPress={() => handleSelectArtisan(p.artisan_id)}
+                disabled={selectingArtisan}
+              >
+                {p.avatarUrl ? (
+                  <Image source={{ uri: p.avatarUrl }} style={styles.proposalAvatarImg} />
+                ) : (
+                  <View style={styles.proposalAvatar}>
+                    <Icon name="person" size={20} color="#FFFFFF" />
+                  </View>
+                )}
+                <View style={styles.proposalInfo}>
+                  <Text style={styles.proposalName}>{p.name}</Text>
+                  <View style={styles.proposalStars}>
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <Icon
+                        key={star}
+                        name={star <= Math.round(p.rating) ? "star" : "star-outline"}
+                        size={14}
+                        color="#f59e0b"
+                      />
+                    ))}
+                    <Text style={styles.proposalRatingText}>
+                      {p.rating.toFixed(1)} ({p.reviews})
+                    </Text>
+                  </View>
+                  {p.lastComment && (
+                    <Text style={styles.proposalComment} numberOfLines={2}>
+                      "{p.lastComment}"
+                    </Text>
+                  )}
+                </View>
+                <View style={styles.proposalSelectBtn}>
+                  <Text style={styles.proposalSelectText}>{t("booking.select")}</Text>
+                </View>
+              </TouchableOpacity>
+            ))}
+
+            <Text style={styles.choosingWait}>{t("booking.waitingMore")}</Text>
+          </View>
+        )}
+
         {(state === "matched" || state === "arriving") && (
           <>
-            <View style={styles.matchedHeader}>
-              <Icon name="checkmark-circle" size={24} color="#16a34a" />
-              <Text style={styles.matchedTitle}>
-                {state === "arriving" ? t("booking.artisanOnWay") : t("booking.artisanFound")}
-              </Text>
-            </View>
-
-            {/* Artisan info card */}
-            <ArtisanCard
-              name={matchedArtisan?.name || "Artisan"}
-              rating={matchedArtisan?.rating || 0}
-              reviewCount={matchedArtisan?.reviews || 0}
-              phone={matchedArtisan?.phone || ""}
-              lastReviewComment={matchedArtisan?.lastReviewComment}
-              isAvailable={matchedArtisan?.isAvailable}
-              isFavorited={matchedArtisan?.isFavorited}
-              onToggleFavorite={handleToggleFavorite}
-            />
-
-            {/* ETA box */}
-            <View style={styles.etaBoxRow}>
-              <View style={styles.etaBox}>
-                <Icon name="car" size={16} color={COLORS.primary} />
-                <Text style={styles.etaText}>{etaMinutes} min</Text>
+            {/* Compact status + ETA */}
+            <View style={styles.trackingHeader}>
+              <View style={styles.trackingStatus}>
+                <Icon name="checkmark-circle" size={20} color="#16a34a" />
+                <Text style={styles.trackingStatusText}>
+                  {state === "arriving" ? t("booking.artisanOnWay") : t("booking.artisanFound")}
+                </Text>
               </View>
+              {etaMinutes > 0 && (
+                <View style={styles.trackingEta}>
+                  <Icon name="car" size={14} color={COLORS.primary} />
+                  <Text style={styles.trackingEtaText}>{etaMinutes} min</Text>
+                </View>
+              )}
             </View>
 
-            {/* QR Code for artisan arrival verification */}
-            {arrivalCode && bookingId && (
-              <View style={styles.qrCard}>
-                <QRCode
-                  value={`CASAFIX:${bookingId}:${arrivalCode}`}
-                  size={160}
-                  backgroundColor="#FFFFFF"
-                  color="#1f2937"
-                />
-                <Text style={styles.qrLabel}>{t("booking.showQrToArtisan")}</Text>
+            {/* Artisan info row */}
+            <View style={styles.trackingArtisan}>
+              <View style={styles.trackingArtisanAvatar}>
+                <Icon name="person" size={20} color="#FFFFFF" />
               </View>
-            )}
-
-            {/* Service + price */}
-            <View style={styles.matchedService}>
-              <Text style={styles.matchedServiceName}>{serviceName}</Text>
-              <Text style={styles.matchedServicePrice}>{priceRange}</Text>
+              <View style={styles.trackingArtisanInfo}>
+                <Text style={styles.trackingArtisanName}>{matchedArtisan?.name || "Artisan"}</Text>
+                <View style={styles.trackingRating}>
+                  <Icon name="star" size={12} color="#f59e0b" />
+                  <Text style={styles.trackingRatingText}>
+                    {matchedArtisan?.rating?.toFixed(1) || "0.0"} ({matchedArtisan?.reviews || 0})
+                  </Text>
+                  <Text style={styles.trackingServiceText}> · {serviceName}</Text>
+                </View>
+              </View>
+              <Text style={styles.trackingPrice}>{priceRange}</Text>
             </View>
 
-            {/* Actions */}
-            <View style={styles.matchedActions}>
+            {/* Action buttons */}
+            <View style={styles.trackingActions}>
               <TouchableOpacity
-                style={styles.callBtn}
+                style={styles.trackingCallBtn}
                 activeOpacity={0.8}
                 onPress={() => {
                   const phone = `tel:${matchedArtisan?.phone || ""}`;
@@ -705,11 +959,22 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
                   });
                 }}
               >
-                <Icon name="call" size={20} color={COLORS.primary} />
-                <Text style={styles.callBtnText}>{t("booking.call")}</Text>
+                <Icon name="call" size={18} color={COLORS.primary} />
+                <Text style={styles.trackingCallText}>{t("booking.call")}</Text>
               </TouchableOpacity>
+
+              {arrivalCode && bookingId && (
+                <TouchableOpacity
+                  style={styles.trackingQRBtn}
+                  activeOpacity={0.8}
+                  onPress={() => setShowQRModal(true)}
+                >
+                  <Icon name="qr-code" size={18} color="#FFFFFF" />
+                  <Text style={styles.trackingQRText}>QR</Text>
+                </TouchableOpacity>
+              )}
               <TouchableOpacity
-                style={styles.chatBtn}
+                style={styles.trackingChatBtn}
                 activeOpacity={0.8}
                 onPress={() => {
                   if (bookingId) {
@@ -720,31 +985,52 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
                   }
                 }}
               >
-                <Icon name="chatbubble" size={20} color="#FFFFFF" />
-                <Text style={styles.chatBtnText}>{t("booking.chat")}</Text>
+                <Icon name="chatbubble" size={18} color="#FFFFFF" />
+                <Text style={styles.trackingChatText}>{t("booking.chat")}</Text>
               </TouchableOpacity>
             </View>
-
-            {/* Report */}
-            <TouchableOpacity
-              style={styles.reportLink}
-              onPress={async () => {
-                if (!bookingId) return;
-                const { data } = await getBookingWithArtisan(bookingId);
-                navigation.navigate("Report", {
-                  bookingId,
-                  reportedUserId: data?.artisan?.id || "",
-                  reportedUserName: data?.artisan?.full_name || matchedArtisan?.name || "Artisan",
-                });
-              }}
-              activeOpacity={0.7}
-            >
-              <Icon name="flag-outline" size={16} color="#6b7280" />
-              <Text style={styles.reportLinkText}>{t("report.title")}</Text>
-            </TouchableOpacity>
           </>
         )}
       </ScrollView>
+
+      {/* QR Code Modal */}
+      <Modal
+        visible={showQRModal}
+        transparent
+        animationType="fade"
+        onRequestClose={() => setShowQRModal(false)}
+      >
+        <View style={styles.qrModalOverlay}>
+          <View style={styles.qrModalContent}>
+            <TouchableOpacity
+              style={styles.qrModalClose}
+              onPress={() => setShowQRModal(false)}
+            >
+              <Icon name="close" size={24} color="#6b7280" />
+            </TouchableOpacity>
+            <Text style={styles.qrModalTitle}>{t("booking.showQrToArtisan")}</Text>
+            {qrMatrix.length > 0 && (
+              <View style={{ backgroundColor: "#FFFFFF", padding: 8 }}>
+                {qrMatrix.map((row, rowIdx) => (
+                  <View key={rowIdx} style={{ flexDirection: "row" }}>
+                    {row.map((cell, colIdx) => (
+                      <View
+                        key={colIdx}
+                        style={{
+                          width: Math.floor(200 / qrMatrix.length),
+                          height: Math.floor(200 / qrMatrix.length),
+                          backgroundColor: cell ? "#1f2937" : "#FFFFFF",
+                        }}
+                      />
+                    ))}
+                  </View>
+                ))}
+              </View>
+            )}
+            <Text style={styles.qrModalCode}>{arrivalCode}</Text>
+          </View>
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 }
@@ -829,6 +1115,97 @@ const styles = StyleSheet.create({
     shadowColor: "#000", shadowOffset: { width: 0, height: -4 },
     shadowOpacity: 0.1, shadowRadius: 12, elevation: 8,
   },
+  bottomCardCompact: {
+    maxHeight: 220,
+    paddingTop: SPACING.md, paddingBottom: SPACING.lg,
+  },
+  trackingHeader: {
+    flexDirection: "row", justifyContent: "space-between", alignItems: "center",
+    marginBottom: 10,
+  },
+  trackingStatus: {
+    flexDirection: "row", alignItems: "center", gap: 6,
+  },
+  trackingStatusText: {
+    fontSize: 15, fontWeight: "700", color: "#16a34a",
+  },
+  trackingEta: {
+    flexDirection: "row", alignItems: "center", gap: 4,
+    backgroundColor: "#f0f9ff", paddingHorizontal: 10, paddingVertical: 4, borderRadius: 12,
+  },
+  trackingEtaText: {
+    fontSize: 14, fontWeight: "700", color: COLORS.primary,
+  },
+  trackingArtisan: {
+    flexDirection: "row", alignItems: "center", gap: 10,
+    marginBottom: 12,
+  },
+  trackingArtisanAvatar: {
+    width: 40, height: 40, borderRadius: 20, backgroundColor: COLORS.primary,
+    alignItems: "center", justifyContent: "center",
+  },
+  trackingArtisanInfo: { flex: 1 },
+  trackingArtisanName: {
+    fontSize: 15, fontWeight: "600", color: "#1f2937",
+  },
+  trackingRating: {
+    flexDirection: "row", alignItems: "center", gap: 3, marginTop: 2,
+  },
+  trackingRatingText: { fontSize: 12, color: "#6b7280" },
+  trackingServiceText: { fontSize: 12, color: "#9ca3af" },
+  trackingPrice: {
+    fontSize: 15, fontWeight: "700", color: COLORS.primary,
+  },
+  trackingActions: {
+    flexDirection: "row", gap: 10,
+  },
+  trackingCallBtn: {
+    flex: 1, flexDirection: "row", alignItems: "center", justifyContent: "center",
+    gap: 6, paddingVertical: 10, borderRadius: RADIUS.md,
+    borderWidth: 1.5, borderColor: COLORS.primary,
+  },
+  trackingCallText: {
+    fontSize: 14, fontWeight: "600", color: COLORS.primary,
+  },
+  trackingChatBtn: {
+    flex: 1, flexDirection: "row", alignItems: "center", justifyContent: "center",
+    gap: 6, paddingVertical: 10, borderRadius: RADIUS.md,
+    backgroundColor: COLORS.primary,
+  },
+  trackingChatText: {
+    fontSize: 14, fontWeight: "600", color: "#FFFFFF",
+  },
+  trackingQRBtn: {
+    width: 48, flexDirection: "row", alignItems: "center", justifyContent: "center",
+    gap: 4, paddingVertical: 10, borderRadius: RADIUS.md,
+    backgroundColor: "#1f2937",
+  },
+  trackingQRText: {
+    fontSize: 12, fontWeight: "700", color: "#FFFFFF",
+  },
+  qrModalOverlay: {
+    flex: 1, backgroundColor: "rgba(0,0,0,0.6)",
+    justifyContent: "center", alignItems: "center",
+  },
+  qrModalContent: {
+    backgroundColor: "#FFFFFF", borderRadius: 20, padding: 32,
+    alignItems: "center", width: "85%",
+    shadowColor: "#000", shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.2, shadowRadius: 24, elevation: 10,
+  },
+  qrModalClose: {
+    position: "absolute", top: 12, right: 12,
+    width: 36, height: 36, borderRadius: 18,
+    backgroundColor: "#f3f4f6", alignItems: "center", justifyContent: "center",
+  },
+  qrModalTitle: {
+    fontSize: 16, fontWeight: "600", color: "#1f2937",
+    marginBottom: 20, textAlign: "center",
+  },
+  qrModalCode: {
+    fontSize: 20, fontWeight: "700", color: COLORS.primary,
+    marginTop: 16, letterSpacing: 4,
+  },
   serviceRow: { flexDirection: "row", alignItems: "center", gap: 12, marginBottom: SPACING.md },
   svcIcon: {
     width: 48, height: 48, borderRadius: RADIUS.md,
@@ -867,6 +1244,35 @@ const styles = StyleSheet.create({
   searchingSubtitle: { fontSize: 13, color: COLORS.textLight, textAlign: "center" },
   dots: { flexDirection: "row", gap: 8, marginTop: SPACING.md },
   loadingDot: { width: 12, height: 12, borderRadius: 6, backgroundColor: COLORS.primary },
+  choosingCard: { paddingVertical: SPACING.sm },
+  choosingTitle: { fontSize: 18, fontWeight: "700", color: "#16a34a", marginBottom: 4 },
+  choosingSubtitle: { fontSize: 13, color: COLORS.textLight, marginBottom: SPACING.md },
+  proposalCard: {
+    flexDirection: "row", alignItems: "center", gap: 10,
+    backgroundColor: "#f9fafb", borderRadius: RADIUS.md,
+    padding: 12, marginBottom: 8,
+    borderWidth: 1, borderColor: "#e5e7eb",
+  },
+  proposalAvatar: {
+    width: 48, height: 48, borderRadius: 24, backgroundColor: COLORS.primary,
+    alignItems: "center", justifyContent: "center",
+  },
+  proposalAvatarImg: {
+    width: 48, height: 48, borderRadius: 24,
+  },
+  proposalInfo: { flex: 1 },
+  proposalName: { fontSize: 15, fontWeight: "600", color: "#1f2937" },
+  proposalStars: { flexDirection: "row", alignItems: "center", gap: 2, marginTop: 3 },
+  proposalRatingText: { fontSize: 12, color: "#6b7280", marginLeft: 4 },
+  proposalComment: {
+    fontSize: 12, color: "#9ca3af", fontStyle: "italic", marginTop: 4, lineHeight: 16,
+  },
+  proposalSelectBtn: {
+    backgroundColor: COLORS.primary, paddingHorizontal: 14, paddingVertical: 8,
+    borderRadius: RADIUS.md,
+  },
+  proposalSelectText: { fontSize: 13, fontWeight: "600", color: "#FFFFFF" },
+  choosingWait: { fontSize: 12, color: COLORS.textLight, textAlign: "center", marginTop: 8 },
   matchedHeader: {
     flexDirection: "row", alignItems: "center", gap: 8, marginBottom: SPACING.md,
   },

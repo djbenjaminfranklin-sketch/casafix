@@ -24,29 +24,37 @@ export type Invoice = {
   created_at: string;
 };
 
-// Fetch all invoices for the current user, ordered by date desc
 export async function getMyInvoices(): Promise<{ data: Invoice[]; error: any }> {
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return { data: [], error: { message: "Not authenticated" } };
+  try {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return { data: [], error: { message: "Not authenticated" } };
 
-  const { data, error } = await supabase
-    .from("invoices")
-    .select("*")
-    .or(`client_id.eq.${user.id},artisan_id.eq.${user.id}`)
-    .order("created_at", { ascending: false });
+    const { data, error } = await supabase
+      .from("invoices")
+      .select("*")
+      .or(`client_id.eq.${user.id},artisan_id.eq.${user.id}`)
+      .order("created_at", { ascending: false });
 
-  return { data: data || [], error };
+    return { data: data || [], error };
+  } catch (e) {
+    console.warn("getMyInvoices error:", e);
+    return { data: [], error: e };
+  }
 }
 
-// Fetch the invoice for a specific booking
 export async function getInvoiceByBooking(
   bookingId: string
 ): Promise<{ data: Invoice | null; error: any }> {
-  const { data, error } = await supabase
-    .from("invoices")
-    .select("*")
-    .eq("booking_id", bookingId)
-    .maybeSingle();
+  try {
+    const { data, error } = await supabase
+      .from("invoices")
+      .select("*")
+      .eq("booking_id", bookingId)
+      .maybeSingle();
 
-  return { data: data || null, error };
+    return { data: data || null, error };
+  } catch (e) {
+    console.warn("getInvoiceByBooking error:", e);
+    return { data: null, error: e };
+  }
 }

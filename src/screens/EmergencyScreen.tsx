@@ -48,12 +48,6 @@ export default function EmergencyScreen({ navigation }: Props) {
               <View style={{ width: 40 }} />
             </View>
 
-            {/* Banner */}
-            <View style={styles.banner}>
-              <Icon name="time-outline" size={18} color="rgba(255,255,255,0.9)" />
-              <Text style={styles.bannerText}>{t("emergencySubtitle")}</Text>
-            </View>
-
             {/* Subtitle */}
             <Text style={styles.sectionTitle}>{t("servicesTitle")}</Text>
           </View>
@@ -118,22 +112,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "700",
     color: "#ffffff",
-  },
-  banner: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 8,
-    backgroundColor: "#b91c1c",
-    marginHorizontal: SPACING.md,
-    paddingVertical: 10,
-    borderRadius: RADIUS.md,
-    marginBottom: SPACING.md,
-  },
-  bannerText: {
-    fontSize: 13,
-    fontWeight: "600",
-    color: "rgba(255,255,255,0.9)",
   },
   sectionTitle: {
     fontSize: 18,

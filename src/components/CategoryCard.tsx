@@ -45,7 +45,7 @@ export default function CategoryCard({ id, name, icon, color, bg, onPress }: Pro
         <View style={[styles.iconBox, { backgroundColor: bg }]}>
           <Icon name={icon} size={20} color={color} />
         </View>
-        <Text style={styles.name}>{name}</Text>
+        <Text style={styles.name} numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.7}>{name}</Text>
       </View>
     </TouchableOpacity>
   );
@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   name: {
-    fontSize: 14,
+    fontSize: 12,
     fontWeight: "600",
     color: COLORS.text,
     flexShrink: 1,

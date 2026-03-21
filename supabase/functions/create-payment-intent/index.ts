@@ -35,11 +35,37 @@ serve(async (req) => {
 
     const { booking_id, amount, currency } = await req.json();
 
+    // Get or create Stripe customer for this user
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("stripe_customer_id, email, full_name")
+      .eq("id", user.id)
+      .single();
+
+    let customerId = profile?.stripe_customer_id;
+
+    if (!customerId) {
+      const customer = await stripe.customers.create({
+        email: profile?.email || user.email,
+        name: profile?.full_name || undefined,
+        metadata: { user_id: user.id },
+      });
+      customerId = customer.id;
+
+      // Save customer ID for future use
+      await supabase
+        .from("profiles")
+        .update({ stripe_customer_id: customerId })
+        .eq("id", user.id);
+    }
+
     // Create a PaymentIntent with manual capture (pre-authorization)
     const paymentIntent = await stripe.paymentIntents.create({
       amount, // amount in cents (e.g., 15000 = 150€)
       currency: currency || "eur",
+      customer: customerId,
       capture_method: "manual", // KEY: pre-authorize only, capture later
+      setup_future_usage: "off_session", // Save payment method for future charges
       metadata: {
         booking_id,
         client_id: user.id,

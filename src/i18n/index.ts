@@ -1,5 +1,6 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
+import { getLocales } from "react-native-localize";
 
 import es from "./locales/es.json";
 import en from "./locales/en.json";
@@ -31,6 +32,19 @@ export const LANGUAGES = [
   { code: "it", label: "IT", flag: "🇮🇹" },
 ] as const;
 
+const supportedLngs = ["es", "en", "fr", "sv", "no", "da", "nl", "de", "ar", "pl", "ro", "ru", "it"];
+
+function getDeviceLanguage(): string {
+  try {
+    const locales = getLocales();
+    if (locales && locales.length > 0) {
+      const lang = locales[0].languageCode;
+      if (supportedLngs.includes(lang)) return lang;
+    }
+  } catch {}
+  return "es";
+}
+
 i18n.use(initReactI18next).init({
   resources: {
     es: { translation: es },
@@ -47,8 +61,8 @@ i18n.use(initReactI18next).init({
     ru: { translation: ru },
     it: { translation: it },
   },
-  lng: "es",
-  fallbackLng: "en",
+  lng: getDeviceLanguage(),
+  fallbackLng: "es",
   interpolation: { escapeValue: false },
 });
 

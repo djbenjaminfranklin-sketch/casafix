@@ -1,5 +1,5 @@
 // Supabase Edge Function: Send push notification via Firebase Cloud Messaging (HTTP v1)
-// Deploy with: supabase functions deploy send-notification
+// Deploy with: supabase functions deploy send-notification --no-verify-jwt
 // Secrets needed: FIREBASE_PROJECT_ID, FIREBASE_SERVICE_ACCOUNT_KEY
 
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
@@ -7,15 +7,17 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers":
-    "authorization, x-client-info, apikey, content-type",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
-// Get OAuth 2.0 access token from service account
+function toBase64Url(str: string): string {
+  return btoa(str).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+}
+
 async function getAccessToken(serviceAccount: any): Promise<string> {
   const now = Math.floor(Date.now() / 1000);
-  const header = btoa(JSON.stringify({ alg: "RS256", typ: "JWT" }));
-  const payload = btoa(
+  const headerB64 = toBase64Url(JSON.stringify({ alg: "RS256", typ: "JWT" }));
+  const payloadB64 = toBase64Url(
     JSON.stringify({
       iss: serviceAccount.client_email,
       scope: "https://www.googleapis.com/auth/firebase.messaging",
@@ -25,7 +27,6 @@ async function getAccessToken(serviceAccount: any): Promise<string> {
     })
   );
 
-  // Import the private key
   const pemKey = serviceAccount.private_key;
   const pemContents = pemKey
     .replace("-----BEGIN PRIVATE KEY-----", "")
@@ -41,21 +42,14 @@ async function getAccessToken(serviceAccount: any): Promise<string> {
     ["sign"]
   );
 
-  const signatureInput = new TextEncoder().encode(`${header}.${payload}`);
-  const signature = await crypto.subtle.sign(
-    "RSASSA-PKCS1-v1_5",
-    cryptoKey,
-    signatureInput
-  );
-
-  const signatureBase64 = btoa(
-    String.fromCharCode(...new Uint8Array(signature))
-  )
+  const signatureInput = new TextEncoder().encode(`${headerB64}.${payloadB64}`);
+  const signature = await crypto.subtle.sign("RSASSA-PKCS1-v1_5", cryptoKey, signatureInput);
+  const signatureB64 = btoa(String.fromCharCode(...new Uint8Array(signature)))
     .replace(/\+/g, "-")
     .replace(/\//g, "_")
     .replace(/=+$/, "");
 
-  const jwt = `${header}.${payload}.${signatureBase64}`;
+  const jwt = `${headerB64}.${payloadB64}.${signatureB64}`;
 
   const tokenResponse = await fetch("https://oauth2.googleapis.com/token", {
     method: "POST",
@@ -64,6 +58,9 @@ async function getAccessToken(serviceAccount: any): Promise<string> {
   });
 
   const tokenData = await tokenResponse.json();
+  if (!tokenData.access_token) {
+    throw new Error(`Firebase OAuth failed: ${JSON.stringify(tokenData)}`);
+  }
   return tokenData.access_token;
 }
 
@@ -145,9 +142,9 @@ serve(async (req) => {
       if (response.ok) {
         successCount++;
       } else {
+        const errorData = await response.json();
         failedTokens.push(device.fcm_token);
         // Clean up invalid tokens
-        const errorData = await response.json();
         if (
           errorData?.error?.details?.some(
             (d: any) => d.errorCode === "UNREGISTERED"
@@ -172,10 +169,7 @@ serve(async (req) => {
   } catch (error) {
     return new Response(
       JSON.stringify({ error: error.message }),
-      {
-        status: 400,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      }
+      { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   }
 });

@@ -14,33 +14,43 @@ export async function createReport(params: {
   reason: ReportReason;
   description?: string;
 }) {
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return { error: { message: "Not authenticated" } };
+  try {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return { error: { message: "Not authenticated" } };
 
-  const { data, error } = await supabase
-    .from("reports")
-    .insert({
-      booking_id: params.bookingId,
-      reporter_id: user.id,
-      reported_user_id: params.reportedUserId,
-      reason: params.reason,
-      description: params.description || null,
-    })
-    .select()
-    .single();
+    const { data, error } = await supabase
+      .from("reports")
+      .insert({
+        booking_id: params.bookingId,
+        reporter_id: user.id,
+        reported_user_id: params.reportedUserId,
+        reason: params.reason,
+        description: params.description || null,
+      })
+      .select()
+      .single();
 
-  return { data, error };
+    return { data, error };
+  } catch (e) {
+    console.warn("createReport error:", e);
+    return { data: null, error: e };
+  }
 }
 
 export async function getMyReports() {
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return { data: [], error: null };
+  try {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return { data: [], error: null };
 
-  const { data, error } = await supabase
-    .from("reports")
-    .select("*")
-    .eq("reporter_id", user.id)
-    .order("created_at", { ascending: false });
+    const { data, error } = await supabase
+      .from("reports")
+      .select("*")
+      .eq("reporter_id", user.id)
+      .order("created_at", { ascending: false });
 
-  return { data: data || [], error };
+    return { data: data || [], error };
+  } catch (e) {
+    console.warn("getMyReports error:", e);
+    return { data: [], error: e };
+  }
 }

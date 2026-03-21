@@ -106,7 +106,7 @@ export default function AdminArtisanDetailScreen() {
           try {
             await supabase
               .from("artisans")
-              .update({ is_verified: true })
+              .update({ verified: true })
               .eq("id", artisanId);
             await fetchArtisan();
           } catch (error) {
@@ -275,7 +275,7 @@ export default function AdminArtisanDetailScreen() {
           )}
           <Text style={styles.artisanName}>{artisan.full_name}</Text>
           <View style={styles.badgeRow}>
-            {artisan.is_verified && (
+            {artisan.verified && (
               <View style={[styles.badge, { backgroundColor: "#10b98120" }]}>
                 <Icon name="checkmark-circle" size={14} color="#10b981" />
                 <Text style={[styles.badgeText, { color: "#10b981" }]}>{t("admin.verified")}</Text>
@@ -515,7 +515,7 @@ export default function AdminArtisanDetailScreen() {
 
         {/* Action Buttons */}
         <View style={styles.actionsSection}>
-          {!artisan.is_verified && (
+          {!artisan.verified && (
             <TouchableOpacity
               style={[styles.actionButton, styles.validateButton]}
               onPress={handleValidate}

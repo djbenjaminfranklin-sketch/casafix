@@ -37,7 +37,7 @@ export default function AdminDashboardScreen() {
       const [bookingsRes, artisansRes, pendingRes, disputesRes] = await Promise.all([
         supabase.from("bookings").select("id", { count: "exact", head: true }),
         supabase.from("artisans").select("id", { count: "exact", head: true }).eq("is_available", true),
-        supabase.from("artisans").select("id", { count: "exact", head: true }).eq("is_verified", false),
+        supabase.from("artisans").select("id", { count: "exact", head: true }).eq("verified", false),
         supabase.from("reports").select("id", { count: "exact", head: true }).eq("status", "pending"),
       ]);
 

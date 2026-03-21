@@ -246,7 +246,13 @@
     "today": "Hoy",
     "guarantee2h": "En tu domicilio en 2h máximo",
     "lateCancel": "Cancelación gratuita si el artesano llega tarde",
-    "punctuality": "Puntualidad"
+    "punctuality": "Puntualidad",
+    "recommendedInArea": "Recomendado en tu zona",
+    "showQrToArtisan": "Muestra este código QR al artesano",
+    "artisansAvailable": "artesano(s) disponible(s)",
+    "chooseArtisan": "Elige tu artesano",
+    "select": "Seleccionar",
+    "waitingMore": "Esperando más artesanos..."
   },
   "auth": {
     "login": "Iniciar sesión",

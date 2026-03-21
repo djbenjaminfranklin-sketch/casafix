@@ -46,9 +46,9 @@ export default function AdminArtisansScreen() {
       let query = supabase.from("artisans").select("*").order("created_at", { ascending: false });
 
       if (activeTab === "pending") {
-        query = query.eq("is_verified", false).or("suspended_until.is.null,suspended_until.lt." + new Date().toISOString());
+        query = query.eq("verified", false).or("suspended_until.is.null,suspended_until.lt." + new Date().toISOString());
       } else if (activeTab === "verified") {
-        query = query.eq("is_verified", true);
+        query = query.eq("verified", true);
       } else if (activeTab === "suspended") {
         query = query.gt("suspended_until", new Date().toISOString());
       }
@@ -101,7 +101,7 @@ export default function AdminArtisansScreen() {
             <Text style={styles.artisanName} numberOfLines={1}>
               {item.full_name}
             </Text>
-            {item.is_verified && (
+            {item.verified && (
               <Icon name="checkmark-circle" size={16} color="#10b981" />
             )}
             {isSuspended(item) && (

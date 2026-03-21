@@ -19,7 +19,10 @@ export async function createPaymentIntent(params: {
     },
   });
 
-  if (error || !data) return null;
+  if (error || !data) {
+    console.warn("createPaymentIntent failed:", error, data);
+    return null;
+  }
   return data;
 }
 
