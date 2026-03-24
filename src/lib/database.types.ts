@@ -48,7 +48,7 @@ export type Artisan = {
   id_document_url: string | null;
   id_document_verso_url: string | null;
   id_document_type: "nie" | "passport" | "id_card" | null;
-  is_verified: boolean;
+  verified: boolean;
   suspended_until: string | null;
   created_at: string;
   updated_at: string;
@@ -79,6 +79,8 @@ export type Booking = {
   payment_released_at: string | null;
   arrival_code: string | null;
   artisan_arrived_at: string | null;
+  cancel_reason: string | null;
+  estimated_arrival: string | null;
   created_at: string;
   updated_at: string;
 };
