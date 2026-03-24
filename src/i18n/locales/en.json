@@ -790,5 +790,44 @@
     "workCompleted": "Work completed",
     "no": "No",
     "yes": "Yes"
+  },
+  "promo": {
+    "title": "Promo code",
+    "enterCode": "Enter your promo code",
+    "apply": "Apply",
+    "success": "Promo code applied successfully!",
+    "invalid": "This promo code does not exist",
+    "expired": "This promo code has expired",
+    "alreadyUsed": "You have already used this promo code",
+    "activePromos": "My used codes"
+  },
+  "referral": {
+    "title": "Referral",
+    "yourCode": "Your referral code",
+    "share": "Share my code",
+    "shareMessage": "Join CasaFix and use my code {{code}} to get €10 off your first service! Download the app: https://casafix.es",
+    "reward": "€10 off for you and your friend",
+    "referrals": "Referrals",
+    "explanation": "Refer a friend and you both get €10 off your next CasaFix service."
+  },
+  "portfolio": {
+    "title": "Portfolio",
+    "seeAll": "See all",
+    "photos": "{{count}} photos"
+  },
+  "addresses": {
+    "title": "My addresses",
+    "add": "Add an address",
+    "label": "Label",
+    "address": "Address",
+    "useCurrentLocation": "Use my current location",
+    "delete": "Delete address",
+    "default": "Default",
+    "setDefault": "Set as default address",
+    "home": "Home",
+    "work": "Work",
+    "other": "Other",
+    "saved": "Address saved",
+    "empty": "No saved addresses"
   }
 }

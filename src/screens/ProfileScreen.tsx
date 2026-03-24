@@ -42,6 +42,21 @@ export default function ProfileScreen() {
       onPress: () => navigation.navigate("Payment"),
     },
     {
+      icon: "pricetag-outline",
+      label: t("promo.title"),
+      onPress: () => navigation.navigate("PromoCode"),
+    },
+    {
+      icon: "people-outline",
+      label: t("referral.title"),
+      onPress: () => navigation.navigate("Referral"),
+    },
+    {
+      icon: "location-outline",
+      label: t("addresses.title"),
+      onPress: () => navigation.navigate("AddressBook"),
+    },
+    {
       icon: "help-circle-outline",
       label: t("profile.help"),
       onPress: () => navigation.navigate("Help"),

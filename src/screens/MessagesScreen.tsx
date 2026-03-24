@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import {
   View,
   Text,
@@ -35,10 +35,15 @@ export default function MessagesScreen() {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return;
 
-    // Get bookings with artisan info that have messages
+    // Single query: bookings with artisan info AND all messages joined
     const { data: bookings } = await supabase
       .from("bookings")
-      .select("id, service_id, artisan:artisan_id(full_name)")
+      .select(`
+        id,
+        service_id,
+        artisan:artisan_id(full_name),
+        messages(id, content, created_at, read, sender_id)
+      `)
       .eq("client_id", user.id)
       .not("artisan_id", "is", null)
       .order("updated_at", { ascending: false });
@@ -49,39 +54,43 @@ export default function MessagesScreen() {
       return;
     }
 
+    // Process joined data client-side: extract last message & unread count
     const convos: Conversation[] = [];
 
     for (const booking of bookings) {
-      // Get last message
-      const { data: msgs } = await supabase
-        .from("messages")
-        .select("content, created_at, read")
-        .eq("booking_id", booking.id)
-        .order("created_at", { ascending: false })
-        .limit(1);
+      const messages = (booking.messages as any[]) || [];
+      if (messages.length === 0) continue;
 
-      // Count unread
-      const { count } = await supabase
-        .from("messages")
-        .select("id", { count: "exact", head: true })
-        .eq("booking_id", booking.id)
-        .neq("sender_id", user.id)
-        .eq("read", false);
+      // Find the latest message by created_at
+      const sorted = messages.sort(
+        (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+      );
+      const lastMsg = sorted[0];
+
+      // Count unread messages not sent by the current user
+      const unreadCount = messages.filter(
+        (m) => m.sender_id !== user.id && !m.read
+      ).length;
 
       const artisanData = booking.artisan as any;
       const artisanName = artisanData?.full_name || "Artisan";
 
-      if (msgs && msgs.length > 0) {
-        convos.push({
-          booking_id: booking.id,
-          artisan_name: artisanName,
-          service_id: booking.service_id,
-          last_message: msgs[0].content,
-          last_message_at: msgs[0].created_at,
-          unread_count: count || 0,
-        });
-      }
+      convos.push({
+        booking_id: booking.id,
+        artisan_name: artisanName,
+        service_id: booking.service_id,
+        last_message: lastMsg.content,
+        last_message_at: lastMsg.created_at,
+        unread_count: unreadCount,
+      });
     }
+
+    // Sort conversations by most recent message first
+    convos.sort((a, b) => {
+      if (!a.last_message_at) return 1;
+      if (!b.last_message_at) return -1;
+      return new Date(b.last_message_at).getTime() - new Date(a.last_message_at).getTime();
+    });
 
     setConversations(convos);
     setLoading(false);

@@ -785,5 +785,44 @@
     "selectAll": "Tout sélectionner",
     "deselectAll": "Tout désélectionner",
     "deleteBooking": "Supprimer"
+  },
+  "promo": {
+    "title": "Code promo",
+    "enterCode": "Entrez votre code promo",
+    "apply": "Appliquer",
+    "success": "Code promo appliqué avec succès !",
+    "invalid": "Ce code promo n'existe pas",
+    "expired": "Ce code promo a expiré",
+    "alreadyUsed": "Vous avez déjà utilisé ce code promo",
+    "activePromos": "Mes codes utilisés"
+  },
+  "referral": {
+    "title": "Parrainage",
+    "yourCode": "Votre code de parrainage",
+    "share": "Partager mon code",
+    "shareMessage": "Rejoins CasaFix et utilise mon code {{code}} pour obtenir 10€ de réduction sur ta première intervention ! Télécharge l'app : https://casafix.es",
+    "reward": "10€ offerts pour vous et votre filleul",
+    "referrals": "Parrainages",
+    "explanation": "Parrainez un ami, vous recevez tous les deux 10€ de réduction sur votre prochaine intervention CasaFix."
+  },
+  "portfolio": {
+    "title": "Réalisations",
+    "seeAll": "Voir tout",
+    "photos": "{{count}} photos"
+  },
+  "addresses": {
+    "title": "Mes adresses",
+    "add": "Ajouter une adresse",
+    "label": "Nom",
+    "address": "Adresse",
+    "useCurrentLocation": "Utiliser ma position actuelle",
+    "delete": "Supprimer l'adresse",
+    "default": "Par défaut",
+    "setDefault": "Définir comme adresse par défaut",
+    "home": "Maison",
+    "work": "Bureau",
+    "other": "Autre",
+    "saved": "Adresse enregistrée",
+    "empty": "Aucune adresse enregistrée"
   }
 }

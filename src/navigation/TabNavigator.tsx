@@ -29,6 +29,9 @@ import PaymentScreen from "../screens/PaymentScreen";
 import HelpScreen from "../screens/HelpScreen";
 import HowItWorksScreen from "../screens/HowItWorksScreen";
 import InvoiceScreen from "../screens/InvoiceScreen";
+import PromoCodeScreen from "../screens/PromoCodeScreen";
+import ReferralScreen from "../screens/ReferralScreen";
+import AddressBookScreen from "../screens/AddressBookScreen";
 import AdminDashboardScreen from "../screens/admin/AdminDashboardScreen";
 import AdminArtisansScreen from "../screens/admin/AdminArtisansScreen";
 import AdminArtisanDetailScreen from "../screens/admin/AdminArtisanDetailScreen";
@@ -62,6 +65,9 @@ type RootStackParamList = {
   Help: undefined;
   HowItWorks: undefined;
   Invoice: { bookingId: string };
+  PromoCode: undefined;
+  Referral: undefined;
+  AddressBook: undefined;
   AdminDashboard: undefined;
   AdminArtisans: undefined;
   AdminArtisanDetail: { artisanId: string };
@@ -273,6 +279,21 @@ export default function RootNavigator() {
       <Stack.Screen
         name="Invoice"
         component={InvoiceScreen}
+        options={{ animation: "slide_from_right" }}
+      />
+      <Stack.Screen
+        name="PromoCode"
+        component={PromoCodeScreen}
+        options={{ animation: "slide_from_right" }}
+      />
+      <Stack.Screen
+        name="Referral"
+        component={ReferralScreen}
+        options={{ animation: "slide_from_right" }}
+      />
+      <Stack.Screen
+        name="AddressBook"
+        component={AddressBookScreen}
         options={{ animation: "slide_from_right" }}
       />
       <Stack.Screen

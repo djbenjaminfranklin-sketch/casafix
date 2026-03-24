@@ -744,5 +744,44 @@
     "workCompleted": "Trabajo terminado",
     "no": "No",
     "yes": "Sí"
+  },
+  "promo": {
+    "title": "Código promo",
+    "enterCode": "Introduce tu código promo",
+    "apply": "Aplicar",
+    "success": "¡Código promo aplicado con éxito!",
+    "invalid": "Este código promo no existe",
+    "expired": "Este código promo ha caducado",
+    "alreadyUsed": "Ya has utilizado este código promo",
+    "activePromos": "Mis códigos usados"
+  },
+  "referral": {
+    "title": "Referidos",
+    "yourCode": "Tu código de referido",
+    "share": "Compartir mi código",
+    "shareMessage": "Únete a CasaFix y usa mi código {{code}} para obtener 10€ de descuento en tu primer servicio. Descarga la app: https://casafix.es",
+    "reward": "10€ de descuento para ti y tu amigo",
+    "referrals": "Referidos",
+    "explanation": "Invita a un amigo y ambos recibiréis 10€ de descuento en vuestro próximo servicio CasaFix."
+  },
+  "portfolio": {
+    "title": "Portafolio",
+    "seeAll": "Ver todo",
+    "photos": "{{count}} photos"
+  },
+  "addresses": {
+    "title": "Mis direcciones",
+    "add": "Agregar una direccion",
+    "label": "Nombre",
+    "address": "Direccion",
+    "useCurrentLocation": "Usar mi ubicacion actual",
+    "delete": "Eliminar direccion",
+    "default": "Predeterminada",
+    "setDefault": "Establecer como direccion predeterminada",
+    "home": "Casa",
+    "work": "Oficina",
+    "other": "Otro",
+    "saved": "Direccion guardada",
+    "empty": "No hay direcciones guardadas"
   }
 }

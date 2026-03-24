@@ -27,6 +27,7 @@ import { COLORS, SPACING, RADIUS } from "../constants/theme";
 import MediaPicker from "../components/MediaPicker";
 import DiagnosticCard from "../components/DiagnosticCard";
 import ArtisanCard from "../components/ArtisanCard";
+import ArtisanPortfolio from "../components/ArtisanPortfolio";
 import { MediaItem, uploadAllMedia } from "../services/media";
 import { createBooking, subscribeToBooking, getBookingWithArtisan, reportNoShow } from "../services/bookings";
 import { createPaymentIntent } from "../lib/stripe";
@@ -929,45 +930,47 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
             <Text style={styles.choosingSubtitle}>{t("booking.chooseArtisan")}</Text>
 
             {proposals.map((p) => (
-              <TouchableOpacity
-                key={p.artisan_id}
-                style={styles.proposalCard}
-                activeOpacity={0.8}
-                onPress={() => handleSelectArtisan(p.artisan_id)}
-                disabled={selectingArtisan}
-              >
-                {p.avatarUrl ? (
-                  <Image source={{ uri: p.avatarUrl }} style={styles.proposalAvatarImg} />
-                ) : (
-                  <View style={styles.proposalAvatar}>
-                    <Icon name="person" size={20} color="#FFFFFF" />
-                  </View>
-                )}
-                <View style={styles.proposalInfo}>
-                  <Text style={styles.proposalName}>{p.name}</Text>
-                  <View style={styles.proposalStars}>
-                    {[1, 2, 3, 4, 5].map((star) => (
-                      <Icon
-                        key={star}
-                        name={star <= Math.round(p.rating) ? "star" : "star-outline"}
-                        size={14}
-                        color="#f59e0b"
-                      />
-                    ))}
-                    <Text style={styles.proposalRatingText}>
-                      {p.rating.toFixed(1)} ({p.reviews})
-                    </Text>
-                  </View>
-                  {p.lastComment && (
-                    <Text style={styles.proposalComment} numberOfLines={2}>
-                      "{p.lastComment}"
-                    </Text>
+              <View key={p.artisan_id} style={styles.proposalCard}>
+                <TouchableOpacity
+                  style={styles.proposalRow}
+                  activeOpacity={0.8}
+                  onPress={() => handleSelectArtisan(p.artisan_id)}
+                  disabled={selectingArtisan}
+                >
+                  {p.avatarUrl ? (
+                    <Image source={{ uri: p.avatarUrl }} style={styles.proposalAvatarImg} />
+                  ) : (
+                    <View style={styles.proposalAvatar}>
+                      <Icon name="person" size={20} color="#FFFFFF" />
+                    </View>
                   )}
-                </View>
-                <View style={styles.proposalSelectBtn}>
-                  <Text style={styles.proposalSelectText}>{t("booking.select")}</Text>
-                </View>
-              </TouchableOpacity>
+                  <View style={styles.proposalInfo}>
+                    <Text style={styles.proposalName}>{p.name}</Text>
+                    <View style={styles.proposalStars}>
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <Icon
+                          key={star}
+                          name={star <= Math.round(p.rating) ? "star" : "star-outline"}
+                          size={14}
+                          color="#f59e0b"
+                        />
+                      ))}
+                      <Text style={styles.proposalRatingText}>
+                        {p.rating.toFixed(1)} ({p.reviews})
+                      </Text>
+                    </View>
+                    {p.lastComment && (
+                      <Text style={styles.proposalComment} numberOfLines={2}>
+                        "{p.lastComment}"
+                      </Text>
+                    )}
+                  </View>
+                  <View style={styles.proposalSelectBtn}>
+                    <Text style={styles.proposalSelectText}>{t("booking.select")}</Text>
+                  </View>
+                </TouchableOpacity>
+                <ArtisanPortfolio artisanId={p.artisan_id} />
+              </View>
             ))}
 
             <Text style={styles.choosingWait}>{t("booking.waitingMore")}</Text>
@@ -1334,10 +1337,12 @@ const styles = StyleSheet.create({
   choosingTitle: { fontSize: 18, fontWeight: "700", color: "#16a34a", marginBottom: 4 },
   choosingSubtitle: { fontSize: 13, color: COLORS.textLight, marginBottom: SPACING.md },
   proposalCard: {
-    flexDirection: "row", alignItems: "center", gap: 10,
     backgroundColor: "#f9fafb", borderRadius: RADIUS.md,
     padding: 12, marginBottom: 8,
     borderWidth: 1, borderColor: "#e5e7eb",
+  },
+  proposalRow: {
+    flexDirection: "row", alignItems: "center", gap: 10,
   },
   proposalAvatar: {
     width: 48, height: 48, borderRadius: 24, backgroundColor: COLORS.primary,
