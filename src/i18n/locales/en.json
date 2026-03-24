@@ -829,5 +829,13 @@
     "other": "Other",
     "saved": "Address saved",
     "empty": "No saved addresses"
+  },
+  "beforeAfter": {
+    "title": "Before/After photos",
+    "before": "Before",
+    "after": "After",
+    "addBefore": "Add before photos",
+    "addAfter": "Add after photos",
+    "uploading": "Uploading photos..."
   }
 }

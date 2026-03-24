@@ -824,5 +824,13 @@
     "other": "Autre",
     "saved": "Adresse enregistrée",
     "empty": "Aucune adresse enregistrée"
+  },
+  "beforeAfter": {
+    "title": "Photos avant/après",
+    "before": "Avant",
+    "after": "Après",
+    "addBefore": "Ajouter photos avant",
+    "addAfter": "Ajouter photos après",
+    "uploading": "Envoi des photos en cours..."
   }
 }

@@ -783,5 +783,13 @@
     "other": "Otro",
     "saved": "Direccion guardada",
     "empty": "No hay direcciones guardadas"
+  },
+  "beforeAfter": {
+    "title": "Fotos antes/después",
+    "before": "Antes",
+    "after": "Después",
+    "addBefore": "Añadir fotos antes",
+    "addAfter": "Añadir fotos después",
+    "uploading": "Subiendo fotos..."
   }
 }

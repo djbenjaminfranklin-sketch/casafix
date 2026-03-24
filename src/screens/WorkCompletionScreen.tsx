@@ -8,13 +8,18 @@ import {
   TouchableOpacity,
   Alert,
   ActivityIndicator,
+  ScrollView,
+  Image,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import { useTranslation } from "react-i18next";
+import { launchCamera, launchImageLibrary } from "react-native-image-picker";
 import { supabase } from "../lib/supabase";
 import { releaseToArtisan } from "../lib/stripe";
 import { COLORS, SPACING, RADIUS } from "../constants/theme";
 import { getInvoiceByBooking, Invoice } from "../services/invoices";
+import { uploadMedia, MediaItem } from "../services/media";
+import BeforeAfterPhotos from "../components/BeforeAfterPhotos";
 
 type Props = {
   route: {
@@ -38,6 +43,10 @@ export default function WorkCompletionScreen({ route, navigation }: Props) {
   const [hoursLeft, setHoursLeft] = useState(48);
   const [invoice, setInvoice] = useState<Invoice | null>(null);
   const [showInvoice, setShowInvoice] = useState(false);
+  const [beforePhotos, setBeforePhotos] = useState<MediaItem[]>([]);
+  const [afterPhotos, setAfterPhotos] = useState<MediaItem[]>([]);
+  const [uploadingPhotos, setUploadingPhotos] = useState(false);
+  const [activePhotoTab, setActivePhotoTab] = useState<"before" | "after">("before");
 
   // Calculate countdown
   useEffect(() => {
@@ -54,6 +63,94 @@ export default function WorkCompletionScreen({ route, navigation }: Props) {
     return () => clearInterval(interval);
   }, [artisanMarkedDoneAt]);
 
+  function handleAddPhoto(type: "before" | "after") {
+    const current = type === "before" ? beforePhotos : afterPhotos;
+    if (current.length >= 5) {
+      Alert.alert(t("media.maxReached"), t("media.maxReachedDesc", { max: 5 }));
+      return;
+    }
+
+    Alert.alert(
+      type === "before" ? t("beforeAfter.addBefore") : t("beforeAfter.addAfter"),
+      "",
+      [
+        {
+          text: t("media.takePhoto"),
+          onPress: () => pickPhoto(type, "camera"),
+        },
+        {
+          text: t("media.fromGallery"),
+          onPress: () => pickPhoto(type, "gallery"),
+        },
+        { text: t("priceConfirm.no"), style: "cancel" },
+      ]
+    );
+  }
+
+  async function pickPhoto(type: "before" | "after", source: "camera" | "gallery") {
+    const result =
+      source === "camera"
+        ? await launchCamera({ mediaType: "photo", quality: 0.8 })
+        : await launchImageLibrary({ mediaType: "photo", selectionLimit: 5 - (type === "before" ? beforePhotos.length : afterPhotos.length), quality: 0.8 });
+
+    if (result.assets && result.assets.length > 0) {
+      const newItems: MediaItem[] = result.assets.map((asset) => ({
+        uri: asset.uri!,
+        type: "photo" as const,
+        fileName: asset.fileName,
+        fileSize: asset.fileSize,
+      }));
+      if (type === "before") {
+        setBeforePhotos((prev) => [...prev, ...newItems]);
+      } else {
+        setAfterPhotos((prev) => [...prev, ...newItems]);
+      }
+    }
+  }
+
+  function removePhoto(type: "before" | "after", index: number) {
+    if (type === "before") {
+      setBeforePhotos((prev) => prev.filter((_, i) => i !== index));
+    } else {
+      setAfterPhotos((prev) => prev.filter((_, i) => i !== index));
+    }
+  }
+
+  async function uploadBeforeAfterPhotos() {
+    const userId = (await supabase.auth.getUser()).data.user?.id;
+    if (!userId) return;
+
+    setUploadingPhotos(true);
+
+    for (const photo of beforePhotos) {
+      if (photo.uploaded) continue;
+      const result = await uploadMedia(bookingId, userId, photo);
+      if (result) {
+        await supabase.from("booking_photos").insert({
+          booking_id: bookingId,
+          image_url: result.url,
+          type: "before",
+          uploaded_by: userId,
+        });
+      }
+    }
+
+    for (const photo of afterPhotos) {
+      if (photo.uploaded) continue;
+      const result = await uploadMedia(bookingId, userId, photo);
+      if (result) {
+        await supabase.from("booking_photos").insert({
+          booking_id: bookingId,
+          image_url: result.url,
+          type: "after",
+          uploaded_by: userId,
+        });
+      }
+    }
+
+    setUploadingPhotos(false);
+  }
+
   async function handleConfirmCompletion() {
     Alert.alert(
       t("completion.confirmTitle"),
@@ -64,6 +161,11 @@ export default function WorkCompletionScreen({ route, navigation }: Props) {
           text: t("completion.yesConfirm"),
           onPress: async () => {
             setLoading(true);
+
+            // Upload before/after photos if any
+            if (beforePhotos.length > 0 || afterPhotos.length > 0) {
+              await uploadBeforeAfterPhotos();
+            }
 
             const { data, error } = await supabase.rpc("complete_work", {
               p_booking_id: bookingId,
@@ -175,6 +277,8 @@ export default function WorkCompletionScreen({ route, navigation }: Props) {
             </View>
           )}
 
+          <BeforeAfterPhotos bookingId={bookingId} />
+
           <TouchableOpacity
             style={styles.reviewBtn}
             onPress={() =>
@@ -216,7 +320,7 @@ export default function WorkCompletionScreen({ route, navigation }: Props) {
         <View style={{ width: 40 }} />
       </View>
 
-      <View style={styles.content}>
+      <ScrollView style={styles.content} contentContainerStyle={styles.contentInner}>
         {/* Artisan marked done */}
         <View style={styles.doneCard}>
           <View style={styles.doneIconBox}>
@@ -257,12 +361,78 @@ export default function WorkCompletionScreen({ route, navigation }: Props) {
           </View>
         </View>
 
+        {/* Before/After photos from artisan (if already uploaded) */}
+        <BeforeAfterPhotos bookingId={bookingId} />
+
+        {/* Before/After photo upload section */}
+        <View style={styles.photoSection}>
+          <View style={styles.photoSectionHeader}>
+            <Icon name="images" size={18} color={COLORS.primary} />
+            <Text style={styles.photoSectionTitle}>{t("beforeAfter.title")}</Text>
+          </View>
+
+          {/* Photo tabs */}
+          <View style={styles.photoTabs}>
+            <TouchableOpacity
+              style={[styles.photoTab, activePhotoTab === "before" && styles.photoTabActive]}
+              onPress={() => setActivePhotoTab("before")}
+            >
+              <Text style={[styles.photoTabText, activePhotoTab === "before" && styles.photoTabTextActive]}>
+                {t("beforeAfter.before")} ({beforePhotos.length})
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.photoTab, activePhotoTab === "after" && styles.photoTabActive]}
+              onPress={() => setActivePhotoTab("after")}
+            >
+              <Text style={[styles.photoTabText, activePhotoTab === "after" && styles.photoTabTextActive]}>
+                {t("beforeAfter.after")} ({afterPhotos.length})
+              </Text>
+            </TouchableOpacity>
+          </View>
+
+          {/* Photo grid for active tab */}
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.photoScroll}>
+            {(activePhotoTab === "before" ? beforePhotos : afterPhotos).map((item, index) => (
+              <View key={index} style={styles.photoItem}>
+                <Image source={{ uri: item.uri }} style={styles.photoThumbnail} />
+                <TouchableOpacity
+                  style={styles.photoRemoveBtn}
+                  onPress={() => removePhoto(activePhotoTab, index)}
+                >
+                  <Icon name="close" size={14} color="#FFFFFF" />
+                </TouchableOpacity>
+              </View>
+            ))}
+
+            {(activePhotoTab === "before" ? beforePhotos : afterPhotos).length < 5 && (
+              <TouchableOpacity
+                style={styles.photoAddBtn}
+                onPress={() => handleAddPhoto(activePhotoTab)}
+                activeOpacity={0.7}
+              >
+                <Icon name="add" size={28} color={COLORS.primary} />
+                <Text style={styles.photoAddText}>
+                  {activePhotoTab === "before" ? t("beforeAfter.addBefore") : t("beforeAfter.addAfter")}
+                </Text>
+              </TouchableOpacity>
+            )}
+          </ScrollView>
+
+          {uploadingPhotos && (
+            <View style={styles.uploadingBar}>
+              <ActivityIndicator size="small" color={COLORS.primary} />
+              <Text style={styles.uploadingText}>{t("beforeAfter.uploading")}</Text>
+            </View>
+          )}
+        </View>
+
         {/* Guarantee */}
         <View style={styles.guaranteeCard}>
           <Icon name="shield-checkmark" size={18} color="#16a34a" />
           <Text style={styles.guaranteeText}>{t("multiday.guaranteeReminder")}</Text>
         </View>
-      </View>
+      </ScrollView>
 
       {/* Bottom actions */}
       <View style={styles.bottomBar}>
@@ -302,6 +472,7 @@ const styles = StyleSheet.create({
   },
   headerTitle: { fontSize: 17, fontWeight: "700", color: COLORS.text },
   content: { flex: 1, paddingHorizontal: SPACING.lg },
+  contentInner: { paddingBottom: SPACING.md },
   // Artisan done card
   doneCard: {
     alignItems: "center", backgroundColor: "#EFF6FF", borderRadius: RADIUS.lg,
@@ -336,6 +507,48 @@ const styles = StyleSheet.create({
     borderWidth: 1, borderColor: "#bbf7d0",
   },
   guaranteeText: { fontSize: 12, color: "#166534", flex: 1, lineHeight: 18 },
+  // Before/After photos
+  photoSection: {
+    backgroundColor: "#f9fafb", borderRadius: RADIUS.md, padding: SPACING.md,
+    marginBottom: SPACING.sm,
+  },
+  photoSectionHeader: {
+    flexDirection: "row", alignItems: "center", gap: 8, marginBottom: SPACING.sm,
+  },
+  photoSectionTitle: { fontSize: 14, fontWeight: "600", color: "#1f2937" },
+  photoTabs: {
+    flexDirection: "row", backgroundColor: "#e5e7eb", borderRadius: RADIUS.sm,
+    padding: 2, marginBottom: SPACING.sm,
+  },
+  photoTab: {
+    flex: 1, paddingVertical: 8, alignItems: "center", borderRadius: RADIUS.sm - 2,
+  },
+  photoTabActive: { backgroundColor: "#FFFFFF" },
+  photoTabText: { fontSize: 13, fontWeight: "500", color: COLORS.textLight },
+  photoTabTextActive: { color: COLORS.text, fontWeight: "600" },
+  photoScroll: { flexDirection: "row" },
+  photoItem: {
+    width: 80, height: 80, borderRadius: RADIUS.sm, marginRight: 8,
+    overflow: "hidden",
+  },
+  photoThumbnail: { width: "100%", height: "100%", borderRadius: RADIUS.sm },
+  photoRemoveBtn: {
+    position: "absolute", top: 4, right: 4,
+    width: 22, height: 22, borderRadius: 11,
+    backgroundColor: "rgba(0,0,0,0.6)",
+    alignItems: "center", justifyContent: "center",
+  },
+  photoAddBtn: {
+    width: 80, height: 80, borderRadius: RADIUS.sm,
+    borderWidth: 2, borderColor: "#e5e7eb", borderStyle: "dashed",
+    alignItems: "center", justifyContent: "center",
+  },
+  photoAddText: { fontSize: 9, color: COLORS.primary, marginTop: 2, textAlign: "center", paddingHorizontal: 4 },
+  uploadingBar: {
+    flexDirection: "row", alignItems: "center", gap: 8,
+    marginTop: SPACING.sm, paddingVertical: 8,
+  },
+  uploadingText: { fontSize: 12, color: COLORS.textLight },
   // Bottom
   bottomBar: {
     flexDirection: "row", gap: SPACING.sm,
