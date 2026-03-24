@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import i18n from "../i18n";
 import {
   View,
   Text,
@@ -19,6 +20,8 @@ import DiagnosticCard from "../components/DiagnosticCard";
 
 import { MediaItem, uploadAllMedia } from "../services/media";
 import { createBooking, subscribeToBooking, getBookingWithArtisan } from "../services/bookings";
+import { createPaymentIntent } from "../lib/stripe";
+import { usePaymentSheet } from "@stripe/stripe-react-native";
 import { supabase } from "../lib/supabase";
 import { Booking } from "../lib/database.types";
 import { analyzeProblem, DiagnosticResult } from "../services/ai-diagnostic";
@@ -45,17 +48,25 @@ const TIME_SLOTS = [
   "18:00 - 20:00",
 ];
 
+const LOCALE_MAP: Record<string, string> = {
+  fr: "fr-FR", es: "es-ES", en: "en-GB", sv: "sv-SE", no: "nb-NO",
+  da: "da-DK", nl: "nl-NL", de: "de-DE", ar: "ar-SA", pl: "pl-PL",
+  ro: "ro-RO", ru: "ru-RU", it: "it-IT",
+};
+const getDateLocale = (): string => LOCALE_MAP[i18n.language] || "fr-FR";
+
 function getNextDays(count: number) {
   const days = [];
   const now = new Date();
+  const locale = getDateLocale();
   for (let i = 0; i < count; i++) {
     const d = new Date(now);
     d.setDate(d.getDate() + i);
     days.push({
       date: d,
-      dayName: d.toLocaleDateString("es-ES", { weekday: "short" }).toUpperCase(),
+      dayName: d.toLocaleDateString(locale, { weekday: "short" }).toUpperCase(),
       dayNum: d.getDate(),
-      month: d.toLocaleDateString("es-ES", { month: "short" }),
+      month: d.toLocaleDateString(locale, { month: "short" }),
       isToday: i === 0,
     });
   }
@@ -65,6 +76,7 @@ function getNextDays(count: number) {
 export default function AppointmentBookingScreen({ route, navigation }: Props) {
   const { categoryId, serviceName, priceRange } = route.params;
   const { t } = useTranslation();
+  const { initPaymentSheet, presentPaymentSheet } = usePaymentSheet();
   const category = CATEGORIES.find((c) => c.id === categoryId);
 
   const days = getNextDays(14);
@@ -122,6 +134,80 @@ export default function AppointmentBookingScreen({ route, navigation }: Props) {
     } finally {
       setAnalyzingAi(false);
     }
+  };
+
+  const handleBookAppointment = async () => {
+    if (selectedSlot === null || submitting) return;
+    setSubmitting(true);
+
+    const selectedDate = days[selectedDay].date.toISOString().split("T")[0];
+
+    // 1. Create booking
+    const { data: booking } = await createBooking({
+      categoryId,
+      serviceId: route.params.serviceId,
+      serviceName,
+      priceRange,
+      type: "appointment",
+      scheduledDate: selectedDate,
+      scheduledSlot: TIME_SLOTS[selectedSlot],
+      description: description.trim() || undefined,
+    });
+
+    if (!booking) {
+      Alert.alert(t("common.error"), t("booking.createError"));
+      setSubmitting(false);
+      return;
+    }
+
+    // 2. Create PaymentIntent (pre-auth)
+    const maxPrice = booking.max_price || 150;
+    const piResult = await createPaymentIntent({
+      bookingId: booking.id,
+      amount: Math.round(maxPrice * 100),
+      currency: "eur",
+    });
+
+    if (!piResult) {
+      await supabase.from("bookings").update({ status: "cancelled" }).eq("id", booking.id);
+      Alert.alert(t("common.error"), t("payment.setupError"));
+      setSubmitting(false);
+      return;
+    }
+
+    // 3. Show PaymentSheet
+    const { error: initError } = await initPaymentSheet({
+      paymentIntentClientSecret: piResult.clientSecret,
+      merchantDisplayName: "CasaFix",
+      style: "automatic",
+    });
+
+    if (initError) {
+      await supabase.from("bookings").update({ status: "cancelled" }).eq("id", booking.id);
+      Alert.alert(t("common.error"), initError.message);
+      setSubmitting(false);
+      return;
+    }
+
+    const { error: sheetError } = await presentPaymentSheet();
+    if (sheetError) {
+      await supabase.from("bookings").update({ status: "cancelled" }).eq("id", booking.id);
+      setSubmitting(false);
+      return;
+    }
+
+    // 4. Payment authorized
+    setBookingId(booking.id);
+    await supabase.from("bookings").update({ deposit_amount: maxPrice }).eq("id", booking.id);
+
+    if (media.length > 0) {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) await uploadAllMedia(booking.id, user.id, media);
+    }
+
+    supabase.functions.invoke("process-notifications").catch(() => {});
+    setSubmitting(false);
+    setConfirmed(true);
   };
 
   if (confirmed) {
@@ -281,41 +367,7 @@ export default function AppointmentBookingScreen({ route, navigation }: Props) {
       <View style={styles.bottomBar}>
         <TouchableOpacity
           style={[styles.bookBtn, (selectedSlot === null || submitting || analyzingAi) && styles.bookBtnDisabled]}
-          onPress={async () => {
-            if (selectedSlot === null || submitting) return;
-
-            setSubmitting(true);
-
-            const selectedDate = days[selectedDay].date.toISOString().split("T")[0];
-            const { data: booking } = await createBooking({
-              categoryId,
-              serviceId: route.params.serviceId,
-              serviceName,
-              priceRange,
-              type: "appointment",
-              scheduledDate: selectedDate,
-              scheduledSlot: TIME_SLOTS[selectedSlot],
-              description: description.trim() || undefined,
-            });
-
-            if (booking) {
-              setBookingId(booking.id);
-            }
-
-            // Upload media if any
-            if (booking && media.length > 0) {
-              const { data: { user } } = await supabase.auth.getUser();
-              if (user) {
-                await uploadAllMedia(booking.id, user.id, media);
-              }
-            }
-
-            // Trigger push notifications to matching artisans
-            supabase.functions.invoke("process-notifications").catch(() => {});
-
-            setSubmitting(false);
-            setConfirmed(true);
-          }}
+          onPress={handleBookAppointment}
           activeOpacity={0.85}
           disabled={selectedSlot === null || submitting || analyzingAi}
         >

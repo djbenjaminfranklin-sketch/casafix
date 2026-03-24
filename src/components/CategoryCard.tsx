@@ -88,8 +88,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   name: {
-    fontSize: 12,
-    fontWeight: "600",
+    fontSize: 13,
+    fontWeight: "700",
     color: COLORS.text,
     flexShrink: 1,
   },

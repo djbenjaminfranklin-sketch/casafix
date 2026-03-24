@@ -6,6 +6,7 @@ import { StripeProvider } from "@stripe/stripe-react-native";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import "./src/i18n";
 import { AuthProvider } from "./src/contexts/AuthContext";
+import ErrorBoundary from "./src/components/ErrorBoundary";
 import { STRIPE_PUBLISHABLE_KEY } from "./src/lib/stripe";
 import RootNavigator from "./src/navigation/TabNavigator";
 import {
@@ -67,7 +68,9 @@ export default function App() {
         <AuthProvider>
           <NavigationContainer ref={navigationRef}>
             <NotificationHandler navigationRef={navigationRef} />
-            <RootNavigator />
+            <ErrorBoundary>
+              <RootNavigator />
+            </ErrorBoundary>
           </NavigationContainer>
         </AuthProvider>
       </StripeProvider>

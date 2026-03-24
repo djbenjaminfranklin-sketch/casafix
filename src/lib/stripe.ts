@@ -57,7 +57,7 @@ export async function releaseToArtisan(params: {
 }
 
 // Charge the remaining amount when price exceeds deposit
-// Example: deposit = 150€, real price = 1000€ → charge 850€ more
+// Example: deposit = 150€, final price = 1000€ → charge 850€ more
 export async function chargeRemaining(params: {
   bookingId: string;
   remainingAmount: number; // in cents

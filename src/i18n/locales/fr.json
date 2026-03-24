@@ -1,4 +1,18 @@
 {
+  "common": {
+    "error": "Erreur"
+  },
+  "error": {
+    "title": "Oups !",
+    "message": "Une erreur inattendue est survenue. Veuillez réessayer.",
+    "retry": "Réessayer"
+  },
+  "notifications": {
+    "artisanSelected": "Sélectionné",
+    "artisanSelectedBody": "Vous avez été sélectionné pour \"{{service}}\". Rendez-vous à l'adresse du client.",
+    "artisanNotSelected": "Non sélectionné",
+    "artisanNotSelectedBody": "Le client a choisi un autre artisan pour \"{{service}}\"."
+  },
   "appName": "CasaFix",
   "location": "Costa del Sol",
   "searchPlaceholder": "Que recherchez-vous ?",
@@ -69,7 +83,8 @@
     "pool_install": "Installation piscine",
     "garden_maintenance": "Entretien jardin",
     "garden_install": "Aménagement jardin",
-    "garden_repair": "Réparation jardin"
+    "garden_repair": "Réparation jardin",
+    "other": "Autre"
   },
   "services": {
     "toilet_unclog": "Débouchage WC",
@@ -203,7 +218,8 @@
     "lawn_install": "Pose de gazon",
     "garden_design": "Conception de jardin",
     "irrigation_repair": "Réparation système d'arrosage",
-    "fence_repair": "Réparation clôture"
+    "fence_repair": "Réparation clôture",
+    "other_service": "Autre demande (devis sur place)"
   },
   "banner": {
     "onlinePayment": "Paiement en ligne",
@@ -213,8 +229,8 @@
   "payment": {
     "book": "Réserver",
     "maxPrice": "Prix max.",
-    "realPriceNote": "Le prix réel sera défini sur place par l'artisan",
-    "explanation": "Le montant maximum est préautorisé sur votre carte. Seul le prix réel, défini par l'artisan après l'intervention, sera débité.",
+    "realPriceNote": "Le prix final sera défini sur place par l'artisan. Il peut varier en fonction du matériel nécessaire.",
+    "explanation": "Votre argent est en sécurité. Il s'agit uniquement d'une préautorisation : AUCUN montant n'est débité de votre compte. Seul le prix final, fixé par l'artisan sur place, sera prélevé. S'il est inférieur, la différence est automatiquement restituée.",
     "preauth": "Préautorisation",
     "charged": "Montant débité",
     "secure": "Paiement 100% sécurisé"
@@ -260,7 +276,14 @@
     "yesCancel": "Oui, annuler",
     "cancelFeeWarning": "Après 2 min, l'annulation entraîne 75€ de frais de déplacement.",
     "recommendedInArea": "Recommandé dans votre zone",
-    "activeBooking": "Course en cours"
+    "activeBooking": "Course en cours",
+    "photoHelp": "Ajoutez des photos pour aider l'artisan à vous donner un prix plus précis.",
+    "noArtisanTitle": "Aucun artisan disponible",
+    "noArtisanDesc": "Aucun artisan n'est disponible pour le moment. Votre préautorisation a été libérée. Veuillez réessayer ultérieurement.",
+    "noShowTitle": "L'artisan n'est pas arrivé ?",
+    "noShowDesc": "Cela fait 45 minutes que l'artisan a été assigné. S'il n'est pas arrivé, vous pouvez signaler son absence et relancer une recherche.",
+    "noShowResearch": "Signaler et relancer",
+    "noShowCancel": "Signaler et annuler"
   },
   "auth": {
     "login": "Se connecter",
@@ -444,7 +467,48 @@
     "payment": "Paiement",
     "help": "Aide & Contact",
     "myBookings": "Mes réservations",
-    "legalSection": "Informations légales"
+    "legalSection": "Informations légales",
+    "howItWorks": "Comment ça marche"
+  },
+  "howItWorks": {
+    "title": "Comment ça marche",
+    "intro": "CasaFix vous met en relation avec des artisans vérifiés en quelques minutes. Voici comment :",
+    "step1": {
+      "title": "Choisissez un service",
+      "desc": "Sélectionnez le type de réparation : plomberie, électricité, serrurerie et plus."
+    },
+    "step2": {
+      "title": "Décrivez le problème",
+      "desc": "Prenez des photos et décrivez la situation. Notre IA fournira un diagnostic préliminaire."
+    },
+    "step3": {
+      "title": "Préautorisation sécurisée",
+      "desc": "Votre carte est préautorisée (RIEN n'est débité). Seul le prix final sera prélevé."
+    },
+    "step4": {
+      "title": "Suivez votre artisan",
+      "desc": "Voyez votre artisan sur la carte en temps réel pendant qu'il se dirige vers vous."
+    },
+    "step5": {
+      "title": "Confirmez l'arrivée",
+      "desc": "Montrez le QR code à l'artisan à son arrivée pour confirmer sa présence."
+    },
+    "step6": {
+      "title": "Travaux réalisés",
+      "desc": "L'artisan effectue le travail et propose le prix final. Vous acceptez ou refusez."
+    },
+    "step7": {
+      "title": "Paiement sécurisé",
+      "desc": "Seul le prix convenu est débité. Vous avez 48h pour valider le travail."
+    },
+    "step8": {
+      "title": "Notez votre artisan",
+      "desc": "Laissez un avis pour aider les autres clients et récompenser le bon travail."
+    },
+    "tipsTitle": "Bon à savoir",
+    "tip1": "Votre argent est en sécurité — simple préautorisation, aucun débit avant votre accord.",
+    "tip2": "Annulation gratuite dans les 2 premières minutes.",
+    "tip3": "Tous les artisans sont vérifiés et assurés."
   },
   "legal": {
     "cguTitle": "Conditions Générales d'Utilisation",
@@ -466,7 +530,7 @@
       },
       "article4": {
         "title": "Article 4 – Tarification et paiement",
-        "content": "Les tarifs affichés dans l'Application sont des fourchettes indicatives TTC (Toutes Taxes Comprises). Aucune majoration n'est appliquée pour les interventions en soirée, le week-end ou les jours fériés. Le paiement s'effectue exclusivement en ligne : lors de la réservation, une préautorisation du montant maximum est effectuée sur la carte bancaire du client. À l'issue de l'intervention, l'artisan renseigne le montant réel de la prestation, et seul ce montant est débité. La différence entre le montant préautorisé et le montant réel est automatiquement libérée. La facture est envoyée par email sous 48 heures."
+        "content": "Les tarifs affichés dans l'Application sont des fourchettes indicatives TTC (Toutes Taxes Comprises). Aucune majoration n'est appliquée pour les interventions en soirée, le week-end ou les jours fériés. Le paiement s'effectue exclusivement en ligne : lors de la réservation, une préautorisation du montant maximum est effectuée sur la carte bancaire du client. À l'issue de l'intervention, l'artisan renseigne le montant final de la prestation, et seul ce montant est débité. La différence entre le montant préautorisé et le montant final est automatiquement libérée. La facture est envoyée par email sous 48 heures."
       },
       "article5": {
         "title": "Article 5 – Garanties",
@@ -545,7 +609,7 @@
     "secureTitle": "Paiement sécurisé",
     "secureDesc": "Tous les paiements sont protégés par Stripe, leader mondial du paiement en ligne",
     "preauthTitle": "Préautorisation",
-    "preauthDesc": "Seul le montant réel est débité après l'intervention. Le reste est automatiquement libéré",
+    "preauthDesc": "Seul le montant final est débité après l'intervention. Le reste est automatiquement libéré",
     "invoiceTitle": "Factures",
     "invoiceDesc": "Recevez automatiquement votre facture par email après chaque intervention",
     "methodTitle": "Moyen de paiement",
@@ -555,7 +619,7 @@
   },
   "invoice": {
     "title": "Facture",
-    "invoiceNumber": "Facture N\u00b0",
+    "invoiceNumber": "Facture N°",
     "date": "Date",
     "provider": "Prestataire",
     "client": "Client",
@@ -563,7 +627,7 @@
     "subtotal": "Montant HT",
     "iva": "IVA",
     "total": "Total TTC",
-    "paidByCard": "Paiement effectu\u00e9 par carte bancaire",
+    "paidByCard": "Paiement effectué par carte bancaire",
     "commission": "Commission CasaFix",
     "yourShare": "Votre part",
     "noInvoice": "Facture non disponible",
@@ -574,7 +638,7 @@
     "email": "Email",
     "faqTitle": "Questions fréquentes",
     "faq1q": "Comment fonctionne le paiement ?",
-    "faq1a": "Lors de la réservation, le montant maximum est préautorisé sur votre carte. Après l'intervention, seul le prix réel fixé par l'artisan est débité. La différence est automatiquement libérée.",
+    "faq1a": "Lors de la réservation, le montant maximum est préautorisé sur votre carte. Après l'intervention, seul le prix final fixé par l'artisan est débité. La différence est automatiquement libérée.",
     "faq2q": "Puis-je annuler une réservation ?",
     "faq2a": "Une fois la réservation confirmée, des frais de déplacement de 75€ sont dus. Vous pouvez cependant refuser les travaux et ne payer que ces frais de déplacement. Ce système permet d'éviter les annulations abusives tout en vous laissant le choix.",
     "faq3q": "Quelle est la garantie ?",

@@ -63,7 +63,7 @@ export default function ArtisanCard({
       if (supported) {
         Linking.openURL(tel);
       } else {
-        Alert.alert("Error", t("booking.callUnavailable"));
+        Alert.alert(t("common.error"), t("booking.callUnavailable"));
       }
     });
   };

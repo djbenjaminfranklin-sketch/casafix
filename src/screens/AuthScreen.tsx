@@ -33,22 +33,22 @@ export default function AuthScreen() {
 
   async function handleSubmit() {
     if (!email || !password) {
-      Alert.alert("Error", t("auth.fillAllFields"));
+      Alert.alert(t("common.error"), t("auth.fillAllFields"));
       return;
     }
     if (!isLogin && !fullName) {
-      Alert.alert("Error", t("auth.fillAllFields"));
+      Alert.alert(t("common.error"), t("auth.fillAllFields"));
       return;
     }
 
     setLoading(true);
     if (isLogin) {
       const { error } = await signIn(email.trim(), password);
-      if (error) Alert.alert("Error", error.message);
+      if (error) Alert.alert(t("common.error"), error.message);
     } else {
       const { error } = await signUp(email.trim(), password, fullName.trim());
       if (error) {
-        Alert.alert("Error", error.message);
+        Alert.alert(t("common.error"), error.message);
       } else {
         Alert.alert(t("auth.success"), t("auth.checkEmail"));
       }
@@ -178,7 +178,7 @@ export default function AuthScreen() {
                 onPress={async () => {
                   setSocialLoading("apple");
                   const { error } = await signInWithApple();
-                  if (error) Alert.alert("Error", error.message);
+                  if (error) Alert.alert(t("common.error"), error.message);
                   setSocialLoading(null);
                 }}
               >
@@ -200,7 +200,7 @@ export default function AuthScreen() {
               onPress={async () => {
                 setSocialLoading("google");
                 const { error } = await signInWithGoogle();
-                if (error) Alert.alert("Error", error.message);
+                if (error) Alert.alert(t("common.error"), error.message);
                 setSocialLoading(null);
               }}
             >

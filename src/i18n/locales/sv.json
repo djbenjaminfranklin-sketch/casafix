@@ -1,4 +1,7 @@
 {
+  "common": { "error": "Fel" },
+  "error": { "title": "Hoppsan!", "message": "Ett oväntat fel inträffade. Försök igen.", "retry": "Försök igen" },
+  "notifications": { "artisanSelected": "Vald", "artisanSelectedBody": "Du har valts för \"{{service}}\". Bege dig till kundens adress.", "artisanNotSelected": "Ej vald", "artisanNotSelectedBody": "Kunden valde en annan hantverkare för \"{{service}}\"." },
   "appName": "CasaFix",
   "location": "Costa del Sol",
   "searchPlaceholder": "Vad letar du efter?",
@@ -69,7 +72,8 @@
     "pool_install": "Poolinstallation",
     "garden_maintenance": "Trädgårdsskötsel",
     "garden_install": "Trädgårdsanläggning",
-    "garden_repair": "Trädgårdsreparation"
+    "garden_repair": "Trädgårdsreparation",
+    "other": "Övrigt"
   },
   "services": {
     "toilet_unclog": "Avloppsstopp toalett",
@@ -203,7 +207,8 @@
     "lawn_install": "Gräsmatteutläggning",
     "garden_design": "Trädgårdsdesign",
     "irrigation_repair": "Bevattningsreparation",
-    "fence_repair": "Staketreparation"
+    "fence_repair": "Staketreparation",
+    "other_service": "Annan förfrågan (offert på plats)"
   },
   "banner": {
     "onlinePayment": "Onlinebetalning",
@@ -213,8 +218,8 @@
   "payment": {
     "book": "Boka nu",
     "maxPrice": "Max pris",
-    "realPriceNote": "Det verkliga priset bestäms på plats av hantverkaren",
-    "explanation": "Maxbeloppet förauktoriseras på ditt kort. Endast det verkliga priset, som bestäms av hantverkaren efter arbetet, debiteras.",
+    "realPriceNote": "Det slutliga priset bestäms på plats av hantverkaren",
+    "explanation": "Maxbeloppet förauktoriseras på ditt kort. Endast det slutliga priset, som bestäms av hantverkaren efter arbetet, debiteras.",
     "preauth": "Förauktorisering",
     "charged": "Debiterat belopp",
     "secure": "100% säker betalning"
@@ -462,7 +467,7 @@
       },
       "article4": {
         "title": "Artikel 4 – Priser & Betalning",
-        "content": "Priserna är vägledande inkl. moms. Inget påslag för kvällar, helger eller helgdagar. Betalning sker uteslutande online: vid bokning förauktoriseras maxbeloppet på kundens kort. Efter arbetet anger hantverkaren det verkliga priset och endast detta debiteras."
+        "content": "Priserna är vägledande inkl. moms. Inget påslag för kvällar, helger eller helgdagar. Betalning sker uteslutande online: vid bokning förauktoriseras maxbeloppet på kundens kort. Efter arbetet anger hantverkaren det slutliga priset och endast detta debiteras."
       },
       "article5": {
         "title": "Artikel 5 – Garantier",
@@ -541,7 +546,7 @@
     "secureTitle": "Säker betalning",
     "secureDesc": "Alla betalningar skyddas av Stripe, världsledande inom onlinebetalningar",
     "preauthTitle": "Förauktorisering",
-    "preauthDesc": "Endast det faktiska beloppet debiteras efter tjänsten. Resten frigörs automatiskt",
+    "preauthDesc": "Endast det slutliga beloppet debiteras efter tjänsten. Resten frigörs automatiskt",
     "invoiceTitle": "Fakturor",
     "invoiceDesc": "Få automatiskt din faktura via e-post efter varje tjänst",
     "methodTitle": "Betalningsmetod",
@@ -554,7 +559,7 @@
     "email": "E-post",
     "faqTitle": "Vanliga frågor",
     "faq1q": "Hur fungerar betalningen?",
-    "faq1a": "Vid bokning förauktoriseras maxbeloppet på ditt kort. Efter tjänsten debiteras bara det faktiska priset. Mellanskillnaden frigörs automatiskt.",
+    "faq1a": "Vid bokning förauktoriseras maxbeloppet på ditt kort. Efter tjänsten debiteras bara det slutliga priset. Mellanskillnaden frigörs automatiskt.",
     "faq2q": "Kan jag avboka?",
     "faq2a": "När en bokning är bekräftad tillkommer 75€ i utryckningsavgift. Du kan dock tacka nej till arbetet och bara betala utryckningsavgiften. Detta system förhindrar missbruk av avbokningar och ger dig valet.",
     "faq3q": "Vad är garantin?",

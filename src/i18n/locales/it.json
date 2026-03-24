@@ -1,4 +1,7 @@
 {
+  "common": { "error": "Errore" },
+  "error": { "title": "Ops!", "message": "Si è verificato un errore imprevisto. Riprova.", "retry": "Riprova" },
+  "notifications": { "artisanSelected": "Selezionato", "artisanSelectedBody": "Sei stato selezionato per \"{{service}}\". Recati all'indirizzo del cliente.", "artisanNotSelected": "Non selezionato", "artisanNotSelectedBody": "Il cliente ha scelto un altro artigiano per \"{{service}}\"." },
   "appName": "CasaFix",
   "location": "Costa del Sol",
   "searchPlaceholder": "Cosa cerchi?",
@@ -69,7 +72,8 @@
     "pool_install": "Installazione piscina",
     "garden_maintenance": "Manutenzione giardino",
     "garden_install": "Progettazione giardino",
-    "garden_repair": "Riparazione giardino"
+    "garden_repair": "Riparazione giardino",
+    "other": "Altro"
   },
   "services": {
     "toilet_unclog": "Disostruzione WC",
@@ -203,7 +207,8 @@
     "lawn_install": "Posa prato",
     "garden_design": "Progettazione giardino",
     "irrigation_repair": "Riparazione sistema di irrigazione",
-    "fence_repair": "Riparazione recinzione"
+    "fence_repair": "Riparazione recinzione",
+    "other_service": "Altra richiesta (preventivo sul posto)"
   },
   "banner": {
     "onlinePayment": "Pagamento online",
@@ -213,8 +218,8 @@
   "payment": {
     "book": "Prenota",
     "maxPrice": "Prezzo max.",
-    "realPriceNote": "Il prezzo reale verra definito sul posto dall'artigiano",
-    "explanation": "L'importo massimo viene preautorizzato sulla tua carta. Viene addebitato solo il prezzo reale, definito dall'artigiano dopo l'intervento.",
+    "realPriceNote": "Il prezzo finale verra definito sul posto dall'artigiano",
+    "explanation": "L'importo massimo viene preautorizzato sulla tua carta. Viene addebitato solo il prezzo finale, definito dall'artigiano dopo l'intervento.",
     "preauth": "Preautorizzazione",
     "charged": "Importo addebitato",
     "secure": "Pagamento 100% sicuro"
@@ -465,7 +470,7 @@
       },
       "article4": {
         "title": "Articolo 4 – Tariffe e pagamento",
-        "content": "I prezzi indicati nell'Applicazione sono fasce indicative IVA inclusa. Non viene applicata alcuna maggiorazione per interventi serali, nei fine settimana o nei giorni festivi. Il pagamento avviene esclusivamente online: al momento della prenotazione, viene preautorizzato l'importo massimo sulla carta del cliente. Al termine dell'intervento, l'artigiano inserisce l'importo reale e solo questo importo viene addebitato. La differenza viene automaticamente rilasciata. La fattura viene inviata via email entro 48 ore."
+        "content": "I prezzi indicati nell'Applicazione sono fasce indicative IVA inclusa. Non viene applicata alcuna maggiorazione per interventi serali, nei fine settimana o nei giorni festivi. Il pagamento avviene esclusivamente online: al momento della prenotazione, viene preautorizzato l'importo massimo sulla carta del cliente. Al termine dell'intervento, l'artigiano inserisce l'importo finale e solo questo importo viene addebitato. La differenza viene automaticamente rilasciata. La fattura viene inviata via email entro 48 ore."
       },
       "article5": {
         "title": "Articolo 5 – Garanzie",
@@ -544,7 +549,7 @@
     "secureTitle": "Pagamento sicuro",
     "secureDesc": "Tutti i pagamenti sono protetti da Stripe, leader mondiale dei pagamenti online",
     "preauthTitle": "Preautorizzazione",
-    "preauthDesc": "Viene addebitato solo l'importo reale dopo l'intervento. Il resto viene rilasciato automaticamente",
+    "preauthDesc": "Viene addebitato solo l'importo finale dopo l'intervento. Il resto viene rilasciato automaticamente",
     "invoiceTitle": "Fatture",
     "invoiceDesc": "Ricevi automaticamente la fattura via email dopo ogni intervento",
     "methodTitle": "Metodo di pagamento",
@@ -573,7 +578,7 @@
     "email": "Email",
     "faqTitle": "Domande frequenti",
     "faq1q": "Come funziona il pagamento?",
-    "faq1a": "Al momento della prenotazione, l'importo massimo viene preautorizzato sulla tua carta. Dopo l'intervento, viene addebitato solo il prezzo reale stabilito dall'artigiano. La differenza viene rilasciata automaticamente.",
+    "faq1a": "Al momento della prenotazione, l'importo massimo viene preautorizzato sulla tua carta. Dopo l'intervento, viene addebitato solo il prezzo finale stabilito dall'artigiano. La differenza viene rilasciata automaticamente.",
     "faq2q": "Posso annullare una prenotazione?",
     "faq2a": "Una volta confermata la prenotazione, sono dovute spese di spostamento di 75€. Puoi tuttavia rifiutare i lavori e pagare solo le spese di spostamento. Questo sistema previene le cancellazioni abusive lasciandoti la liberta di scelta.",
     "faq3q": "Qual e la garanzia?",

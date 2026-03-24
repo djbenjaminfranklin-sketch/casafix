@@ -1,4 +1,18 @@
 {
+  "common": {
+    "error": "Error"
+  },
+  "error": {
+    "title": "Oops!",
+    "message": "An unexpected error occurred. Please try again.",
+    "retry": "Retry"
+  },
+  "notifications": {
+    "artisanSelected": "Selected",
+    "artisanSelectedBody": "You have been selected for \"{{service}}\". Head to the client's address.",
+    "artisanNotSelected": "Not selected",
+    "artisanNotSelectedBody": "The client chose another artisan for \"{{service}}\"."
+  },
   "appName": "CasaFix",
   "location": "Costa del Sol",
   "searchPlaceholder": "What are you looking for?",
@@ -69,7 +83,8 @@
     "pool_install": "Pool Equipment",
     "garden_maintenance": "Garden Maintenance",
     "garden_install": "Landscaping",
-    "garden_repair": "Garden Repair"
+    "garden_repair": "Garden Repair",
+    "other": "Other"
   },
   "services": {
     "toilet_unclog": "Toilet unclogging",
@@ -203,7 +218,8 @@
     "lawn_install": "Lawn installation",
     "garden_design": "Garden design",
     "irrigation_repair": "Irrigation system repair",
-    "fence_repair": "Fence repair"
+    "fence_repair": "Fence repair",
+    "other_service": "Other request (quote on-site)"
   },
   "banner": {
     "onlinePayment": "Online payment",
@@ -213,8 +229,8 @@
   "payment": {
     "book": "Book now",
     "maxPrice": "Max price",
-    "realPriceNote": "The actual price will be set on-site by the artisan",
-    "explanation": "The maximum amount is pre-authorised on your card. Only the actual price, set by the artisan after the job, will be charged.",
+    "realPriceNote": "The final price will be set on-site by the artisan. It may vary depending on the materials required.",
+    "explanation": "Your money is safe. This is only a pre-authorisation: NO money is taken from your account. Only the final price, set by the artisan on-site, will be charged. If it's less, the difference is automatically released.",
     "preauth": "Pre-authorisation",
     "charged": "Amount charged",
     "secure": "100% secure payment",
@@ -266,7 +282,14 @@
     "artisansAvailable": "artisan(s) available",
     "chooseArtisan": "Choose your artisan",
     "select": "Select",
-    "waitingMore": "Waiting for more artisans..."
+    "waitingMore": "Waiting for more artisans...",
+    "photoHelp": "Add photos to help the artisan give you a more accurate price.",
+    "noArtisanTitle": "No artisan available",
+    "noShowTitle": "Artisan hasn't arrived?",
+    "noShowDesc": "It's been 45 minutes since the artisan was assigned. If they haven't arrived, you can report their absence and search again.",
+    "noShowResearch": "Report and search again",
+    "noShowCancel": "Report and cancel",
+    "noArtisanDesc": "No artisan is available at the moment. Your pre-authorisation has been released. Please try again later."
   },
   "auth": {
     "login": "Log in",
@@ -469,7 +492,48 @@
     "payment": "Payment",
     "help": "Help & Contact",
     "myBookings": "My bookings",
-    "legalSection": "Legal information"
+    "legalSection": "Legal information",
+    "howItWorks": "How it works"
+  },
+  "howItWorks": {
+    "title": "How it works",
+    "intro": "CasaFix connects you with verified local artisans in minutes. Here's how it works:",
+    "step1": {
+      "title": "Choose a service",
+      "desc": "Select the type of repair you need: plumbing, electrical, locksmith, and more."
+    },
+    "step2": {
+      "title": "Describe the problem",
+      "desc": "Take photos and describe the issue. Our AI will provide a preliminary diagnosis."
+    },
+    "step3": {
+      "title": "Secure pre-authorisation",
+      "desc": "Your card is pre-authorised (NOT charged). Only the final price will be debited."
+    },
+    "step4": {
+      "title": "Track your artisan",
+      "desc": "See your artisan on the map in real-time as they head to your location."
+    },
+    "step5": {
+      "title": "Confirm arrival",
+      "desc": "Show the QR code to the artisan when they arrive to confirm their presence."
+    },
+    "step6": {
+      "title": "Work is done",
+      "desc": "The artisan does the job and proposes the final price. You accept or decline."
+    },
+    "step7": {
+      "title": "Secure payment",
+      "desc": "Only the agreed price is charged. You have 48h to validate the work."
+    },
+    "step8": {
+      "title": "Rate your artisan",
+      "desc": "Leave a review to help other clients and reward good work."
+    },
+    "tipsTitle": "Good to know",
+    "tip1": "Your money is safe — only a pre-authorisation, no charge until you accept.",
+    "tip2": "Free cancellation within the first 2 minutes.",
+    "tip3": "All artisans are verified and insured."
   },
   "legal": {
     "cguTitle": "Terms and Conditions",
@@ -477,16 +541,46 @@
     "privacyTitle": "Privacy Policy",
     "lastUpdated": "Last updated",
     "cgu": {
-      "article1": { "title": "Article 1 – Purpose", "content": "These Terms and Conditions govern the use of the CasaFix mobile application, a platform connecting homeowners with qualified artisans on the Costa del Sol (Marbella, Estepona, Fuengirola, Málaga and surrounding areas)." },
-      "article2": { "title": "Article 2 – Access", "content": "Access to the Application is free. Some services may require creating a user account. Users agree to provide accurate information and maintain the confidentiality of their login credentials." },
-      "article3": { "title": "Article 3 – Services", "content": "CasaFix connects users with artisans for: plumbing, electrical, locksmith, heating, AC, pest control, appliances, glazing, small works, renovation, pool and garden services. Displayed prices are indicative. A free, no-obligation quote is provided before any work." },
-      "article4": { "title": "Article 4 – Pricing & Payment", "content": "Prices shown are indicative ranges including VAT. No surcharge is applied for evenings, weekends or holidays. Payment is exclusively online: upon booking, the maximum amount is pre-authorised on the customer's card. After the job, the artisan enters the actual price and only that amount is charged. The difference is automatically released. An invoice is sent by email within 48 hours." },
-      "article5": { "title": "Article 5 – Guarantees", "content": "All work carried out by CasaFix network artisans comes with a 1-year guarantee on parts and labour. A free return visit is arranged within 48 hours for any related issues. Partner artisans carry professional liability insurance." },
-      "article6": { "title": "Article 6 – Liability", "content": "CasaFix acts as an intermediary and is not directly responsible for the quality of work, though it commits to selecting qualified and insured professionals." },
-      "article7": { "title": "Article 7 – Personal Data", "content": "CasaFix complies with GDPR and Spanish LOPD regulations. Data collected is used solely for service operation and is never shared with third parties without consent." },
-      "article8": { "title": "Article 8 – Intellectual Property", "content": "All elements of the Application are protected by intellectual property law. Reproduction without authorisation is prohibited." },
-      "article9": { "title": "Article 9 – Applicable Law", "content": "These Terms are governed by Spanish law. Disputes shall be submitted to the competent courts of Málaga, Spain." },
-      "article10": { "title": "Article 10 – Amendments", "content": "CasaFix reserves the right to modify these Terms at any time. Continued use of the Application constitutes acceptance of the updated Terms." }
+      "article1": {
+        "title": "Article 1 – Purpose",
+        "content": "These Terms and Conditions govern the use of the CasaFix mobile application, a platform connecting homeowners with qualified artisans on the Costa del Sol (Marbella, Estepona, Fuengirola, Málaga and surrounding areas)."
+      },
+      "article2": {
+        "title": "Article 2 – Access",
+        "content": "Access to the Application is free. Some services may require creating a user account. Users agree to provide accurate information and maintain the confidentiality of their login credentials."
+      },
+      "article3": {
+        "title": "Article 3 – Services",
+        "content": "CasaFix connects users with artisans for: plumbing, electrical, locksmith, heating, AC, pest control, appliances, glazing, small works, renovation, pool and garden services. Displayed prices are indicative. A free, no-obligation quote is provided before any work."
+      },
+      "article4": {
+        "title": "Article 4 – Pricing & Payment",
+        "content": "Prices shown are indicative ranges including VAT. No surcharge is applied for evenings, weekends or holidays. Payment is exclusively online: upon booking, the maximum amount is pre-authorised on the customer's card. After the job, the artisan enters the final price and only that amount is charged. The difference is automatically released. An invoice is sent by email within 48 hours."
+      },
+      "article5": {
+        "title": "Article 5 – Guarantees",
+        "content": "All work carried out by CasaFix network artisans comes with a 1-year guarantee on parts and labour. A free return visit is arranged within 48 hours for any related issues. Partner artisans carry professional liability insurance."
+      },
+      "article6": {
+        "title": "Article 6 – Liability",
+        "content": "CasaFix acts as an intermediary and is not directly responsible for the quality of work, though it commits to selecting qualified and insured professionals."
+      },
+      "article7": {
+        "title": "Article 7 – Personal Data",
+        "content": "CasaFix complies with GDPR and Spanish LOPD regulations. Data collected is used solely for service operation and is never shared with third parties without consent."
+      },
+      "article8": {
+        "title": "Article 8 – Intellectual Property",
+        "content": "All elements of the Application are protected by intellectual property law. Reproduction without authorisation is prohibited."
+      },
+      "article9": {
+        "title": "Article 9 – Applicable Law",
+        "content": "These Terms are governed by Spanish law. Disputes shall be submitted to the competent courts of Málaga, Spain."
+      },
+      "article10": {
+        "title": "Article 10 – Amendments",
+        "content": "CasaFix reserves the right to modify these Terms at any time. Continued use of the Application constitutes acceptance of the updated Terms."
+      }
     },
     "legalNotice": {
       "publisherTitle": "Application Publisher",
@@ -540,7 +634,7 @@
     "secureTitle": "Secure payment",
     "secureDesc": "All payments are protected by Stripe, the world leader in online payments",
     "preauthTitle": "Pre-authorisation",
-    "preauthDesc": "Only the actual amount is charged after the service. The rest is automatically released",
+    "preauthDesc": "Only the final amount is charged after the service. The rest is automatically released",
     "invoiceTitle": "Invoices",
     "invoiceDesc": "Automatically receive your invoice by email after each service",
     "methodTitle": "Payment method",
@@ -553,7 +647,7 @@
     "email": "Email",
     "faqTitle": "Frequently asked questions",
     "faq1q": "How does payment work?",
-    "faq1a": "When booking, the maximum amount is pre-authorised on your card. After the service, only the actual price set by the artisan is charged. The difference is automatically released.",
+    "faq1a": "When booking, the maximum amount is pre-authorised on your card. After the service, only the final price set by the artisan is charged. The difference is automatically released.",
     "faq2q": "Can I cancel a booking?",
     "faq2a": "Once a booking is confirmed, a €75 displacement fee applies. You may however decline the work and only pay the displacement fee. This system prevents cancellation abuse while leaving you the choice.",
     "faq3q": "What is the guarantee?",

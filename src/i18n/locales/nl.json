@@ -1,4 +1,7 @@
 {
+  "common": { "error": "Fout" },
+  "error": { "title": "Oeps!", "message": "Er is een onverwachte fout opgetreden. Probeer het opnieuw.", "retry": "Opnieuw proberen" },
+  "notifications": { "artisanSelected": "Geselecteerd", "artisanSelectedBody": "U bent geselecteerd voor \"{{service}}\". Ga naar het adres van de klant.", "artisanNotSelected": "Niet geselecteerd", "artisanNotSelectedBody": "De klant heeft een andere vakman gekozen voor \"{{service}}\"." },
   "appName": "CasaFix",
   "location": "Costa del Sol",
   "searchPlaceholder": "Wat zoekt u?",
@@ -69,7 +72,8 @@
     "pool_install": "Zwembadinstallatie",
     "garden_maintenance": "Tuinonderhoud",
     "garden_install": "Tuinaanleg",
-    "garden_repair": "Tuinreparatie"
+    "garden_repair": "Tuinreparatie",
+    "other": "Overig"
   },
   "services": {
     "toilet_unclog": "Toilet ontstoppen",
@@ -203,7 +207,8 @@
     "lawn_install": "Gazon aanleggen",
     "garden_design": "Tuinontwerp",
     "irrigation_repair": "Irrigatiesysteem-reparatie",
-    "fence_repair": "Hekwerkreparatie"
+    "fence_repair": "Hekwerkreparatie",
+    "other_service": "Ander verzoek (offerte ter plaatse)"
   },
   "banner": {
     "onlinePayment": "Online betaling",
@@ -213,8 +218,8 @@
   "payment": {
     "book": "Boeken",
     "maxPrice": "Max. prijs",
-    "realPriceNote": "De werkelijke prijs wordt ter plaatse bepaald door de vakman",
-    "explanation": "Het maximumbedrag wordt vooraf geautoriseerd op uw kaart. Alleen de werkelijke prijs, bepaald door de vakman na het werk, wordt afgeschreven.",
+    "realPriceNote": "De definitieve prijs wordt ter plaatse bepaald door de vakman",
+    "explanation": "Het maximumbedrag wordt vooraf geautoriseerd op uw kaart. Alleen de definitieve prijs, bepaald door de vakman na het werk, wordt afgeschreven.",
     "preauth": "Voorautorisatie",
     "charged": "Afgeschreven bedrag",
     "secure": "100% veilige betaling"
@@ -462,7 +467,7 @@
       },
       "article4": {
         "title": "Artikel 4 – Tarieven en betaling",
-        "content": "De getoonde prijzen zijn indicatief en inclusief btw. Er wordt geen toeslag berekend voor avond-, weekend- of feestdaginterventies. De betaling vindt uitsluitend online plaats: bij het boeken wordt het maximumbedrag vooraf geautoriseerd op de kaart van de klant. Na afloop van de interventie geeft de vakman de werkelijke prijs aan en alleen dit bedrag wordt afgeschreven. Het verschil wordt automatisch vrijgegeven. De factuur wordt binnen 48 uur per e-mail verzonden."
+        "content": "De getoonde prijzen zijn indicatief en inclusief btw. Er wordt geen toeslag berekend voor avond-, weekend- of feestdaginterventies. De betaling vindt uitsluitend online plaats: bij het boeken wordt het maximumbedrag vooraf geautoriseerd op de kaart van de klant. Na afloop van de interventie geeft de vakman de definitieve prijs aan en alleen dit bedrag wordt afgeschreven. Het verschil wordt automatisch vrijgegeven. De factuur wordt binnen 48 uur per e-mail verzonden."
       },
       "article5": {
         "title": "Artikel 5 – Garanties",
@@ -541,7 +546,7 @@
     "secureTitle": "Veilige betaling",
     "secureDesc": "Alle betalingen worden beschermd door Stripe, wereldleider in online betalingen",
     "preauthTitle": "Voorautorisatie",
-    "preauthDesc": "Alleen het werkelijke bedrag wordt in rekening gebracht na de service. De rest wordt automatisch vrijgegeven",
+    "preauthDesc": "Alleen het definitieve bedrag wordt in rekening gebracht na de service. De rest wordt automatisch vrijgegeven",
     "invoiceTitle": "Facturen",
     "invoiceDesc": "Ontvang automatisch uw factuur per e-mail na elke service",
     "methodTitle": "Betaalmethode",
@@ -554,7 +559,7 @@
     "email": "E-mail",
     "faqTitle": "Veelgestelde vragen",
     "faq1q": "Hoe werkt de betaling?",
-    "faq1a": "Bij het boeken wordt het maximumbedrag voorgeautoriseerd op uw kaart. Na de service wordt alleen de werkelijke prijs in rekening gebracht. Het verschil wordt automatisch vrijgegeven.",
+    "faq1a": "Bij het boeken wordt het maximumbedrag voorgeautoriseerd op uw kaart. Na de service wordt alleen de definitieve prijs in rekening gebracht. Het verschil wordt automatisch vrijgegeven.",
     "faq2q": "Kan ik een boeking annuleren?",
     "faq2a": "Na bevestiging van een boeking zijn er €75 voorrijkosten verschuldigd. U kunt de werkzaamheden echter weigeren en alleen de voorrijkosten betalen. Dit systeem voorkomt misbruik van annuleringen en laat u de keuze.",
     "faq3q": "Wat is de garantie?",

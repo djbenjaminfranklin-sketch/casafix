@@ -53,7 +53,7 @@ export default function MyAccountScreen({ navigation }: Props) {
       setEdited(false);
       Alert.alert("", t("account.saved"));
     } catch {
-      Alert.alert("Error", t("account.saveError"));
+      Alert.alert(t("common.error"), t("account.saveError"));
     }
     setSaving(false);
   }
@@ -78,7 +78,7 @@ export default function MyAccountScreen({ navigation }: Props) {
               }
               await signOut();
             } catch {
-              Alert.alert("Error", t("account.deleteError"));
+              Alert.alert(t("common.error"), t("account.deleteError"));
             }
           },
         },

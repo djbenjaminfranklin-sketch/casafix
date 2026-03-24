@@ -28,7 +28,7 @@ import MediaPicker from "../components/MediaPicker";
 import DiagnosticCard from "../components/DiagnosticCard";
 import ArtisanCard from "../components/ArtisanCard";
 import { MediaItem, uploadAllMedia } from "../services/media";
-import { createBooking, subscribeToBooking, getBookingWithArtisan } from "../services/bookings";
+import { createBooking, subscribeToBooking, getBookingWithArtisan, reportNoShow } from "../services/bookings";
 import { createPaymentIntent } from "../lib/stripe";
 import { usePaymentSheet } from "@stripe/stripe-react-native";
 import { addFavorite, removeFavorite, isFavorite } from "../services/favorites";
@@ -97,10 +97,11 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
   const [selectingArtisan, setSelectingArtisan] = useState(false);
   const [manualAddress, setManualAddress] = useState("");
   const [locationFailed, setLocationFailed] = useState(false);
-  const [userLocation, setUserLocation] = useState({
-    latitude: 36.5105,
-    longitude: -4.8826,
-  });
+  const [userLocation, setUserLocation] = useState<{ latitude: number; longitude: number } | null>(null);
+
+  // Fallback: center of France if geolocation fails
+  const FALLBACK_LOCATION = { latitude: 48.8566, longitude: 2.3522 };
+  const displayLocation = userLocation || FALLBACK_LOCATION;
 
   // Helper: fetch full artisan details (last review + favorite status)
   const fetchFullArtisanDetails = async (artisanData: any, artisanId: string) => {
@@ -283,6 +284,55 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
     };
   }, [state, bookingId]);
 
+  // 30-minute search timeout
+  useEffect(() => {
+    if (state !== "searching" || !bookingId) return;
+    const timeout = setTimeout(async () => {
+      Alert.alert(
+        t("booking.noArtisanTitle"),
+        t("booking.noArtisanDesc"),
+        [{
+          text: "OK",
+          onPress: async () => {
+            await supabase.from("bookings").update({ status: "cancelled" }).eq("id", bookingId);
+            navigation.reset({ index: 0, routes: [{ name: "Tabs" }] });
+          },
+        }]
+      );
+    }, 30 * 60 * 1000); // 30 minutes
+    return () => clearTimeout(timeout);
+  }, [state, bookingId]);
+
+  // 45-minute no-show timer after artisan matched
+  useEffect(() => {
+    if ((state !== "matched" && state !== "arriving") || !bookingId) return;
+    const noShowTimeout = setTimeout(() => {
+      Alert.alert(
+        t("booking.noShowTitle"),
+        t("booking.noShowDesc"),
+        [
+          {
+            text: t("booking.noShowResearch"),
+            onPress: async () => {
+              await reportNoShow(bookingId);
+              // Re-create a new booking with same params
+              navigation.reset({ index: 0, routes: [{ name: "Tabs" }] });
+            },
+          },
+          {
+            text: t("booking.noShowCancel"),
+            style: "cancel",
+            onPress: async () => {
+              await reportNoShow(bookingId);
+              navigation.reset({ index: 0, routes: [{ name: "Tabs" }] });
+            },
+          },
+        ]
+      );
+    }, 45 * 60 * 1000); // 45 minutes
+    return () => clearTimeout(noShowTimeout);
+  }, [state, bookingId]);
+
   // Search pulse animation
   useEffect(() => {
     if (state === "searching") {
@@ -324,20 +374,20 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
       (async () => {
         const { data } = await getBookingWithArtisan(bookingId);
         if (data?.artisan) {
-          const artLat = data.artisan.latitude || userLocation.latitude;
-          const artLng = data.artisan.longitude || userLocation.longitude;
+          const artLat = data.artisan.latitude || displayLocation.latitude;
+          const artLng = data.artisan.longitude || displayLocation.longitude;
           const artisanPos = { latitude: artLat, longitude: artLng };
 
           setArtisanPosition(artisanPos);
 
           // Calculate real distance (km) and ETA (assuming 40km/h average in city)
           const R = 6371;
-          const dLat = ((userLocation.latitude - artLat) * Math.PI) / 180;
-          const dLng = ((userLocation.longitude - artLng) * Math.PI) / 180;
+          const dLat = ((displayLocation.latitude - artLat) * Math.PI) / 180;
+          const dLng = ((displayLocation.longitude - artLng) * Math.PI) / 180;
           const a =
             Math.sin(dLat / 2) * Math.sin(dLat / 2) +
             Math.cos((artLat * Math.PI) / 180) *
-              Math.cos((userLocation.latitude * Math.PI) / 180) *
+              Math.cos((displayLocation.latitude * Math.PI) / 180) *
               Math.sin(dLng / 2) *
               Math.sin(dLng / 2);
           const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
@@ -349,7 +399,7 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
           if (distanceKm > 0.1) {
             setTimeout(() => {
               mapRef.current?.fitToCoordinates(
-                [userLocation, artisanPos],
+                [displayLocation, artisanPos],
                 { edgePadding: { top: 100, right: 60, bottom: 300, left: 60 }, animated: true }
               );
             }, 500);
@@ -367,6 +417,14 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
     if (!bookingId) return;
 
     const unsubscribe = subscribeToBooking(bookingId, async (updatedBooking: Booking) => {
+      // Update ETA if artisan sent one
+      if (updatedBooking.estimated_arrival) {
+        const remaining = Math.max(0, Math.round(
+          (new Date(updatedBooking.estimated_arrival).getTime() - Date.now()) / 60000
+        ));
+        setEtaMinutes(remaining);
+      }
+
       // Artisan accepted the booking
       if (updatedBooking.status === "matched" && updatedBooking.artisan_id) {
         const { data: fullBooking } = await getBookingWithArtisan(bookingId);
@@ -484,6 +542,28 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
           isFavorited: false,
         });
       }
+
+      // Notify selected artisan
+      await supabase.from("notification_queue").insert({
+        user_id: artisanId,
+        title: t("notifications.artisanSelected"),
+        body: t("notifications.artisanSelectedBody", { service: serviceName }),
+        data: JSON.stringify({ type: "selected", booking_id: bookingId }),
+        sent: false,
+      });
+
+      // Notify non-selected artisans
+      const nonSelected = proposals.filter((p) => p.artisan_id !== artisanId);
+      for (const p of nonSelected) {
+        await supabase.from("notification_queue").insert({
+          user_id: p.artisan_id,
+          title: t("notifications.artisanNotSelected"),
+          body: t("notifications.artisanNotSelectedBody", { service: serviceName }),
+          data: JSON.stringify({ type: "not_selected", booking_id: bookingId }),
+          sent: false,
+        });
+      }
+
       setState("matched");
     }
     setSelectingArtisan(false);
@@ -533,8 +613,8 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
       serviceName: serviceName,
       priceRange,
       type: "emergency",
-      latitude: userLocation.latitude,
-      longitude: userLocation.longitude,
+      latitude: displayLocation.latitude,
+      longitude: displayLocation.longitude,
       description: fullDescription,
     });
 
@@ -586,16 +666,16 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
       return;
     }
 
-    // 4. Payment authorized — proceed with booking
+    // 4. Payment authorized — now switch to searching (triggers artisan notifications)
     setState("searching");
     setBookingId(booking.id);
 
-    // Generate and save arrival code for QR verification
+    // Generate arrival code and activate the booking
     const code = Math.random().toString(36).slice(2, 10).toUpperCase();
     setArrivalCode(code);
     await supabase
       .from("bookings")
-      .update({ arrival_code: code, deposit_amount: maxPrice })
+      .update({ arrival_code: code, deposit_amount: maxPrice, status: "searching" })
       .eq("id", booking.id);
 
     // Upload media if any
@@ -606,8 +686,10 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
       }
     }
 
-    // Trigger push notifications to matching artisans
+    // Trigger push notifications to nearest artisans (max 5)
     supabase.functions.invoke("process-notifications").catch(() => {});
+
+    setSubmitting(false);
   };
 
   const pulseScale = pulseAnim.interpolate({
@@ -638,7 +720,7 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
         provider={PROVIDER_DEFAULT}
         style={styles.map}
         region={{
-          ...userLocation,
+          ...displayLocation,
           latitudeDelta: 0.02,
           longitudeDelta: 0.02,
         }}
@@ -662,7 +744,7 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
 
         {/* User destination marker */}
         {(state === "matched" || state === "arriving") && (
-          <Marker coordinate={userLocation} anchor={{ x: 0.5, y: 0.5 }}>
+          <Marker coordinate={displayLocation} anchor={{ x: 0.5, y: 0.5 }}>
             <View style={styles.userDestMarker}>
               <Icon name="home" size={16} color="#FFFFFF" />
             </View>
@@ -670,12 +752,18 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
         )}
       </MapView>
 
-      {/* Back button overlay */}
+      {/* Navigation buttons overlay */}
       <TouchableOpacity
         style={styles.backBtnOverlay}
         onPress={() => navigation.goBack()}
       >
         <Icon name="arrow-back" size={22} color={COLORS.text} />
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.homeBtnOverlay}
+        onPress={() => navigation.reset({ index: 0, routes: [{ name: "Tabs" }] })}
+      >
+        <Icon name="home" size={20} color={COLORS.text} />
       </TouchableOpacity>
 
       {/* ETA overlay on map when artisan is moving */}
@@ -739,10 +827,13 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
               <Text style={styles.guaranteeText}>{t("booking.guarantee2h")}</Text>
             </View>
 
-            {/* Payment info */}
-            <View style={styles.paymentRow}>
-              <Icon name="card" size={16} color={COLORS.primary} />
-              <Text style={styles.paymentText}>{t("payment.explanation")}</Text>
+            {/* Payment info - trust badge */}
+            <View style={styles.trustBadge}>
+              <View style={styles.trustBadgeHeader}>
+                <Icon name="shield-checkmark" size={20} color="#16a34a" />
+                <Text style={styles.trustBadgeTitle}>{t("payment.secure")}</Text>
+              </View>
+              <Text style={styles.trustBadgeText}>{t("payment.explanation")}</Text>
             </View>
 
             {/* Manual address fallback */}
@@ -765,38 +856,14 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
             {/* Photos / Videos */}
             <MediaPicker media={media} onMediaChange={setMedia} maxItems={5} description={description} onDescriptionChange={setDescription} />
 
-            {/* Analyze button - appears when photos + description are present */}
-            {media.length > 0 && description.trim().length > 0 && !aiDiagnostic && (
-              <TouchableOpacity
-                style={[styles.analyzeBtn, analyzingAi && { opacity: 0.6 }]}
-                onPress={handleAnalyze}
-                activeOpacity={0.85}
-                disabled={analyzingAi}
-              >
-                {analyzingAi ? (
-                  <>
-                    <Icon name="sparkles" size={20} color={COLORS.primary} />
-                    <Text style={styles.analyzeBtnText}>{t("diagnostic.analyzing")}</Text>
-                    <View style={styles.dots}>
-                      <AnimatedDot delay={0} />
-                      <AnimatedDot delay={200} />
-                      <AnimatedDot delay={400} />
-                    </View>
-                  </>
-                ) : (
-                  <>
-                    <Icon name="sparkles" size={20} color={COLORS.primary} />
-                    <Text style={styles.analyzeBtnText}>{t("diagnostic.analyze")}</Text>
-                  </>
-                )}
-              </TouchableOpacity>
-            )}
-
-            {/* AI Diagnostic result */}
-            {aiDiagnostic && <DiagnosticCard diagnostic={aiDiagnostic} />}
+            {/* Photo help text */}
+            <View style={styles.photoHelpRow}>
+              <Icon name="camera-outline" size={16} color="#6b7280" />
+              <Text style={styles.photoHelpText}>{t("booking.photoHelp")}</Text>
+            </View>
 
             {/* Confirm button */}
-            <TouchableOpacity style={[styles.confirmBtn, (analyzingAi || submitting) && { opacity: 0.4 }]} onPress={handleConfirm} activeOpacity={0.85} disabled={analyzingAi || submitting}>
+            <TouchableOpacity style={[styles.confirmBtn, submitting && { opacity: 0.4 }]} onPress={handleConfirm} activeOpacity={0.85} disabled={submitting}>
               {submitting ? (
                 <ActivityIndicator color="#FFFFFF" />
               ) : (
@@ -954,7 +1021,7 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
                     if (supported) {
                       Linking.openURL(phone);
                     } else {
-                      Alert.alert("Error", t("booking.callUnavailable"));
+                      Alert.alert(t("common.error"), t("booking.callUnavailable"));
                     }
                   });
                 }}
@@ -1067,6 +1134,13 @@ const styles = StyleSheet.create({
   map: { flex: 1 },
   backBtnOverlay: {
     position: "absolute", top: 60, left: SPACING.md,
+    width: 44, height: 44, borderRadius: 22, backgroundColor: "#FFFFFF",
+    alignItems: "center", justifyContent: "center",
+    shadowColor: "#000", shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.15, shadowRadius: 8, elevation: 4,
+  },
+  homeBtnOverlay: {
+    position: "absolute", top: 60, left: SPACING.md + 52,
     width: 44, height: 44, borderRadius: 22, backgroundColor: "#FFFFFF",
     alignItems: "center", justifyContent: "center",
     shadowColor: "#000", shadowOffset: { width: 0, height: 2 },
@@ -1228,12 +1302,24 @@ const styles = StyleSheet.create({
     marginBottom: SPACING.md,
   },
   paymentText: { fontSize: 11, color: "#991B1B", flex: 1, lineHeight: 16 },
-  analyzeBtn: {
-    flexDirection: "row", alignItems: "center", justifyContent: "center",
-    backgroundColor: "#f0f9ff", paddingVertical: 12, borderRadius: RADIUS.md, gap: 8,
-    marginBottom: SPACING.sm, borderWidth: 2, borderColor: COLORS.primary,
+  trustBadge: {
+    backgroundColor: "#f0fdf4", padding: 14, borderRadius: RADIUS.md,
+    marginBottom: SPACING.md, borderWidth: 1, borderColor: "#bbf7d0",
   },
-  analyzeBtnText: { fontSize: 14, fontWeight: "700", color: COLORS.primary },
+  trustBadgeHeader: {
+    flexDirection: "row", alignItems: "center", gap: 6, marginBottom: 6,
+  },
+  trustBadgeTitle: {
+    fontSize: 13, fontWeight: "700", color: "#16a34a",
+  },
+  trustBadgeText: {
+    fontSize: 12, color: "#166534", lineHeight: 18,
+  },
+  photoHelpRow: {
+    flexDirection: "row", alignItems: "center", gap: 6,
+    marginBottom: SPACING.md, marginTop: 4,
+  },
+  photoHelpText: { fontSize: 12, color: "#6b7280", flex: 1, lineHeight: 17 },
   confirmBtn: {
     flexDirection: "row", alignItems: "center", justifyContent: "center",
     backgroundColor: COLORS.primary, paddingVertical: 14, borderRadius: RADIUS.md, gap: 10,

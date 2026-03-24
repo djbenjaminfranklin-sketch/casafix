@@ -72,7 +72,7 @@ export default function WorkCompletionScreen({ route, navigation }: Props) {
 
             if (error) {
               setLoading(false);
-              Alert.alert("Error", error.message);
+              Alert.alert(t("common.error"), error.message);
               return;
             }
 

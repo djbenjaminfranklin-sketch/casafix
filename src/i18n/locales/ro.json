@@ -1,4 +1,7 @@
 {
+  "common": { "error": "Eroare" },
+  "error": { "title": "Ups!", "message": "A apărut o eroare neașteptată. Vă rugăm să încercați din nou.", "retry": "Reîncercați" },
+  "notifications": { "artisanSelected": "Selectat", "artisanSelectedBody": "Ați fost selectat pentru \"{{service}}\". Mergeți la adresa clientului.", "artisanNotSelected": "Neselectat", "artisanNotSelectedBody": "Clientul a ales un alt meșter pentru \"{{service}}\"." },
   "appName": "CasaFix",
   "location": "Costa del Sol",
   "searchPlaceholder": "Ce cautati?",
@@ -69,7 +72,8 @@
     "pool_install": "Instalare piscina",
     "garden_maintenance": "Intretinere gradina",
     "garden_install": "Amenajare gradina",
-    "garden_repair": "Reparatie gradina"
+    "garden_repair": "Reparatie gradina",
+    "other": "Altele"
   },
   "services": {
     "toilet_unclog": "Desfundare toaleta",
@@ -203,7 +207,8 @@
     "lawn_install": "Montare gazon",
     "garden_design": "Design gradina",
     "irrigation_repair": "Reparatie sistem de irigare",
-    "fence_repair": "Reparatie gard"
+    "fence_repair": "Reparatie gard",
+    "other_service": "Altă solicitare (deviz la fața locului)"
   },
   "banner": {
     "onlinePayment": "Plata online",
@@ -213,8 +218,8 @@
   "payment": {
     "book": "Rezerva",
     "maxPrice": "Pret max.",
-    "realPriceNote": "Pretul real va fi stabilit la fata locului de catre meserias",
-    "explanation": "Suma maxima este preautorizata pe cardul dvs. Se debiteaza doar pretul real, stabilit de meserias dupa interventie.",
+    "realPriceNote": "Pretul final va fi stabilit la fata locului de catre meserias",
+    "explanation": "Suma maxima este preautorizata pe cardul dvs. Se debiteaza doar pretul final, stabilit de meserias dupa interventie.",
     "preauth": "Preautorizare",
     "charged": "Suma debitata",
     "secure": "Plata 100% securizata"
@@ -465,7 +470,7 @@
       },
       "article4": {
         "title": "Articolul 4 – Tarife si plata",
-        "content": "Preturile afisate in Aplicatie sunt intervale orientative cu TVA inclus. Nu se aplica niciun supliment pentru interventiile seara, in weekend sau in zilele de sarbatoare. Plata se efectueaza exclusiv online: la rezervare, se preautorizeaza suma maxima pe cardul clientului. Dupa interventie, meseriasul introduce suma reala si doar aceasta suma este debitata. Diferenta este eliberata automat. Factura este trimisa prin email in 48 de ore."
+        "content": "Preturile afisate in Aplicatie sunt intervale orientative cu TVA inclus. Nu se aplica niciun supliment pentru interventiile seara, in weekend sau in zilele de sarbatoare. Plata se efectueaza exclusiv online: la rezervare, se preautorizeaza suma maxima pe cardul clientului. Dupa interventie, meseriasul introduce suma finala si doar aceasta suma este debitata. Diferenta este eliberata automat. Factura este trimisa prin email in 48 de ore."
       },
       "article5": {
         "title": "Articolul 5 – Garantii",
@@ -544,7 +549,7 @@
     "secureTitle": "Plata securizata",
     "secureDesc": "Toate platile sunt protejate de Stripe, lider mondial in plati online",
     "preauthTitle": "Preautorizare",
-    "preauthDesc": "Se debiteaza doar suma reala dupa interventie. Restul este eliberat automat",
+    "preauthDesc": "Se debiteaza doar suma finala dupa interventie. Restul este eliberat automat",
     "invoiceTitle": "Facturi",
     "invoiceDesc": "Primiti automat factura prin email dupa fiecare interventie",
     "methodTitle": "Metoda de plata",
@@ -573,7 +578,7 @@
     "email": "Email",
     "faqTitle": "Intrebari frecvente",
     "faq1q": "Cum functioneaza plata?",
-    "faq1a": "La rezervare, suma maxima este preautorizata pe cardul dvs. Dupa interventie, se debiteaza doar pretul real stabilit de meserias. Diferenta este eliberata automat.",
+    "faq1a": "La rezervare, suma maxima este preautorizata pe cardul dvs. Dupa interventie, se debiteaza doar pretul final stabilit de meserias. Diferenta este eliberata automat.",
     "faq2q": "Pot anula o rezervare?",
     "faq2a": "Dupa confirmarea rezervarii, se datoreaza o taxa de deplasare de 75€. Puteti totusi refuza lucrarile si plati doar taxa de deplasare. Acest sistem previne anularile abuzive, pastrand in acelasi timp libertatea de alegere.",
     "faq3q": "Care este garantia?",

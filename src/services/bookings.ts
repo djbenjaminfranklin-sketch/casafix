@@ -38,7 +38,7 @@ export async function createBooking(params: {
       max_price: maxPrice,
       scheduled_date: params.scheduledDate || null,
       scheduled_slot: params.scheduledSlot || null,
-      status: "searching",
+      status: "pending",
       client_latitude: params.latitude || null,
       client_longitude: params.longitude || null,
       description: params.description || null,
@@ -107,4 +107,46 @@ export async function cancelBooking(bookingId: string) {
     .eq("id", bookingId);
 
   return { error };
+}
+
+// Report artisan no-show: cancel booking, flag artisan, file report
+export async function reportNoShow(bookingId: string) {
+  // Get booking details
+  const { data: booking } = await supabase
+    .from("bookings")
+    .select("*, artisan:artisans(id, full_name)")
+    .eq("id", bookingId)
+    .single();
+
+  if (!booking) return { error: { message: "Booking not found" } };
+
+  // Cancel the booking with no_show reason
+  const { error: cancelError } = await supabase
+    .from("bookings")
+    .update({ status: "cancelled", cancel_reason: "artisan_no_show" })
+    .eq("id", bookingId);
+
+  if (cancelError) return { error: cancelError };
+
+  // File a report for the no-show
+  if (booking.artisan_id) {
+    await supabase.from("reports").insert({
+      booking_id: bookingId,
+      reporter_id: booking.client_id,
+      reported_id: booking.artisan_id,
+      reason: "no_show",
+      description: `Artisan ${booking.artisan?.full_name || "unknown"} did not show up for booking ${bookingId}`,
+    });
+  }
+
+  // Release payment hold if exists
+  if (booking.payment_intent_id) {
+    try {
+      await supabase.functions.invoke("release-payment", {
+        body: { bookingId },
+      });
+    } catch {}
+  }
+
+  return { error: null };
 }

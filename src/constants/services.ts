@@ -67,6 +67,13 @@ export const SERVICES: CategoryServices[] = [
           { id: "water_heater_leak", priceRange: "150–250 €" },
         ],
       },
+      {
+        id: "other",
+        icon: "ellipsis-horizontal",
+        services: [
+          { id: "other_service", priceRange: "75–200 €" },
+        ],
+      },
     ],
   },
   {
@@ -108,6 +115,13 @@ export const SERVICES: CategoryServices[] = [
           { id: "shutter_motor_repair", priceRange: "150–300 €" },
           { id: "smoke_detector_install", priceRange: "50–100 €" },
           { id: "electrical_diagnosis", priceRange: "100–200 €" },
+        ],
+      },
+      {
+        id: "other",
+        icon: "ellipsis-horizontal",
+        services: [
+          { id: "other_service", priceRange: "75–200 €" },
         ],
       },
     ],
@@ -153,6 +167,13 @@ export const SERVICES: CategoryServices[] = [
           { id: "shutter_motor_install", priceRange: "250–500 €" },
         ],
       },
+      {
+        id: "other",
+        icon: "ellipsis-horizontal",
+        services: [
+          { id: "other_service", priceRange: "75–200 €" },
+        ],
+      },
     ],
   },
   {
@@ -183,6 +204,13 @@ export const SERVICES: CategoryServices[] = [
           { id: "radiator_repair", priceRange: "180–240 €" },
           { id: "radiator_install", priceRange: "250–500 €" },
           { id: "underfloor_heating_repair", priceRange: "200–400 €" },
+        ],
+      },
+      {
+        id: "other",
+        icon: "ellipsis-horizontal",
+        services: [
+          { id: "other_service", priceRange: "75–200 €" },
         ],
       },
     ],
@@ -216,6 +244,13 @@ export const SERVICES: CategoryServices[] = [
           { id: "ac_filter_cleaning", priceRange: "80–120 €" },
         ],
       },
+      {
+        id: "other",
+        icon: "ellipsis-horizontal",
+        services: [
+          { id: "other_service", priceRange: "75–200 €" },
+        ],
+      },
     ],
   },
   {
@@ -246,6 +281,13 @@ export const SERVICES: CategoryServices[] = [
         services: [
           { id: "pest_contract", priceRange: "4–7 €/m²" },
           { id: "pest_diagnosis", priceRange: "120–150 €" },
+        ],
+      },
+      {
+        id: "other",
+        icon: "ellipsis-horizontal",
+        services: [
+          { id: "other_service", priceRange: "75–200 €" },
         ],
       },
     ],
@@ -296,6 +338,13 @@ export const SERVICES: CategoryServices[] = [
           { id: "dryer_repair", priceRange: "100–250 €" },
         ],
       },
+      {
+        id: "other",
+        icon: "ellipsis-horizontal",
+        services: [
+          { id: "other_service", priceRange: "75–200 €" },
+        ],
+      },
     ],
   },
   {
@@ -318,6 +367,13 @@ export const SERVICES: CategoryServices[] = [
           { id: "window_aluminium_install", priceRange: "800–1300 €" },
           { id: "window_repair", priceRange: "150–300 €" },
           { id: "window_handle_replace", priceRange: "200–300 €" },
+        ],
+      },
+      {
+        id: "other",
+        icon: "ellipsis-horizontal",
+        services: [
+          { id: "other_service", priceRange: "75–200 €" },
         ],
       },
     ],
@@ -354,6 +410,13 @@ export const SERVICES: CategoryServices[] = [
           { id: "general_handyman", priceRange: "50–90 €/h" },
         ],
       },
+      {
+        id: "other",
+        icon: "ellipsis-horizontal",
+        services: [
+          { id: "other_service", priceRange: "75–200 €" },
+        ],
+      },
     ],
   },
   {
@@ -387,6 +450,13 @@ export const SERVICES: CategoryServices[] = [
           { id: "pool_robot_install", priceRange: "300–800 €" },
         ],
       },
+      {
+        id: "other",
+        icon: "ellipsis-horizontal",
+        services: [
+          { id: "other_service", priceRange: "75–200 €" },
+        ],
+      },
     ],
   },
   {
@@ -417,6 +487,13 @@ export const SERVICES: CategoryServices[] = [
         services: [
           { id: "irrigation_repair", priceRange: "80–200 €" },
           { id: "fence_repair", priceRange: "100–300 €" },
+        ],
+      },
+      {
+        id: "other",
+        icon: "ellipsis-horizontal",
+        services: [
+          { id: "other_service", priceRange: "75–200 €" },
         ],
       },
     ],

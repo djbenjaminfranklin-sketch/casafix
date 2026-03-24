@@ -59,7 +59,7 @@ export default function ReportScreen({ route, navigation }: Props) {
     setLoading(false);
 
     if (error) {
-      Alert.alert("Error", error.message);
+      Alert.alert(t("common.error"), error.message);
     } else {
       setSubmitted(true);
     }

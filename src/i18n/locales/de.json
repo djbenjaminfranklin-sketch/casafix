@@ -1,4 +1,7 @@
 {
+  "common": { "error": "Fehler" },
+  "error": { "title": "Hoppla!", "message": "Ein unerwarteter Fehler ist aufgetreten. Bitte versuchen Sie es erneut.", "retry": "Erneut versuchen" },
+  "notifications": { "artisanSelected": "Ausgewählt", "artisanSelectedBody": "Sie wurden für \"{{service}}\" ausgewählt. Begeben Sie sich zur Adresse des Kunden.", "artisanNotSelected": "Nicht ausgewählt", "artisanNotSelectedBody": "Der Kunde hat einen anderen Handwerker für \"{{service}}\" gewählt." },
   "appName": "CasaFix",
   "location": "Costa del Sol",
   "searchPlaceholder": "Was suchen Sie?",
@@ -69,7 +72,8 @@
     "pool_install": "Poolinstallation",
     "garden_maintenance": "Gartenpflege",
     "garden_install": "Gartengestaltung",
-    "garden_repair": "Gartenreparatur"
+    "garden_repair": "Gartenreparatur",
+    "other": "Sonstiges"
   },
   "services": {
     "toilet_unclog": "Toilette entstopfen",
@@ -203,7 +207,8 @@
     "lawn_install": "Rasenverlegung",
     "garden_design": "Gartengestaltung",
     "irrigation_repair": "Bewässerungsanlage-Reparatur",
-    "fence_repair": "Zaun-Reparatur"
+    "fence_repair": "Zaun-Reparatur",
+    "other_service": "Andere Anfrage (Angebot vor Ort)"
   },
   "banner": {
     "onlinePayment": "Online-Zahlung",
@@ -213,8 +218,8 @@
   "payment": {
     "book": "Jetzt buchen",
     "maxPrice": "Max. Preis",
-    "realPriceNote": "Der tatsächliche Preis wird vor Ort vom Handwerker festgelegt",
-    "explanation": "Der Höchstbetrag wird auf Ihrer Karte vorautorisiert. Nur der tatsächliche Preis, der vom Handwerker nach der Arbeit festgelegt wird, wird abgebucht.",
+    "realPriceNote": "Der endgültige Preis wird vor Ort vom Handwerker festgelegt",
+    "explanation": "Der Höchstbetrag wird auf Ihrer Karte vorautorisiert. Nur der endgültige Preis, der vom Handwerker nach der Arbeit festgelegt wird, wird abgebucht.",
     "preauth": "Vorautorisierung",
     "charged": "Abgebuchter Betrag",
     "secure": "100% sichere Zahlung"
@@ -462,7 +467,7 @@
       },
       "article4": {
         "title": "Artikel 4 – Preise & Zahlung",
-        "content": "Die angezeigten Preise sind Richtwerte inkl. MwSt. Kein Aufpreis für Abend, Wochenende oder Feiertage. Die Zahlung erfolgt ausschließlich online: Bei der Buchung wird der Höchstbetrag auf Ihrer Karte vorautorisiert. Nach der Arbeit gibt der Handwerker den tatsächlichen Preis ein und nur dieser wird abgebucht. Die Rechnung wird innerhalb von 48 Stunden per E-Mail versandt."
+        "content": "Die angezeigten Preise sind Richtwerte inkl. MwSt. Kein Aufpreis für Abend, Wochenende oder Feiertage. Die Zahlung erfolgt ausschließlich online: Bei der Buchung wird der Höchstbetrag auf Ihrer Karte vorautorisiert. Nach der Arbeit gibt der Handwerker den endgültigen Preis ein und nur dieser wird abgebucht. Die Rechnung wird innerhalb von 48 Stunden per E-Mail versandt."
       },
       "article5": {
         "title": "Artikel 5 – Garantien",
@@ -541,7 +546,7 @@
     "secureTitle": "Sichere Zahlung",
     "secureDesc": "Alle Zahlungen werden durch Stripe geschützt, dem weltweit führenden Online-Zahlungsanbieter",
     "preauthTitle": "Vorautorisierung",
-    "preauthDesc": "Es wird nur der tatsächliche Betrag nach dem Service abgebucht. Der Rest wird automatisch freigegeben",
+    "preauthDesc": "Es wird nur der endgültige Betrag nach dem Service abgebucht. Der Rest wird automatisch freigegeben",
     "invoiceTitle": "Rechnungen",
     "invoiceDesc": "Erhalten Sie nach jedem Service automatisch Ihre Rechnung per E-Mail",
     "methodTitle": "Zahlungsmethode",
@@ -554,7 +559,7 @@
     "email": "E-Mail",
     "faqTitle": "Häufig gestellte Fragen",
     "faq1q": "Wie funktioniert die Zahlung?",
-    "faq1a": "Bei der Buchung wird der Höchstbetrag auf Ihrer Karte vorautorisiert. Nach dem Service wird nur der vom Handwerker festgelegte tatsächliche Preis abgebucht. Die Differenz wird automatisch freigegeben.",
+    "faq1a": "Bei der Buchung wird der Höchstbetrag auf Ihrer Karte vorautorisiert. Nach dem Service wird nur der vom Handwerker festgelegte endgültige Preis abgebucht. Die Differenz wird automatisch freigegeben.",
     "faq2q": "Kann ich eine Buchung stornieren?",
     "faq2a": "Nach der Bestätigung einer Buchung fallen 75€ Anfahrtskosten an. Sie können die Arbeiten jedoch ablehnen und nur die Anfahrtskosten bezahlen. Dieses System verhindert Missbrauch bei Stornierungen und lässt Ihnen die Wahl.",
     "faq3q": "Was ist die Garantie?",

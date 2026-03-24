@@ -1,4 +1,18 @@
 {
+  "common": {
+    "error": "Error"
+  },
+  "error": {
+    "title": "¡Ups!",
+    "message": "Un error inesperado ha ocurrido. Por favor, inténtalo de nuevo.",
+    "retry": "Reintentar"
+  },
+  "notifications": {
+    "artisanSelected": "Seleccionado",
+    "artisanSelectedBody": "Has sido elegido para \"{{service}}\". Dirígete al domicilio del cliente.",
+    "artisanNotSelected": "No seleccionado",
+    "artisanNotSelectedBody": "El cliente ha elegido otro artesano para \"{{service}}\"."
+  },
   "appName": "CasaFix",
   "location": "Costa del Sol",
   "searchPlaceholder": "¿Qué necesitas?",
@@ -69,7 +83,8 @@
     "pool_install": "Instalación de piscina",
     "garden_maintenance": "Mantenimiento de jardín",
     "garden_install": "Paisajismo",
-    "garden_repair": "Reparación de jardín"
+    "garden_repair": "Reparación de jardín",
+    "other": "Otro"
   },
   "services": {
     "toilet_unclog": "Desatasco de inodoro",
@@ -203,7 +218,8 @@
     "lawn_install": "Instalación de césped",
     "garden_design": "Diseño de jardín",
     "irrigation_repair": "Reparación de riego",
-    "fence_repair": "Reparación de valla"
+    "fence_repair": "Reparación de valla",
+    "other_service": "Otra solicitud (presupuesto en el lugar)"
   },
   "banner": {
     "onlinePayment": "Pago online",
@@ -213,8 +229,8 @@
   "payment": {
     "book": "Reservar",
     "maxPrice": "Precio máx.",
-    "realPriceNote": "El precio real será definido en el lugar por el profesional",
-    "explanation": "El importe máximo se preautoriza en tu tarjeta. Solo se cobrará el precio real, definido por el profesional tras la intervención.",
+    "realPriceNote": "El precio final será definido en el lugar por el profesional. Puede variar según el material necesario.",
+    "explanation": "Tu dinero está seguro. Solo se realiza una preautorización: NO se cobra nada de tu cuenta. Únicamente se cobrará el precio final fijado por el artesano tras la intervención. Si es inferior, la diferencia se libera automáticamente.",
     "preauth": "Preautorización",
     "charged": "Importe cobrado",
     "secure": "Pago 100% seguro"
@@ -252,7 +268,14 @@
     "artisansAvailable": "artesano(s) disponible(s)",
     "chooseArtisan": "Elige tu artesano",
     "select": "Seleccionar",
-    "waitingMore": "Esperando más artesanos..."
+    "waitingMore": "Esperando más artesanos...",
+    "photoHelp": "Añade fotos para ayudar al artesano a darte un precio más preciso.",
+    "noArtisanTitle": "Ningún artesano disponible",
+    "noArtisanDesc": "No hay ningún artesano disponible en este momento. Su preautorización ha sido liberada. Inténtelo más tarde.",
+    "noShowTitle": "¿El artesano no ha llegado?",
+    "noShowDesc": "Han pasado 45 minutos desde que se asignó al artesano. Si no ha llegado, puede informar de su ausencia y buscar otro.",
+    "noShowResearch": "Informar y buscar otro",
+    "noShowCancel": "Informar y cancelar"
   },
   "auth": {
     "login": "Iniciar sesión",
@@ -354,7 +377,10 @@
     "empty": "No hay mensajes aún",
     "placeholder": "Escribe un mensaje..."
   },
-  "favorites": { "empty": "Sin favoritos aún", "emptyDesc": "Los artesanos que marques como favoritos aparecerán aquí" },
+  "favorites": {
+    "empty": "Sin favoritos aún",
+    "emptyDesc": "Los artesanos que marques como favoritos aparecerán aquí"
+  },
   "media": {
     "title": "Fotos y vídeos",
     "subtitle": "Añade fotos o vídeos del problema para que el artesano pueda anticipar",
@@ -427,7 +453,48 @@
     "payment": "Pago",
     "help": "Ayuda y contacto",
     "myBookings": "Mis reservas",
-    "legalSection": "Información legal"
+    "legalSection": "Información legal",
+    "howItWorks": "Cómo funciona"
+  },
+  "howItWorks": {
+    "title": "Cómo funciona",
+    "intro": "CasaFix te conecta con artesanos verificados en minutos. Así funciona:",
+    "step1": {
+      "title": "Elige un servicio",
+      "desc": "Selecciona el tipo de reparación: fontanería, electricidad, cerrajería y más."
+    },
+    "step2": {
+      "title": "Describe el problema",
+      "desc": "Haz fotos y describe la situación. Nuestra IA te dará un diagnóstico preliminar."
+    },
+    "step3": {
+      "title": "Preautorización segura",
+      "desc": "Tu tarjeta se preautoriza (NO se cobra). Solo se cobrará el precio final."
+    },
+    "step4": {
+      "title": "Sigue a tu artesano",
+      "desc": "Ve a tu artesano en el mapa en tiempo real mientras se dirige a tu ubicación."
+    },
+    "step5": {
+      "title": "Confirma la llegada",
+      "desc": "Muestra el código QR al artesano cuando llegue para confirmar su presencia."
+    },
+    "step6": {
+      "title": "Trabajo realizado",
+      "desc": "El artesano hace el trabajo y propone el precio final. Tú aceptas o rechazas."
+    },
+    "step7": {
+      "title": "Pago seguro",
+      "desc": "Solo se cobra el precio acordado. Tienes 48h para validar el trabajo."
+    },
+    "step8": {
+      "title": "Valora a tu artesano",
+      "desc": "Deja una reseña para ayudar a otros clientes y premiar el buen trabajo."
+    },
+    "tipsTitle": "Bueno saber",
+    "tip1": "Tu dinero está seguro — solo una preautorización, sin cobro hasta que aceptes.",
+    "tip2": "Cancelación gratuita en los primeros 2 minutos.",
+    "tip3": "Todos los artesanos están verificados y asegurados."
   },
   "legal": {
     "cguTitle": "Condiciones Generales de Uso",
@@ -435,16 +502,46 @@
     "privacyTitle": "Política de Privacidad",
     "lastUpdated": "Última actualización",
     "cgu": {
-      "article1": { "title": "Artículo 1 – Objeto", "content": "Las presentes Condiciones Generales de Uso (en adelante «CGU») tienen por objeto definir las modalidades y condiciones de uso de la aplicación móvil CasaFix (en adelante «la Aplicación»), así como los derechos y obligaciones de las partes. La Aplicación es un servicio de intermediación entre particulares que buscan servicios a domicilio y artesanos cualificados que operan en la Costa del Sol (Marbella, Estepona, Fuengirola, Málaga y alrededores)." },
-      "article2": { "title": "Artículo 2 – Acceso a la Aplicación", "content": "El acceso a la Aplicación es gratuito. El uso de determinados servicios puede requerir la creación de una cuenta de usuario. El usuario se compromete a proporcionar información veraz y actualizada y a mantener la confidencialidad de sus credenciales." },
-      "article3": { "title": "Artículo 3 – Servicios ofrecidos", "content": "CasaFix ofrece intermediación entre usuarios y artesanos para: fontanería, electricidad, cerrajería, calefacción, climatización, control de plagas, electrodomésticos, cristalería, pequeñas obras, reformas, piscina y jardinería. Los precios mostrados son orientativos. Se elabora un presupuesto gratuito y sin compromiso antes de cada intervención." },
-      "article4": { "title": "Artículo 4 – Tarifas y pago", "content": "Los precios mostrados son orientativos e incluyen IVA. No se aplica recargo por intervenciones nocturnas, fines de semana ni festivos. El pago se realiza exclusivamente online: al reservar, se preautoriza el importe máximo en la tarjeta del cliente. Al finalizar la intervención, el profesional indica el precio real y solo este importe se cobra. La diferencia se libera automáticamente. La factura se envía por email en un plazo de 48 horas." },
-      "article5": { "title": "Artículo 5 – Garantías", "content": "Todas las intervenciones cuentan con garantía de 1 año en piezas y mano de obra. En caso de incidencia, se organiza una nueva visita gratuita en 48 horas. Los artesanos disponen de seguro de responsabilidad civil profesional." },
-      "article6": { "title": "Artículo 6 – Responsabilidad", "content": "CasaFix actúa como intermediario y no es directamente responsable de la calidad de las prestaciones, aunque se compromete a seleccionar profesionales cualificados y asegurados." },
-      "article7": { "title": "Artículo 7 – Datos personales", "content": "CasaFix cumple con el RGPD y la LOPD española. Los datos recogidos se utilizan exclusivamente para el funcionamiento del servicio y no se ceden a terceros sin consentimiento." },
-      "article8": { "title": "Artículo 8 – Propiedad intelectual", "content": "Todos los elementos de la Aplicación están protegidos por las leyes de propiedad intelectual. Queda prohibida su reproducción sin autorización." },
-      "article9": { "title": "Artículo 9 – Legislación aplicable", "content": "Las presentes CGU se rigen por el derecho español. Los litigios se someterán a los tribunales competentes de Málaga." },
-      "article10": { "title": "Artículo 10 – Modificación", "content": "CasaFix se reserva el derecho de modificar las CGU en cualquier momento. El uso continuado de la Aplicación implica la aceptación de las nuevas condiciones." }
+      "article1": {
+        "title": "Artículo 1 – Objeto",
+        "content": "Las presentes Condiciones Generales de Uso (en adelante «CGU») tienen por objeto definir las modalidades y condiciones de uso de la aplicación móvil CasaFix (en adelante «la Aplicación»), así como los derechos y obligaciones de las partes. La Aplicación es un servicio de intermediación entre particulares que buscan servicios a domicilio y artesanos cualificados que operan en la Costa del Sol (Marbella, Estepona, Fuengirola, Málaga y alrededores)."
+      },
+      "article2": {
+        "title": "Artículo 2 – Acceso a la Aplicación",
+        "content": "El acceso a la Aplicación es gratuito. El uso de determinados servicios puede requerir la creación de una cuenta de usuario. El usuario se compromete a proporcionar información veraz y actualizada y a mantener la confidencialidad de sus credenciales."
+      },
+      "article3": {
+        "title": "Artículo 3 – Servicios ofrecidos",
+        "content": "CasaFix ofrece intermediación entre usuarios y artesanos para: fontanería, electricidad, cerrajería, calefacción, climatización, control de plagas, electrodomésticos, cristalería, pequeñas obras, reformas, piscina y jardinería. Los precios mostrados son orientativos. Se elabora un presupuesto gratuito y sin compromiso antes de cada intervención."
+      },
+      "article4": {
+        "title": "Artículo 4 – Tarifas y pago",
+        "content": "Los precios mostrados son orientativos e incluyen IVA. No se aplica recargo por intervenciones nocturnas, fines de semana ni festivos. El pago se realiza exclusivamente online: al reservar, se preautoriza el importe máximo en la tarjeta del cliente. Al finalizar la intervención, el profesional indica el precio final y solo este importe se cobra. La diferencia se libera automáticamente. La factura se envía por email en un plazo de 48 horas."
+      },
+      "article5": {
+        "title": "Artículo 5 – Garantías",
+        "content": "Todas las intervenciones cuentan con garantía de 1 año en piezas y mano de obra. En caso de incidencia, se organiza una nueva visita gratuita en 48 horas. Los artesanos disponen de seguro de responsabilidad civil profesional."
+      },
+      "article6": {
+        "title": "Artículo 6 – Responsabilidad",
+        "content": "CasaFix actúa como intermediario y no es directamente responsable de la calidad de las prestaciones, aunque se compromete a seleccionar profesionales cualificados y asegurados."
+      },
+      "article7": {
+        "title": "Artículo 7 – Datos personales",
+        "content": "CasaFix cumple con el RGPD y la LOPD española. Los datos recogidos se utilizan exclusivamente para el funcionamiento del servicio y no se ceden a terceros sin consentimiento."
+      },
+      "article8": {
+        "title": "Artículo 8 – Propiedad intelectual",
+        "content": "Todos los elementos de la Aplicación están protegidos por las leyes de propiedad intelectual. Queda prohibida su reproducción sin autorización."
+      },
+      "article9": {
+        "title": "Artículo 9 – Legislación aplicable",
+        "content": "Las presentes CGU se rigen por el derecho español. Los litigios se someterán a los tribunales competentes de Málaga."
+      },
+      "article10": {
+        "title": "Artículo 10 – Modificación",
+        "content": "CasaFix se reserva el derecho de modificar las CGU en cualquier momento. El uso continuado de la Aplicación implica la aceptación de las nuevas condiciones."
+      }
     },
     "legalNotice": {
       "publisherTitle": "Editor de la Aplicación",
@@ -504,7 +601,7 @@
     "email": "Email",
     "faqTitle": "Preguntas frecuentes",
     "faq1q": "¿Cómo funciona el pago?",
-    "faq1a": "Al reservar, se preautoriza el importe máximo en tu tarjeta. Después de la intervención, solo se cobra el precio real fijado por el artesano. La diferencia se libera automáticamente.",
+    "faq1a": "Al reservar, se preautoriza el importe máximo en tu tarjeta. Después de la intervención, solo se cobra el precio final fijado por el artesano. La diferencia se libera automáticamente.",
     "faq2q": "¿Puedo cancelar una reserva?",
     "faq2a": "Una vez confirmada la reserva, se aplican 75€ de gastos de desplazamiento. Sin embargo, puedes rechazar los trabajos y pagar solo los gastos de desplazamiento. Este sistema evita las cancelaciones abusivas y te deja la elección.",
     "faq3q": "¿Cuál es la garantía?",

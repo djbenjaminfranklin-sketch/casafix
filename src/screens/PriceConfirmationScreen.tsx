@@ -66,7 +66,7 @@ export default function PriceConfirmationScreen({ route, navigation }: Props) {
     });
 
     if (error) {
-      Alert.alert("Error", error.message);
+      Alert.alert(t("common.error"), error.message);
       setLoading(false);
       return;
     }
@@ -79,7 +79,7 @@ export default function PriceConfirmationScreen({ route, navigation }: Props) {
     });
 
     if (!captureResult.success) {
-      Alert.alert("Error", t("priceConfirm.paymentError"));
+      Alert.alert(t("common.error"), t("priceConfirm.paymentError"));
       setLoading(false);
       return;
     }
@@ -92,7 +92,7 @@ export default function PriceConfirmationScreen({ route, navigation }: Props) {
       });
 
       if (!remainingResult.success) {
-        Alert.alert("Error", t("priceConfirm.additionalPaymentError"));
+        Alert.alert(t("common.error"), t("priceConfirm.additionalPaymentError"));
         setLoading(false);
         return;
       }

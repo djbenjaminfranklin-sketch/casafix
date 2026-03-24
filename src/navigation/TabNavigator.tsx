@@ -1,5 +1,5 @@
 import React from "react";
-import { ActivityIndicator, StyleSheet, View } from "react-native";
+import { ActivityIndicator, StyleSheet, View, TouchableOpacity } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Icon from "react-native-vector-icons/Ionicons";
@@ -27,6 +27,7 @@ import MyAccountScreen from "../screens/MyAccountScreen";
 import NotificationsSettingsScreen from "../screens/NotificationsSettingsScreen";
 import PaymentScreen from "../screens/PaymentScreen";
 import HelpScreen from "../screens/HelpScreen";
+import HowItWorksScreen from "../screens/HowItWorksScreen";
 import InvoiceScreen from "../screens/InvoiceScreen";
 import AdminDashboardScreen from "../screens/admin/AdminDashboardScreen";
 import AdminArtisansScreen from "../screens/admin/AdminArtisansScreen";
@@ -59,6 +60,7 @@ type RootStackParamList = {
   NotificationsSettings: undefined;
   Payment: undefined;
   Help: undefined;
+  HowItWorks: undefined;
   Invoice: { bookingId: string };
   AdminDashboard: undefined;
   AdminArtisans: undefined;
@@ -153,12 +155,33 @@ export default function RootNavigator() {
   }
 
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Navigator
+      screenOptions={({ navigation, route }) => ({
+        headerShown: route.name !== "Tabs" && route.name !== "Auth",
+        headerTitle: "",
+        headerBackTitleVisible: false,
+        headerShadowVisible: false,
+        headerStyle: { backgroundColor: COLORS.background },
+        headerLeft: () => (
+          <TouchableOpacity onPress={() => navigation.goBack()} style={{ padding: 8 }}>
+            <Icon name="arrow-back" size={24} color={COLORS.text} />
+          </TouchableOpacity>
+        ),
+        headerRight: () => (
+          <TouchableOpacity
+            onPress={() => navigation.reset({ index: 0, routes: [{ name: "Tabs" }] })}
+            style={{ padding: 8 }}
+          >
+            <Icon name="home" size={22} color={COLORS.text} />
+          </TouchableOpacity>
+        ),
+      })}
+    >
       {!session ? (
-        <Stack.Screen name="Auth" component={AuthScreen} options={{ animation: "fade" }} />
+        <Stack.Screen name="Auth" component={AuthScreen} options={{ animation: "fade", headerShown: false }} />
       ) : (
         <>
-          <Stack.Screen name="Tabs" component={TabsScreen} />
+          <Stack.Screen name="Tabs" component={TabsScreen} options={{ headerShown: false }} />
       <Stack.Screen
         name="Emergency"
         component={EmergencyScreen}
@@ -240,6 +263,11 @@ export default function RootNavigator() {
       <Stack.Screen
         name="Help"
         component={HelpScreen}
+        options={{ animation: "slide_from_right" }}
+      />
+      <Stack.Screen
+        name="HowItWorks"
+        component={HowItWorksScreen}
         options={{ animation: "slide_from_right" }}
       />
       <Stack.Screen

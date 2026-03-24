@@ -1,4 +1,7 @@
 {
+  "common": { "error": "Fejl" },
+  "error": { "title": "Ups!", "message": "Der opstod en uventet fejl. Prøv venligst igen.", "retry": "Prøv igen" },
+  "notifications": { "artisanSelected": "Valgt", "artisanSelectedBody": "Du er blevet valgt til \"{{service}}\". Tag til kundens adresse.", "artisanNotSelected": "Ikke valgt", "artisanNotSelectedBody": "Kunden valgte en anden håndværker til \"{{service}}\"." },
   "appName": "CasaFix",
   "location": "Costa del Sol",
   "searchPlaceholder": "Hvad leder du efter?",
@@ -69,7 +72,8 @@
     "pool_install": "Pooludstyr",
     "garden_maintenance": "Havepleje",
     "garden_install": "Haveanlæg",
-    "garden_repair": "Havereparation"
+    "garden_repair": "Havereparation",
+    "other": "Andet"
   },
   "services": {
     "toilet_unclog": "Toiletafløbning",
@@ -203,7 +207,8 @@
     "lawn_install": "Græsplæneudlægning",
     "garden_design": "Havedesign",
     "irrigation_repair": "Vandingsanlæg-reparation",
-    "fence_repair": "Hegnsreparation"
+    "fence_repair": "Hegnsreparation",
+    "other_service": "Anden anmodning (tilbud på stedet)"
   },
   "banner": {
     "onlinePayment": "Online betaling",
@@ -213,8 +218,8 @@
   "payment": {
     "book": "Bestil nu",
     "maxPrice": "Maks pris",
-    "realPriceNote": "Den faktiske pris fastsættes på stedet af håndværkeren",
-    "explanation": "Maksimumsbeløbet forhåndsautoriseres på dit kort. Kun den faktiske pris, fastsat af håndværkeren efter arbejdet, opkræves.",
+    "realPriceNote": "Den endelige pris fastsættes på stedet af håndværkeren",
+    "explanation": "Maksimumsbeløbet forhåndsautoriseres på dit kort. Kun den endelige pris, fastsat af håndværkeren efter arbejdet, opkræves.",
     "preauth": "Forhåndsautorisation",
     "charged": "Opkrævet beløb",
     "secure": "100% sikker betaling"
@@ -462,7 +467,7 @@
       },
       "article4": {
         "title": "Artikel 4 – Priser & Betaling",
-        "content": "Priserne er vejledende inkl. moms. Intet tillæg for aftener, weekender eller helligdage. Betaling sker udelukkende online: ved bestilling forhåndsautoriseres maksimumsbeløbet på kundens kort. Efter arbejdet angiver håndværkeren den faktiske pris og kun dette beløb opkræves."
+        "content": "Priserne er vejledende inkl. moms. Intet tillæg for aftener, weekender eller helligdage. Betaling sker udelukkende online: ved bestilling forhåndsautoriseres maksimumsbeløbet på kundens kort. Efter arbejdet angiver håndværkeren den endelige pris og kun dette beløb opkræves."
       },
       "article5": {
         "title": "Artikel 5 – Garantier",
@@ -541,7 +546,7 @@
     "secureTitle": "Sikker betaling",
     "secureDesc": "Alle betalinger er beskyttet af Stripe, verdensledende inden for onlinebetaling",
     "preauthTitle": "Forhåndsautorisation",
-    "preauthDesc": "Kun det faktiske beløb debiteres efter servicen. Resten frigives automatisk",
+    "preauthDesc": "Kun det endelige beløb debiteres efter servicen. Resten frigives automatisk",
     "invoiceTitle": "Fakturaer",
     "invoiceDesc": "Modtag automatisk din faktura per e-mail efter hver service",
     "methodTitle": "Betalingsmetode",
@@ -554,7 +559,7 @@
     "email": "E-mail",
     "faqTitle": "Ofte stillede spørgsmål",
     "faq1q": "Hvordan fungerer betalingen?",
-    "faq1a": "Ved booking forhåndsautoriseres maksimumsbeløbet på dit kort. Efter servicen debiteres kun den faktiske pris. Forskellen frigives automatisk.",
+    "faq1a": "Ved booking forhåndsautoriseres maksimumsbeløbet på dit kort. Efter servicen debiteres kun den endelige pris. Forskellen frigives automatisk.",
     "faq2q": "Kan jeg annullere en booking?",
     "faq2a": "Når en booking er bekræftet, pålægges 75€ i udkørselsgebyr. Du kan dog afvise arbejdet og kun betale udkørselsgebyret. Dette system forhindrer misbrug af annulleringer og giver dig valget.",
     "faq3q": "Hvad er garantien?",

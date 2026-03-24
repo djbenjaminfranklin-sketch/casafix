@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   View,
   Text,
@@ -10,8 +10,10 @@ import {
   Image,
   TouchableOpacity,
 } from "react-native";
+import Geolocation from "@react-native-community/geolocation";
 import Icon from "react-native-vector-icons/Ionicons";
 import { useTranslation } from "react-i18next";
+import i18n from "../i18n";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { CATEGORIES } from "../constants/categories";
 import { COLORS, SPACING, RADIUS } from "../constants/theme";
@@ -25,26 +27,68 @@ export default function HomeScreen() {
   const navigation = useNavigation<any>();
 
   const [activeBooking, setActiveBooking] = useState<any>(null);
+  const [cityName, setCityName] = useState<string>(t("location"));
+  const [searchText, setSearchText] = useState("");
+  const [refreshing, setRefreshing] = useState(false);
 
-  // Check for active booking — show banner, don't force redirect
+  const filteredCategories = searchText.trim()
+    ? CATEGORIES.filter((cat) =>
+        t(`categories.${cat.id}`).toLowerCase().includes(searchText.toLowerCase())
+      )
+    : CATEGORIES;
+
+  const fetchCityName = useCallback(() => {
+    Geolocation.requestAuthorization(
+      () => {
+        Geolocation.getCurrentPosition(
+          async (pos) => {
+            try {
+              const res = await fetch(
+                `https://nominatim.openstreetmap.org/reverse?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}&format=json&accept-language=${i18n.language}`
+              );
+              const data = await res.json();
+              const city = data.address?.city || data.address?.town || data.address?.village || data.address?.municipality;
+              if (city) setCityName(city);
+            } catch {}
+          },
+          () => {},
+          { enableHighAccuracy: false, timeout: 5000 }
+        );
+      },
+      () => {}
+    );
+  }, []);
+
+  const fetchActiveBooking = useCallback(async () => {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return;
+
+    const { data } = await supabase
+      .from("bookings")
+      .select("id, category_id, service_id, service_name, price_range, status")
+      .eq("client_id", user.id)
+      .in("status", ["searching", "matched", "in_progress", "price_proposed"])
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .single();
+
+    setActiveBooking(data || null);
+  }, []);
+
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+    try {
+      await fetchActiveBooking();
+      fetchCityName();
+    } finally {
+      setRefreshing(false);
+    }
+  }, [fetchActiveBooking, fetchCityName]);
+
+  useEffect(() => { fetchCityName(); }, [fetchCityName]);
+
   useFocusEffect(
-    React.useCallback(() => {
-      (async () => {
-        const { data: { user } } = await supabase.auth.getUser();
-        if (!user) return;
-
-        const { data } = await supabase
-          .from("bookings")
-          .select("id, category_id, service_id, service_name, price_range, status")
-          .eq("client_id", user.id)
-          .in("status", ["searching", "matched", "in_progress", "price_proposed"])
-          .order("created_at", { ascending: false })
-          .limit(1)
-          .single();
-
-        setActiveBooking(data || null);
-      })();
-    }, [])
+    React.useCallback(() => { fetchActiveBooking(); }, [fetchActiveBooking])
   );
 
   return (
@@ -74,11 +118,13 @@ export default function HomeScreen() {
       )}
 
       <FlatList
-        data={CATEGORIES}
+        data={filteredCategories}
         keyExtractor={(item) => item.id}
         numColumns={2}
         contentContainerStyle={styles.listContent}
         showsVerticalScrollIndicator={false}
+        refreshing={refreshing}
+        onRefresh={onRefresh}
         ListHeaderComponent={
           <View style={styles.header}>
             {/* Logo & Location */}
@@ -89,7 +135,7 @@ export default function HomeScreen() {
                 </View>
                 <View style={styles.locationRow}>
                   <Icon name="location" size={14} color={COLORS.accent} />
-                  <Text style={styles.locationText}>{t("location")}</Text>
+                  <Text style={styles.locationText}>{cityName}</Text>
                 </View>
               </View>
             </View>
@@ -104,6 +150,9 @@ export default function HomeScreen() {
                 style={styles.searchInput}
                 placeholder={t("searchPlaceholder")}
                 placeholderTextColor={COLORS.textLight}
+                value={searchText}
+                onChangeText={setSearchText}
+                returnKeyType="search"
               />
             </View>
 

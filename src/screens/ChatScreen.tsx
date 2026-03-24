@@ -10,6 +10,7 @@ import {
   TextInput,
   KeyboardAvoidingView,
   Platform,
+  Image,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import { useTranslation } from "react-i18next";
@@ -71,7 +72,11 @@ export default function ChatScreen({ route, navigation }: Props) {
     return (
       <View style={[styles.msgRow, isMe && styles.msgRowMe]}>
         <View style={[styles.msgBubble, isMe ? styles.msgBubbleMe : styles.msgBubbleOther]}>
-          <Text style={[styles.msgText, isMe && styles.msgTextMe]}>{item.content}</Text>
+          {/\.(jpg|jpeg|png|gif|webp|heic)$/i.test(item.content) || (item.content.startsWith("https://") && (item.content.includes("/storage/") || item.content.includes(".jpg") || item.content.includes(".png"))) ? (
+            <Image source={{ uri: item.content }} style={styles.msgImage} resizeMode="cover" />
+          ) : (
+            <Text style={[styles.msgText, isMe && styles.msgTextMe]}>{item.content}</Text>
+          )}
           <Text style={[styles.msgTime, isMe && styles.msgTimeMe]}>{time}</Text>
         </View>
       </View>
@@ -171,6 +176,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#f3f4f6", borderBottomLeftRadius: 4,
   },
   msgText: { fontSize: 14, color: "#1f2937", lineHeight: 20 },
+  msgImage: { width: 200, height: 200, borderRadius: 8 },
   msgTextMe: { color: "#FFFFFF" },
   msgTime: { fontSize: 10, color: "#9ca3af", marginTop: 4, alignSelf: "flex-end" },
   msgTimeMe: { color: "rgba(255,255,255,0.7)" },

@@ -17,9 +17,9 @@ import ru from "./locales/ru.json";
 import it from "./locales/it.json";
 
 export const LANGUAGES = [
+  { code: "fr", label: "FR", flag: "🇫🇷" },
   { code: "es", label: "ES", flag: "🇪🇸" },
   { code: "en", label: "EN", flag: "🇬🇧" },
-  { code: "fr", label: "FR", flag: "🇫🇷" },
   { code: "sv", label: "SV", flag: "🇸🇪" },
   { code: "no", label: "NO", flag: "🇳🇴" },
   { code: "da", label: "DA", flag: "🇩🇰" },
@@ -42,7 +42,7 @@ function getDeviceLanguage(): string {
       if (supportedLngs.includes(lang)) return lang;
     }
   } catch {}
-  return "es";
+  return "fr";
 }
 
 i18n.use(initReactI18next).init({
@@ -62,7 +62,7 @@ i18n.use(initReactI18next).init({
     it: { translation: it },
   },
   lng: getDeviceLanguage(),
-  fallbackLng: "es",
+  fallbackLng: "fr",
   interpolation: { escapeValue: false },
 });
 

@@ -46,6 +46,11 @@ export default function ProfileScreen() {
       label: t("profile.help"),
       onPress: () => navigation.navigate("Help"),
     },
+    {
+      icon: "book-outline",
+      label: t("profile.howItWorks"),
+      onPress: () => navigation.navigate("HowItWorks"),
+    },
   ];
 
   const legalItems = [

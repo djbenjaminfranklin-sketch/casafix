@@ -1,4 +1,4 @@
-// Supabase Edge Function: Capture the real amount on a pre-authorized PaymentIntent
+// Supabase Edge Function: Capture the final amount on a pre-authorized PaymentIntent
 // Deploy with: supabase functions deploy capture-payment
 // The artisan sets the final price, we capture only that amount
 
@@ -34,7 +34,7 @@ serve(async (req) => {
 
     const { payment_intent_id, final_amount } = await req.json();
 
-    // Capture only the real amount (less than or equal to pre-authorized amount)
+    // Capture only the final amount (less than or equal to pre-authorized amount)
     const paymentIntent = await stripe.paymentIntents.capture(payment_intent_id, {
       amount_to_capture: final_amount, // in cents
     });

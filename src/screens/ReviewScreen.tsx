@@ -51,7 +51,7 @@ export default function ReviewScreen({ route, navigation }: Props) {
     setLoading(false);
 
     if (error) {
-      Alert.alert("Error", error.message);
+      Alert.alert(t("common.error"), error.message);
     } else {
       setSubmitted(true);
     }

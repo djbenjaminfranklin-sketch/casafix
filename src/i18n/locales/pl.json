@@ -1,4 +1,7 @@
 {
+  "common": { "error": "Błąd" },
+  "error": { "title": "Ups!", "message": "Wystąpił nieoczekiwany błąd. Spróbuj ponownie.", "retry": "Spróbuj ponownie" },
+  "notifications": { "artisanSelected": "Wybrany", "artisanSelectedBody": "Zostałeś wybrany do \"{{service}}\". Udaj się pod adres klienta.", "artisanNotSelected": "Nie wybrany", "artisanNotSelectedBody": "Klient wybrał innego fachowca do \"{{service}}\"." },
   "appName": "CasaFix",
   "location": "Costa del Sol",
   "searchPlaceholder": "Czego szukasz?",
@@ -69,7 +72,8 @@
     "pool_install": "Budowa basenu",
     "garden_maintenance": "Pielegnacja ogrodu",
     "garden_install": "Projektowanie ogrodu",
-    "garden_repair": "Naprawa w ogrodzie"
+    "garden_repair": "Naprawa w ogrodzie",
+    "other": "Inne"
   },
   "services": {
     "toilet_unclog": "Udraznianie toalety",
@@ -203,7 +207,8 @@
     "lawn_install": "Zakladanie trawnika",
     "garden_design": "Projektowanie ogrodu",
     "irrigation_repair": "Naprawa systemu nawadniania",
-    "fence_repair": "Naprawa ogrodzenia"
+    "fence_repair": "Naprawa ogrodzenia",
+    "other_service": "Inne zapytanie (wycena na miejscu)"
   },
   "banner": {
     "onlinePayment": "Platnosc online",
@@ -213,8 +218,8 @@
   "payment": {
     "book": "Zarezerwuj",
     "maxPrice": "Cena maks.",
-    "realPriceNote": "Rzeczywista cena zostanie ustalona na miejscu przez fachowca",
-    "explanation": "Maksymalna kwota zostaje preautoryzowana na Twojej karcie. Pobrana zostanie tylko rzeczywista cena ustalona przez fachowca po interwencji.",
+    "realPriceNote": "Ostateczna cena zostanie ustalona na miejscu przez fachowca",
+    "explanation": "Maksymalna kwota zostaje preautoryzowana na Twojej karcie. Pobrana zostanie tylko ostateczna cena ustalona przez fachowca po interwencji.",
     "preauth": "Preautoryzacja",
     "charged": "Pobrana kwota",
     "secure": "100% bezpieczna platnosc"
@@ -465,7 +470,7 @@
       },
       "article4": {
         "title": "Artykul 4 – Cennik i platnosci",
-        "content": "Ceny podane w Aplikacji sa orientacyjnymi przedzialami brutto. Nie sa stosowane zadne narzuty za interwencje wieczorne, weekendowe ani w dni swiateczne. Platnosc odbywa sie wylacznie online: przy rezerwacji na karcie klienta preautoryzowana jest maksymalna kwota. Po interwencji fachowiec wprowadza rzeczywista kwote i tylko ta kwota jest pobierana. Roznica jest automatycznie zwalniana. Faktura jest wysylana e-mailem w ciagu 48 godzin."
+        "content": "Ceny podane w Aplikacji sa orientacyjnymi przedzialami brutto. Nie sa stosowane zadne narzuty za interwencje wieczorne, weekendowe ani w dni swiateczne. Platnosc odbywa sie wylacznie online: przy rezerwacji na karcie klienta preautoryzowana jest maksymalna kwota. Po interwencji fachowiec wprowadza ostateczna kwote i tylko ta kwota jest pobierana. Roznica jest automatycznie zwalniana. Faktura jest wysylana e-mailem w ciagu 48 godzin."
       },
       "article5": {
         "title": "Artykul 5 – Gwarancje",
@@ -544,7 +549,7 @@
     "secureTitle": "Bezpieczna platnosc",
     "secureDesc": "Wszystkie platnosci sa chronione przez Stripe, swiatowego lidera platnosci online",
     "preauthTitle": "Preautoryzacja",
-    "preauthDesc": "Pobrana zostanie tylko rzeczywista kwota po interwencji. Reszta jest automatycznie zwalniana",
+    "preauthDesc": "Pobrana zostanie tylko ostateczna kwota po interwencji. Reszta jest automatycznie zwalniana",
     "invoiceTitle": "Faktury",
     "invoiceDesc": "Fakture otrzymasz automatycznie e-mailem po kazdej interwencji",
     "methodTitle": "Metoda platnosci",
@@ -573,7 +578,7 @@
     "email": "Email",
     "faqTitle": "Najczesciej zadawane pytania",
     "faq1q": "Jak dziala platnosc?",
-    "faq1a": "Przy rezerwacji na Twojej karcie preautoryzowana jest maksymalna kwota. Po interwencji pobrana zostanie tylko rzeczywista cena ustalona przez fachowca. Roznica jest automatycznie zwalniana.",
+    "faq1a": "Przy rezerwacji na Twojej karcie preautoryzowana jest maksymalna kwota. Po interwencji pobrana zostanie tylko ostateczna cena ustalona przez fachowca. Roznica jest automatycznie zwalniana.",
     "faq2q": "Czy moge anulowac rezerwacje?",
     "faq2a": "Po potwierdzeniu rezerwacji nalezna jest oplata za dojazd w wysokosci 75€. Mozesz jednak odmowic prac i zaplacic tylko za dojazd. Ten system zapobiega naduzywaniu anulowania, zachowujac Twoj wybor.",
     "faq3q": "Jaka jest gwarancja?",
