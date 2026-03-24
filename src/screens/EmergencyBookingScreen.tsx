@@ -158,25 +158,13 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
   const pulseAnim = useRef(new Animated.Value(0)).current;
   const pulse2Anim = useRef(new Animated.Value(0)).current;
 
-  // Watch position continuously — avoids stale cached location
+  // Watch position — force fresh GPS, never use cache
   useEffect(() => {
     let watchId: number | null = null;
 
     Geolocation.requestAuthorization(
       () => {
-        // Get initial position quickly (may be cached)
-        Geolocation.getCurrentPosition(
-          (pos) => {
-            setUserLocation({
-              latitude: pos.coords.latitude,
-              longitude: pos.coords.longitude,
-            });
-          },
-          () => {},
-          { enableHighAccuracy: false, timeout: 5000, maximumAge: 60000 }
-        );
-
-        // Then watch for real GPS updates
+        // Watch GPS with no cache — forces a fresh fix
         watchId = Geolocation.watchPosition(
           (pos) => {
             setUserLocation({
@@ -187,7 +175,7 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
           (err) => {
             setLocationFailed(true);
           },
-          { enableHighAccuracy: true, distanceFilter: 50, interval: 10000 }
+          { enableHighAccuracy: true, distanceFilter: 10, maximumAge: 0, timeout: 20000 }
         );
       },
       () => {
