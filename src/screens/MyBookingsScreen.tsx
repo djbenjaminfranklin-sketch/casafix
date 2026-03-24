@@ -16,6 +16,7 @@ import { supabase } from "../lib/supabase";
 import { Booking, BookingStatus } from "../lib/database.types";
 import { CATEGORIES } from "../constants/categories";
 import { COLORS, SPACING, RADIUS } from "../constants/theme";
+import BeforeAfterPhotos from "../components/BeforeAfterPhotos";
 
 type Props = {
   navigation: any;
@@ -178,15 +179,18 @@ export default function MyBookingsScreen({ navigation }: Props) {
         </View>
 
         {(item.status === "completed" || item.status === "work_completed") && (
-          <TouchableOpacity
-            style={styles.invoiceBtn}
-            onPress={() => navigation.navigate("Invoice", { bookingId: item.id })}
-            activeOpacity={0.7}
-          >
-            <Icon name="document-text-outline" size={16} color={COLORS.primary} />
-            <Text style={styles.invoiceBtnText}>{t("invoice.title")}</Text>
-            <Icon name="chevron-forward" size={14} color={COLORS.primary} />
-          </TouchableOpacity>
+          <>
+            <TouchableOpacity
+              style={styles.invoiceBtn}
+              onPress={() => navigation.navigate("Invoice", { bookingId: item.id })}
+              activeOpacity={0.7}
+            >
+              <Icon name="document-text-outline" size={16} color={COLORS.primary} />
+              <Text style={styles.invoiceBtnText}>{t("invoice.title")}</Text>
+              <Icon name="chevron-forward" size={14} color={COLORS.primary} />
+            </TouchableOpacity>
+            <BeforeAfterPhotos bookingId={item.id} />
+          </>
         )}
       </TouchableOpacity>
     );
