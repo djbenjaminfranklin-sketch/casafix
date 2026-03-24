@@ -67,7 +67,7 @@ export async function analyzeProblem(
   const photoItems = mediaItems.filter((m) => m.type === "photo");
 
   if (photoItems.length === 0) {
-    throw new Error("Au moins une photo est requise");
+    throw new Error("PHOTO_REQUIRED");
   }
 
   // Step 1: Upload photos to temp storage
@@ -77,7 +77,7 @@ export async function analyzeProblem(
       photoItems.map((item) => uploadTempPhoto(item.uri))
     );
   } catch (e: any) {
-    throw new Error(`Upload échoué: ${e.message}`);
+    throw new Error(`UPLOAD_FAILED: ${e.message}`);
   }
 
   // Step 2: Call Edge Function directly with fetch to get full error details
@@ -107,7 +107,7 @@ export async function analyzeProblem(
   }
 
   if (!responseData.diagnostic) {
-    throw new Error("Réponse IA invalide");
+    throw new Error("AI_RESPONSE_INVALID");
   }
 
   return responseData as DiagnosticResult;

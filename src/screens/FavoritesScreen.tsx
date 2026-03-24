@@ -183,7 +183,7 @@ export default function FavoritesScreen() {
           <Text style={styles.emptySubtitle}>{t("favorites.emptyDesc")}</Text>
           <TouchableOpacity
             style={styles.browseBtn}
-            onPress={() => navigation.navigate("Search")}
+            onPress={() => navigation.navigate("Tabs")}
             activeOpacity={0.85}
           >
             <Icon name="search" size={18} color="#FFFFFF" />

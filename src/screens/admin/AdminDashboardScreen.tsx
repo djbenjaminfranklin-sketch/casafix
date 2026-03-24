@@ -128,7 +128,7 @@ export default function AdminDashboardScreen() {
     },
     {
       icon: "receipt-outline",
-      label: "Factures",
+      label: t("admin.invoices"),
       screen: "AdminInvoices",
       color: "#10b981",
     },
