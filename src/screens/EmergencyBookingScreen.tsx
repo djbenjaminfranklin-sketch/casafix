@@ -158,25 +158,45 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
   const pulseAnim = useRef(new Animated.Value(0)).current;
   const pulse2Anim = useRef(new Animated.Value(0)).current;
 
-  // Watch position — force fresh GPS, never use cache
+  // Get location — first getCurrentPosition for immediate fix, then watchPosition for updates
   useEffect(() => {
     let watchId: number | null = null;
 
+    const startLocationTracking = () => {
+      // 1) Get current position immediately — don't rely only on watchPosition
+      Geolocation.getCurrentPosition(
+        (pos) => {
+          const loc = {
+            latitude: pos.coords.latitude,
+            longitude: pos.coords.longitude,
+          };
+          setUserLocation(loc);
+        },
+        (err) => {
+          console.warn("getCurrentPosition error:", err);
+          // Don't set locationFailed yet — watchPosition may still succeed
+        },
+        { enableHighAccuracy: true, maximumAge: 0, timeout: 15000 }
+      );
+
+      // 2) Watch for position updates (continuous tracking)
+      watchId = Geolocation.watchPosition(
+        (pos) => {
+          setUserLocation({
+            latitude: pos.coords.latitude,
+            longitude: pos.coords.longitude,
+          });
+        },
+        (err) => {
+          setLocationFailed(true);
+        },
+        { enableHighAccuracy: true, distanceFilter: 10, maximumAge: 0, timeout: 20000 }
+      );
+    };
+
     Geolocation.requestAuthorization(
       () => {
-        // Watch GPS with no cache — forces a fresh fix
-        watchId = Geolocation.watchPosition(
-          (pos) => {
-            setUserLocation({
-              latitude: pos.coords.latitude,
-              longitude: pos.coords.longitude,
-            });
-          },
-          (err) => {
-            setLocationFailed(true);
-          },
-          { enableHighAccuracy: true, distanceFilter: 10, maximumAge: 0, timeout: 20000 }
-        );
+        startLocationTracking();
       },
       () => {
         setLocationFailed(true);
@@ -187,6 +207,20 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
       if (watchId !== null) Geolocation.clearWatch(watchId);
     };
   }, []);
+
+  // Animate map to user's real location whenever it updates
+  useEffect(() => {
+    if (userLocation && mapRef.current) {
+      mapRef.current.animateToRegion(
+        {
+          ...userLocation,
+          latitudeDelta: 0.02,
+          longitudeDelta: 0.02,
+        },
+        600
+      );
+    }
+  }, [userLocation]);
 
   // Resume an existing active booking (when returning to app)
   useEffect(() => {
@@ -727,7 +761,7 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
         ref={mapRef}
         provider={PROVIDER_DEFAULT}
         style={styles.map}
-        region={{
+        initialRegion={{
           ...displayLocation,
           latitudeDelta: 0.02,
           longitudeDelta: 0.02,
