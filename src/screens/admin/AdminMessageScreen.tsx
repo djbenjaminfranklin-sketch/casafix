@@ -50,26 +50,22 @@ export default function AdminMessageScreen() {
   const fetchRecipients = useCallback(async () => {
     try {
       if (recipientType === "client") {
-        let query = supabase.from("profiles").select("id, full_name, email").order("full_name");
+        let query = supabase.from("profiles").select("id, full_name, phone").order("full_name");
         if (recipientSearch.trim()) {
-          query = query.or(
-            `full_name.ilike.%${recipientSearch.trim()}%,email.ilike.%${recipientSearch.trim()}%`
-          );
+          query = query.ilike("full_name", `%${recipientSearch.trim()}%`);
         }
         const { data } = await query.limit(20);
         setRecipients(data || []);
       } else {
-        let query = supabase.from("artisans").select("id, full_name, email").order("full_name");
+        let query = supabase.from("artisans").select("id, full_name, phone").order("full_name");
         if (recipientSearch.trim()) {
-          query = query.or(
-            `full_name.ilike.%${recipientSearch.trim()}%,email.ilike.%${recipientSearch.trim()}%`
-          );
+          query = query.ilike("full_name", `%${recipientSearch.trim()}%`);
         }
         const { data } = await query.limit(20);
         setRecipients(data || []);
       }
     } catch (error) {
-      console.error("Error fetching recipients:", error);
+
     }
   }, [recipientType, recipientSearch]);
 
@@ -85,7 +81,7 @@ export default function AdminMessageScreen() {
       if (error) throw error;
       setSentMessages(data || []);
     } catch (error) {
-      console.error("Error fetching sent messages:", error);
+
     } finally {
       setLoading(false);
       setRefreshing(false);
@@ -140,7 +136,7 @@ export default function AdminMessageScreen() {
             setSelectedRecipient(null);
             await fetchSentMessages();
           } catch (error) {
-            console.error("Error sending message:", error);
+
           } finally {
             setSending(false);
           }
@@ -298,7 +294,7 @@ export default function AdminMessageScreen() {
                       {selectedRecipient.full_name}
                     </Text>
                     <Text style={styles.selectedRecipientEmail}>
-                      {selectedRecipient.email}
+                      {selectedRecipient.phone}
                     </Text>
                   </View>
                 </View>
@@ -337,7 +333,7 @@ export default function AdminMessageScreen() {
                         }}
                       >
                         <Text style={styles.recipientName}>{r.full_name || "N/A"}</Text>
-                        <Text style={styles.recipientEmail}>{r.email}</Text>
+                        <Text style={styles.recipientEmail}>{r.phone}</Text>
                       </TouchableOpacity>
                     ))}
                   </View>

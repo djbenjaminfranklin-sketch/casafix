@@ -169,7 +169,7 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
             });
           },
           (err) => {
-            console.warn("Geolocation error:", err);
+
             setLocationFailed(true);
           },
           { enableHighAccuracy: true, timeout: 10000 }
@@ -587,7 +587,7 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
       });
       setAiDiagnostic(result);
     } catch (e: any) {
-      console.warn("AI diagnostic failed:", e);
+
       Alert.alert(t("diagnostic.error"), e.message || t("diagnostic.analysisFailed"));
     } finally {
       setAnalyzingAi(false);

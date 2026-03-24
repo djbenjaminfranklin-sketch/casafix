@@ -48,7 +48,7 @@ export default function AdminInvoicesScreen() {
       setInvoices(list);
       setTotalRevenue(list.reduce((sum: number, inv: any) => sum + (inv.casafix_commission || 0), 0));
     } catch (error) {
-      console.error("Error:", error);
+
     } finally {
       setLoading(false);
       setRefreshing(false);

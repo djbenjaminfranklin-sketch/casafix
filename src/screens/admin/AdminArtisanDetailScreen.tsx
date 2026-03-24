@@ -78,7 +78,7 @@ export default function AdminArtisanDetailScreen() {
       setActiveBookings(bookingsRes.data || []);
       setReviews(reviewsRes.data || []);
     } catch (error) {
-      console.error("Error fetching artisan:", error);
+
     } finally {
       setLoading(false);
       setRefreshing(false);
@@ -110,7 +110,7 @@ export default function AdminArtisanDetailScreen() {
               .eq("id", artisanId);
             await fetchArtisan();
           } catch (error) {
-            console.error("Error validating artisan:", error);
+
           } finally {
             setActionLoading(false);
           }
@@ -136,7 +136,7 @@ export default function AdminArtisanDetailScreen() {
               .eq("id", artisanId);
             await fetchArtisan();
           } catch (error) {
-            console.error("Error suspending artisan:", error);
+
           } finally {
             setActionLoading(false);
           }
@@ -159,7 +159,7 @@ export default function AdminArtisanDetailScreen() {
               .eq("id", artisanId);
             await fetchArtisan();
           } catch (error) {
-            console.error("Error reactivating artisan:", error);
+
           } finally {
             setActionLoading(false);
           }
@@ -181,7 +181,7 @@ export default function AdminArtisanDetailScreen() {
             Alert.alert(t("admin.artisanDeleted"));
             navigation.goBack();
           } catch (error) {
-            console.error("Error deleting artisan:", error);
+
           } finally {
             setActionLoading(false);
           }

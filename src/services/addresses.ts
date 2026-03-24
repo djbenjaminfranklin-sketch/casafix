@@ -25,7 +25,7 @@ export async function getSavedAddresses(): Promise<{ data: SavedAddress[]; error
 
     return { data: data || [], error };
   } catch (e) {
-    console.warn("getSavedAddresses error:", e);
+
     return { data: [], error: e };
   }
 }
@@ -65,7 +65,7 @@ export async function saveAddress(
 
     return { data, error };
   } catch (e) {
-    console.warn("saveAddress error:", e);
+
     return { data: null, error: e };
   }
 }
@@ -83,7 +83,7 @@ export async function deleteAddress(id: string): Promise<{ error: any }> {
 
     return { error };
   } catch (e) {
-    console.warn("deleteAddress error:", e);
+
     return { error: e };
   }
 }
@@ -115,7 +115,7 @@ export async function updateAddress(
 
     return { data, error };
   } catch (e) {
-    console.warn("updateAddress error:", e);
+
     return { data: null, error: e };
   }
 }

@@ -50,7 +50,7 @@ export async function registerDeviceToken(): Promise<string | null> {
 
     return token;
   } catch (error) {
-    console.error("Error registering device token:", error);
+
     return null;
   }
 }
@@ -88,7 +88,7 @@ export async function unregisterDeviceToken() {
         .eq("fcm_token", token);
     }
   } catch (error) {
-    console.error("Error unregistering device token:", error);
+
   }
 }
 

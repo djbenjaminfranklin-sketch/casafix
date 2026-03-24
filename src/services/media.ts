@@ -42,7 +42,7 @@ export async function uploadMedia(
     });
 
   if (uploadError) {
-    console.error("Upload error:", uploadError);
+
     return null;
   }
 

@@ -69,7 +69,7 @@ export default function AdminClientDetailScreen() {
       setBookings(bookingsRes.data || []);
       setReportsCount(reportsRes.count ?? 0);
     } catch (error) {
-      console.error("Error fetching client:", error);
+
     } finally {
       setLoading(false);
       setRefreshing(false);
@@ -108,7 +108,7 @@ export default function AdminClientDetailScreen() {
               .eq("id", clientId);
             await fetchClient();
           } catch (error) {
-            console.error("Error suspending client:", error);
+
           } finally {
             setActionLoading(false);
           }
@@ -129,7 +129,7 @@ export default function AdminClientDetailScreen() {
             await supabase.from("profiles").delete().eq("id", clientId);
             navigation.goBack();
           } catch (error) {
-            console.error("Error deleting client:", error);
+
           } finally {
             setActionLoading(false);
           }

@@ -58,7 +58,7 @@ export default function AdminClientsScreen() {
 
       setClients(clientsWithCounts);
     } catch (error) {
-      console.error("Error fetching clients:", error);
+
     } finally {
       setLoading(false);
       setRefreshing(false);

@@ -104,7 +104,7 @@ export default function AdminBookingDetailScreen() {
 
       setBooking({ ...bookingData, client: clientData, artisan: artisanData });
     } catch (error) {
-      console.error("Error fetching booking:", error);
+
     } finally {
       setLoading(false);
       setRefreshing(false);
@@ -154,7 +154,7 @@ export default function AdminBookingDetailScreen() {
             Alert.alert(t("admin.bookingCancelled"));
             await fetchBooking();
           } catch (error) {
-            console.error("Error cancelling booking:", error);
+
           } finally {
             setActionLoading(false);
           }
@@ -178,7 +178,7 @@ export default function AdminBookingDetailScreen() {
             Alert.alert(t("admin.bookingReassigned"));
             await fetchBooking();
           } catch (error) {
-            console.error("Error reassigning booking:", error);
+
           } finally {
             setActionLoading(false);
           }
@@ -203,7 +203,7 @@ export default function AdminBookingDetailScreen() {
             Alert.alert(t("admin.statusUpdated"));
             await fetchBooking();
           } catch (error) {
-            console.error("Error forcing status:", error);
+
           } finally {
             setActionLoading(false);
           }

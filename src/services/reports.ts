@@ -32,7 +32,7 @@ export async function createReport(params: {
 
     return { data, error };
   } catch (e) {
-    console.warn("createReport error:", e);
+
     return { data: null, error: e };
   }
 }
@@ -50,7 +50,7 @@ export async function getMyReports() {
 
     return { data: data || [], error };
   } catch (e) {
-    console.warn("getMyReports error:", e);
+
     return { data: [], error: e };
   }
 }

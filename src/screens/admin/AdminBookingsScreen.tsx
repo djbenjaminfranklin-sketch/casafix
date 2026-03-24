@@ -74,7 +74,7 @@ export default function AdminBookingsScreen() {
       if (error) throw error;
       setBookings(data || []);
     } catch (error) {
-      console.error("Error:", error);
+
     } finally {
       setLoading(false);
       setRefreshing(false);

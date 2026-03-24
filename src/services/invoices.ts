@@ -37,7 +37,7 @@ export async function getMyInvoices(): Promise<{ data: Invoice[]; error: any }> 
 
     return { data: data || [], error };
   } catch (e) {
-    console.warn("getMyInvoices error:", e);
+
     return { data: [], error: e };
   }
 }
@@ -54,7 +54,7 @@ export async function getInvoiceByBooking(
 
     return { data: data || null, error };
   } catch (e) {
-    console.warn("getInvoiceByBooking error:", e);
+
     return { data: null, error: e };
   }
 }

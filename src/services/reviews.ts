@@ -24,7 +24,7 @@ export async function createReview(params: {
 
     return { data, error };
   } catch (e) {
-    console.warn("createReview error:", e);
+
     return { data: null, error: e };
   }
 }
@@ -53,7 +53,7 @@ export async function createClientReview(params: {
 
     return { data, error };
   } catch (e) {
-    console.warn("createClientReview error:", e);
+
     return { data: null, error: e };
   }
 }
@@ -71,7 +71,7 @@ export async function getClientReviews(clientId: string) {
 
     return { data: data || [], error };
   } catch (e) {
-    console.warn("getClientReviews error:", e);
+
     return { data: [], error: e };
   }
 }
@@ -89,7 +89,7 @@ export async function getArtisanReviews(artisanId: string) {
 
     return { data: data || [], error };
   } catch (e) {
-    console.warn("getArtisanReviews error:", e);
+
     return { data: [], error: e };
   }
 }

@@ -129,7 +129,7 @@ export default function AppointmentBookingScreen({ route, navigation }: Props) {
       });
       setAiDiagnostic(result);
     } catch (e: any) {
-      console.warn("AI diagnostic failed:", e);
+
       Alert.alert(t("diagnostic.error"), e.message || t("diagnostic.analysisFailed"));
     } finally {
       setAnalyzingAi(false);

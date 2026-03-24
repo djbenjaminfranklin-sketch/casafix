@@ -13,7 +13,7 @@ export async function addFavorite(artisanId: string) {
 
     return { data, error };
   } catch (e) {
-    console.warn("addFavorite error:", e);
+
     return { data: null, error: e };
   }
 }
@@ -31,7 +31,7 @@ export async function removeFavorite(artisanId: string) {
 
     return { error };
   } catch (e) {
-    console.warn("removeFavorite error:", e);
+
     return { error: e };
   }
 }
@@ -54,7 +54,7 @@ export async function getMyFavorites() {
 
     return { data: data || [], error };
   } catch (e) {
-    console.warn("getMyFavorites error:", e);
+
     return { data: [], error: e };
   }
 }
@@ -73,7 +73,7 @@ export async function isFavorite(artisanId: string): Promise<boolean> {
 
     return !!data;
   } catch (e) {
-    console.warn("isFavorite error:", e);
+
     return false;
   }
 }

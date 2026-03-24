@@ -101,12 +101,12 @@ export default function AddressBookScreen({ navigation }: Props) {
                 setAddress(data.display_name);
               }
             } catch (e) {
-              console.warn("Reverse geocode error:", e);
+
             }
             setGeolocating(false);
           },
           (err) => {
-            console.warn("Geolocation error:", err);
+
             Alert.alert(t("booking.locationError"), t("booking.locationErrorDesc"));
             setGeolocating(false);
           },

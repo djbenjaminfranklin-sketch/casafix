@@ -19,13 +19,13 @@ export async function getArtisanPortfolio(
       .order("created_at", { ascending: false });
 
     if (error) {
-      console.warn("getArtisanPortfolio error:", error);
+
       return [];
     }
 
     return data || [];
   } catch (e) {
-    console.warn("getArtisanPortfolio error:", e);
+
     return [];
   }
 }

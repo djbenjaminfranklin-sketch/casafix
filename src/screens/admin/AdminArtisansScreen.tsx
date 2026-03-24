@@ -61,7 +61,7 @@ export default function AdminArtisansScreen() {
       if (error) throw error;
       setArtisans(data || []);
     } catch (error) {
-      console.error("Error fetching artisans:", error);
+
     } finally {
       setLoading(false);
       setRefreshing(false);

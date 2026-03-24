@@ -48,7 +48,7 @@ export default function AdminDashboardScreen() {
         openDisputes: disputesRes.count ?? 0,
       });
     } catch (error) {
-      console.error("Error fetching admin stats:", error);
+
     } finally {
       setLoading(false);
       setRefreshing(false);

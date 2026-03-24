@@ -126,7 +126,7 @@ export default function AdminStatsScreen() {
         topCategories,
       });
     } catch (error) {
-      console.error("Error fetching stats:", error);
+
     } finally {
       setLoading(false);
       setRefreshing(false);

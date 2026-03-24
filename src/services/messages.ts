@@ -18,7 +18,7 @@ export async function sendMessage(bookingId: string, content: string) {
 
     return { data, error };
   } catch (e) {
-    console.warn("sendMessage error:", e);
+
     return { data: null, error: e };
   }
 }
@@ -33,7 +33,7 @@ export async function getMessages(bookingId: string) {
 
     return { data: data || [], error };
   } catch (e) {
-    console.warn("getMessages error:", e);
+
     return { data: [], error: e };
   }
 }
@@ -74,6 +74,6 @@ export async function markMessagesAsRead(bookingId: string) {
       .eq("booking_id", bookingId)
       .neq("sender_id", user.id);
   } catch (e) {
-    console.warn("markMessagesAsRead error:", e);
+
   }
 }
