@@ -30,6 +30,7 @@ export default function HomeScreen() {
   const [cityName, setCityName] = useState<string>(t("location"));
   const [searchText, setSearchText] = useState("");
   const [refreshing, setRefreshing] = useState(false);
+  const [userCoords, setUserCoords] = useState<{ latitude: number; longitude: number } | null>(null);
 
   const filteredCategories = searchText.trim()
     ? CATEGORIES.filter((cat) =>
@@ -42,6 +43,7 @@ export default function HomeScreen() {
       () => {
         Geolocation.getCurrentPosition(
           async (pos) => {
+            setUserCoords({ latitude: pos.coords.latitude, longitude: pos.coords.longitude });
             try {
               const res = await fetch(
                 `https://nominatim.openstreetmap.org/reverse?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}&format=json&accept-language=${i18n.language}`
@@ -52,7 +54,7 @@ export default function HomeScreen() {
             } catch {}
           },
           () => {},
-          { enableHighAccuracy: false, timeout: 5000 }
+          { enableHighAccuracy: true, timeout: 15000, maximumAge: 30000 }
         );
       },
       () => {}
