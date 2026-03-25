@@ -78,11 +78,6 @@ export default function CategoryDetailScreen({ route, navigation }: Props) {
         </View>
       </View>
 
-      {/* Payment explanation */}
-      <View style={styles.paymentInfo}>
-        <Icon name="information-circle" size={16} color={COLORS.primary} />
-        <Text style={styles.paymentInfoText}>{t("payment.explanation")}</Text>
-      </View>
 
       {/* Content */}
       <ScrollView
