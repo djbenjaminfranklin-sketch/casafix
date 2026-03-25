@@ -6,6 +6,7 @@ import { StripeProvider } from "@stripe/stripe-react-native";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import "./src/i18n";
 import { AuthProvider } from "./src/contexts/AuthContext";
+import { LocationProvider } from "./src/contexts/LocationContext";
 import ErrorBoundary from "./src/components/ErrorBoundary";
 import { STRIPE_PUBLISHABLE_KEY } from "./src/lib/stripe";
 import RootNavigator from "./src/navigation/TabNavigator";
@@ -66,12 +67,14 @@ export default function App() {
     <SafeAreaProvider>
       <StripeProvider publishableKey={STRIPE_PUBLISHABLE_KEY} merchantIdentifier="merchant.com.casafix">
         <AuthProvider>
-          <NavigationContainer ref={navigationRef}>
-            <NotificationHandler navigationRef={navigationRef} />
-            <ErrorBoundary>
-              <RootNavigator />
-            </ErrorBoundary>
-          </NavigationContainer>
+          <LocationProvider>
+            <NavigationContainer ref={navigationRef}>
+              <NotificationHandler navigationRef={navigationRef} />
+              <ErrorBoundary>
+                <RootNavigator />
+              </ErrorBoundary>
+            </NavigationContainer>
+          </LocationProvider>
         </AuthProvider>
       </StripeProvider>
     </SafeAreaProvider>

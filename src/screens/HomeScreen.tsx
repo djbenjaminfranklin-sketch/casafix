@@ -10,10 +10,10 @@ import {
   Image,
   TouchableOpacity,
 } from "react-native";
-import Geolocation from "@react-native-community/geolocation";
 import Icon from "react-native-vector-icons/Ionicons";
 import { useTranslation } from "react-i18next";
 import i18n from "../i18n";
+import { useLocation } from "../contexts/LocationContext";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { CATEGORIES } from "../constants/categories";
 import { COLORS, SPACING, RADIUS } from "../constants/theme";
@@ -26,11 +26,11 @@ export default function HomeScreen() {
   const { t } = useTranslation();
   const navigation = useNavigation<any>();
 
+  const { location: globalLocation } = useLocation();
   const [activeBooking, setActiveBooking] = useState<any>(null);
   const [cityName, setCityName] = useState<string>(t("location"));
   const [searchText, setSearchText] = useState("");
   const [refreshing, setRefreshing] = useState(false);
-  const [userCoords, setUserCoords] = useState<{ latitude: number; longitude: number } | null>(null);
 
   const filteredCategories = searchText.trim()
     ? CATEGORIES.filter((cat) =>
@@ -38,28 +38,18 @@ export default function HomeScreen() {
       )
     : CATEGORIES;
 
-  const fetchCityName = useCallback(() => {
-    Geolocation.requestAuthorization(
-      () => {
-        Geolocation.getCurrentPosition(
-          async (pos) => {
-            setUserCoords({ latitude: pos.coords.latitude, longitude: pos.coords.longitude });
-            try {
-              const res = await fetch(
-                `https://nominatim.openstreetmap.org/reverse?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}&format=json&accept-language=${i18n.language}`
-              );
-              const data = await res.json();
-              const city = data.address?.city || data.address?.town || data.address?.village || data.address?.municipality;
-              if (city) setCityName(city);
-            } catch {}
-          },
-          () => {},
-          { enableHighAccuracy: true, timeout: 15000, maximumAge: 30000 }
-        );
-      },
-      () => {}
-    );
-  }, []);
+  // Reverse geocode city name from global location
+  const fetchCityName = useCallback(async () => {
+    if (!globalLocation) return;
+    try {
+      const res = await fetch(
+        `https://nominatim.openstreetmap.org/reverse?lat=${globalLocation.latitude}&lon=${globalLocation.longitude}&format=json&accept-language=${i18n.language}`
+      );
+      const data = await res.json();
+      const city = data.address?.city || data.address?.town || data.address?.village || data.address?.municipality;
+      if (city) setCityName(city);
+    } catch {}
+  }, [globalLocation]);
 
   const fetchActiveBooking = useCallback(async () => {
     const { data: { user } } = await supabase.auth.getUser();

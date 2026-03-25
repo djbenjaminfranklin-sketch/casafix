@@ -36,6 +36,7 @@ import { addFavorite, removeFavorite, isFavorite } from "../services/favorites";
 import { supabase } from "../lib/supabase";
 import { Booking } from "../lib/database.types";
 import { analyzeProblem, DiagnosticResult } from "../services/ai-diagnostic";
+import { useLocation } from "../contexts/LocationContext";
 
 const { width } = Dimensions.get("window");
 
@@ -97,12 +98,14 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
   const [proposals, setProposals] = useState<ArtisanProposal[]>([]);
   const [selectingArtisan, setSelectingArtisan] = useState(false);
   const [manualAddress, setManualAddress] = useState("");
-  const [locationFailed, setLocationFailed] = useState(false);
+  const { location: globalLocation, loading: locationLoading, error: locationError } = useLocation();
   const [userLocation, setUserLocation] = useState<{ latitude: number; longitude: number } | null>(null);
+  const locationFailed = locationError && !userLocation;
 
-  // Fallback: center of France if geolocation fails
+  // Use global location from context, allow local override from watchPosition
+  const effectiveLocation = userLocation || globalLocation;
   const FALLBACK_LOCATION = { latitude: 48.8566, longitude: 2.3522 };
-  const displayLocation = userLocation || FALLBACK_LOCATION;
+  const displayLocation = effectiveLocation || FALLBACK_LOCATION;
 
   // Helper: fetch full artisan details (last review + favorite status)
   const fetchFullArtisanDetails = async (artisanData: any, artisanId: string) => {
@@ -216,17 +219,17 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
 
   // Animate map to user's real location whenever it updates
   useEffect(() => {
-    if (userLocation && mapRef.current) {
+    if (effectiveLocation && mapRef.current) {
       mapRef.current.animateToRegion(
         {
-          ...userLocation,
+          ...effectiveLocation,
           latitudeDelta: 0.02,
           longitudeDelta: 0.02,
         },
         600
       );
     }
-  }, [userLocation]);
+  }, [effectiveLocation]);
 
   // Resume an existing active booking (when returning to app)
   useEffect(() => {
@@ -763,7 +766,7 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
       <StatusBar barStyle="dark-content" />
 
       {/* Map — only render once we have real GPS coordinates */}
-      {!userLocation ? (
+      {!effectiveLocation ? (
         <View style={[styles.map, { justifyContent: "center", alignItems: "center", backgroundColor: "#f3f4f6" }]}>
           <ActivityIndicator size="large" color={COLORS.primary} />
           <Text style={{ marginTop: 8, color: COLORS.textLight, fontSize: 13 }}>{t("booking.locating")}</Text>
@@ -774,8 +777,8 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
         provider={PROVIDER_DEFAULT}
         style={styles.map}
         initialRegion={{
-          latitude: userLocation.latitude,
-          longitude: userLocation.longitude,
+          latitude: effectiveLocation.latitude,
+          longitude: effectiveLocation.longitude,
           latitudeDelta: 0.02,
           longitudeDelta: 0.02,
         }}
