@@ -572,7 +572,7 @@
     },
     "legalNotice": {
       "publisherTitle": "Éditeur de l'Application",
-      "publisherContent": "CasaFix\nÉditeur : BENJAMIN TAIEB, auto-entrepreneur\nApplication de mise en relation pour services de réparation et dépannage à domicile\nFrance\nContact : contact@casafix.fr",
+      "publisherContent": "CasaFix\nÉditeur : BENJAMIN TAIEB, auto-entrepreneur\nSIRET : 528 074 370 00032\nTVA : FR13528074370\nAdresse : 11 Rue Jacques Duchesne, 75019 Paris\nContact : contact@casafix.fr",
       "hostingTitle": "Hébergement",
       "hostingContent": "L'application et les données sont hébergées par Supabase Inc. sur des serveurs situés dans l'Union européenne, conformément au RGPD. Services tiers : Stripe (paiements), Firebase (notifications), Anthropic (diagnostic IA Claude Vision).",
       "ipTitle": "Propriété intellectuelle",
