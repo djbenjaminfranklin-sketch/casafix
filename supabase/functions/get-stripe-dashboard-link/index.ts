@@ -16,6 +16,10 @@ serve(async (req) => {
   }
 
   try {
+    // Parse body ONCE at the top before anything else
+    const body = await req.json().catch(() => ({}));
+    const { artisan_id, return_url, refresh_url } = body;
+
     const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY")!, {
       apiVersion: "2023-10-16",
     });
@@ -29,17 +33,26 @@ serve(async (req) => {
     const { data: { user } } = await supabase.auth.getUser(
       authHeader.replace("Bearer ", "")
     );
-    if (!user) throw new Error("Not authenticated");
+    if (!user) {
+      throw new Error("Not authenticated");
+    }
+
+    // Use artisan_id from body if provided, otherwise fall back to user.id
+    const lookupId = artisan_id || user.id;
 
     // Get artisan's Stripe account ID
-    const { data: artisan } = await supabase
+    const { data: artisan, error: artisanError } = await supabase
       .from("artisans")
       .select("stripe_account_id")
-      .eq("id", user.id)
+      .eq("id", lookupId)
       .single();
 
+    if (artisanError) {
+      throw new Error(`Artisan lookup failed for id=${lookupId}: ${artisanError.message}`);
+    }
+
     if (!artisan?.stripe_account_id) {
-      throw new Error("No Stripe account found");
+      throw new Error(`No Stripe account found for artisan id=${lookupId}`);
     }
 
     // Try creating a login link to the Express Dashboard
@@ -51,9 +64,11 @@ serve(async (req) => {
         JSON.stringify({ url: loginLink.url }),
         { headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
-    } catch {
+    } catch (stripeError: any) {
       // Account not fully onboarded — send onboarding link instead
-      const { return_url, refresh_url } = await req.json().catch(() => ({}));
+      console.log(
+        `createLoginLink failed for ${artisan.stripe_account_id}: ${stripeError.message}. Falling back to onboarding link.`
+      );
       const accountLink = await stripe.accountLinks.create({
         account: artisan.stripe_account_id,
         refresh_url: refresh_url || "casafixpro://stripe/refresh",
@@ -61,11 +76,12 @@ serve(async (req) => {
         type: "account_onboarding",
       });
       return new Response(
-        JSON.stringify({ url: accountLink.url }),
+        JSON.stringify({ url: accountLink.url, type: "onboarding" }),
         { headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
-  } catch (error) {
+  } catch (error: any) {
+    console.error("get-stripe-dashboard-link error:", error.message);
     return new Response(
       JSON.stringify({ error: error.message }),
       { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
