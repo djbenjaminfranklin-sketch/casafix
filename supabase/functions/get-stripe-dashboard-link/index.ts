@@ -42,15 +42,29 @@ serve(async (req) => {
       throw new Error("No Stripe account found");
     }
 
-    // Create a login link to the Express Dashboard
-    const loginLink = await stripe.accounts.createLoginLink(
-      artisan.stripe_account_id
-    );
-
-    return new Response(
-      JSON.stringify({ url: loginLink.url }),
-      { headers: { ...corsHeaders, "Content-Type": "application/json" } }
-    );
+    // Try creating a login link to the Express Dashboard
+    try {
+      const loginLink = await stripe.accounts.createLoginLink(
+        artisan.stripe_account_id
+      );
+      return new Response(
+        JSON.stringify({ url: loginLink.url }),
+        { headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    } catch {
+      // Account not fully onboarded — send onboarding link instead
+      const { return_url, refresh_url } = await req.json().catch(() => ({}));
+      const accountLink = await stripe.accountLinks.create({
+        account: artisan.stripe_account_id,
+        refresh_url: refresh_url || "casafixpro://stripe/refresh",
+        return_url: return_url || "casafixpro://stripe/return",
+        type: "account_onboarding",
+      });
+      return new Response(
+        JSON.stringify({ url: accountLink.url }),
+        { headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
   } catch (error) {
     return new Response(
       JSON.stringify({ error: error.message }),
