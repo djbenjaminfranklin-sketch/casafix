@@ -163,23 +163,31 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
     let watchId: number | null = null;
 
     const startLocationTracking = () => {
-      // 1) Get current position immediately — don't rely only on watchPosition
+      // 1) Get ANY position fast (network/cached OK) — just to show the map
       Geolocation.getCurrentPosition(
         (pos) => {
-          const loc = {
+          setUserLocation({
             latitude: pos.coords.latitude,
             longitude: pos.coords.longitude,
-          };
-          setUserLocation(loc);
+          });
         },
-        (err) => {
-          console.warn("getCurrentPosition error:", err);
-          // Don't set locationFailed yet — watchPosition may still succeed
+        () => {
+          // If even low-accuracy fails, try high accuracy as fallback
+          Geolocation.getCurrentPosition(
+            (pos) => {
+              setUserLocation({
+                latitude: pos.coords.latitude,
+                longitude: pos.coords.longitude,
+              });
+            },
+            () => setLocationFailed(true),
+            { enableHighAccuracy: true, timeout: 30000 }
+          );
         },
-        { enableHighAccuracy: true, maximumAge: 0, timeout: 15000 }
+        { enableHighAccuracy: false, timeout: 5000 }
       );
 
-      // 2) Watch for position updates (continuous tracking)
+      // 2) Watch for GPS updates to refine position
       watchId = Geolocation.watchPosition(
         (pos) => {
           setUserLocation({
@@ -187,10 +195,8 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
             longitude: pos.coords.longitude,
           });
         },
-        (err) => {
-          setLocationFailed(true);
-        },
-        { enableHighAccuracy: true, distanceFilter: 10, maximumAge: 0, timeout: 20000 }
+        () => {},
+        { enableHighAccuracy: true, distanceFilter: 50 }
       );
     };
 
