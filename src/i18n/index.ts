@@ -18,18 +18,8 @@ import it from "./locales/it.json";
 
 export const LANGUAGES = [
   { code: "fr", label: "FR", flag: "🇫🇷" },
-  { code: "es", label: "ES", flag: "🇪🇸" },
   { code: "en", label: "EN", flag: "🇬🇧" },
-  { code: "sv", label: "SV", flag: "🇸🇪" },
-  { code: "no", label: "NO", flag: "🇳🇴" },
-  { code: "da", label: "DA", flag: "🇩🇰" },
-  { code: "nl", label: "NL", flag: "🇳🇱" },
-  { code: "de", label: "DE", flag: "🇩🇪" },
-  { code: "ar", label: "AR", flag: "🇸🇦" },
-  { code: "pl", label: "PL", flag: "🇵🇱" },
-  { code: "ro", label: "RO", flag: "🇷🇴" },
-  { code: "ru", label: "RU", flag: "🇷🇺" },
-  { code: "it", label: "IT", flag: "🇮🇹" },
+  { code: "es", label: "ES", flag: "🇪🇸" },
 ] as const;
 
 const supportedLngs = ["es", "en", "fr", "sv", "no", "da", "nl", "de", "ar", "pl", "ro", "ru", "it"];
