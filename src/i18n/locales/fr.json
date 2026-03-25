@@ -142,6 +142,8 @@
     "hot_water_tank_leak": "Fuite ballon d'eau chaude",
     "radiator_repair": "Réparation radiateur",
     "radiator_install": "Installation radiateur",
+    "thermostatic_valve_install": "Installation robinet thermostatique",
+    "thermostat_install": "Installation thermostat",
     "underfloor_heating_repair": "Réparation plancher chauffant",
     "ac_unit_repair": "Réparation climatisation",
     "ac_diagnosis": "Diagnostic climatisation",

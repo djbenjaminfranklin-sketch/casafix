@@ -194,6 +194,8 @@ export const SERVICES: CategoryServices[] = [
         services: [
           { id: "radiator_repair", priceRange: "180–240 €" },
           { id: "radiator_install", priceRange: "250–500 €" },
+          { id: "thermostatic_valve_install", priceRange: "80–150 €" },
+          { id: "thermostat_install", priceRange: "150–300 €" },
           { id: "underfloor_heating_repair", priceRange: "200–400 €" },
         ],
       },

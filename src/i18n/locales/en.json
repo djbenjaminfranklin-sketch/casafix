@@ -142,6 +142,8 @@
     "hot_water_tank_leak": "Hot water tank leak repair",
     "radiator_repair": "Radiator repair",
     "radiator_install": "Radiator installation",
+    "thermostatic_valve_install": "Thermostatic valve installation",
+    "thermostat_install": "Thermostat installation",
     "underfloor_heating_repair": "Underfloor heating repair",
     "ac_unit_repair": "AC unit repair",
     "ac_diagnosis": "AC diagnosis",

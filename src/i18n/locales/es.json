@@ -142,6 +142,8 @@
     "hot_water_tank_leak": "Fuga de termo",
     "radiator_repair": "Reparación de radiador",
     "radiator_install": "Instalación de radiador",
+    "thermostatic_valve_install": "Instalación de válvula termostática",
+    "thermostat_install": "Instalación de termostato",
     "underfloor_heating_repair": "Reparación de suelo radiante",
     "ac_unit_repair": "Reparación de aire acondicionado",
     "ac_diagnosis": "Diagnóstico de aire acondicionado",
