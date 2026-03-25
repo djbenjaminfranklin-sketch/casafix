@@ -3,7 +3,7 @@
   "error": { "title": "Ups!", "message": "Wystąpił nieoczekiwany błąd. Spróbuj ponownie.", "retry": "Spróbuj ponownie" },
   "notifications": { "artisanSelected": "Wybrany", "artisanSelectedBody": "Zostałeś wybrany do \"{{service}}\". Udaj się pod adres klienta.", "artisanNotSelected": "Nie wybrany", "artisanNotSelectedBody": "Klient wybrał innego fachowca do \"{{service}}\"." },
   "appName": "CasaFix",
-  "location": "Costa del Sol",
+  "location": "Francja",
   "searchPlaceholder": "Czego szukasz?",
   "servicesTitle": "Uslugi domowe",
   "emergency": "Awaria",
@@ -254,7 +254,7 @@
     "locationErrorDesc": "Nie udalo sie uzyskac Twojej pozycji. Sprawdz ustawienia lokalizacji.",
     "locationDenied": "Dostep do lokalizacji jest wymagany, aby znalezc fachowca w Twojej okolicy.",
     "enterAddress": "Wpisz swoj adres",
-    "addressPlaceholder": "Np.: 12 Calle de la Playa, Marbella",
+    "addressPlaceholder": "Np.: 12 Rue de la Paix, Paris",
     "addressRequired": "Wpisz swoj adres, aby fachowiec mogl Cie znalezc.",
     "lateCancel": "Darmowe anulowanie jesli fachowiec sie spozni",
     "punctuality": "Punktualnosc",
@@ -458,7 +458,7 @@
     "cgu": {
       "article1": {
         "title": "Artykul 1 – Przedmiot",
-        "content": "Niniejsze Ogolne warunki uzytkowania (dalej \"OWU\") okreslaja zasady i warunki korzystania z aplikacji mobilnej CasaFix (dalej \"Aplikacja\"), a takze prawa i obowiazki stron w ramach korzystania z Aplikacji. Aplikacja jest serwisem posredniczacym miedzy osobami poszukujacymi uslug domowych a wykwalifikowanymi fachowcami dzialajacymi na Costa del Sol (Marbella, Estepona, Fuengirola, Malaga i okolice)."
+        "content": "Niniejsze Ogolne warunki uzytkowania (dalej \"OWU\") okreslaja zasady i warunki korzystania z aplikacji mobilnej CasaFix (dalej \"Aplikacja\"), a takze prawa i obowiazki stron w ramach korzystania z Aplikacji. Aplikacja jest serwisem posredniczacym miedzy osobami poszukujacymi uslug domowych a wykwalifikowanymi fachowcami dzialajacymi we Francji."
       },
       "article2": {
         "title": "Artykul 2 – Dostep do Aplikacji",
@@ -482,7 +482,7 @@
       },
       "article7": {
         "title": "Artykul 7 – Dane osobowe",
-        "content": "CasaFix zobowiazuje sie do przestrzegania obowiazujacych przepisow dotyczacych ochrony danych osobowych, zgodnie z Ogolnym rozporzadzeniem o ochronie danych (RODO) i hiszpanska Ustawa organiczna o ochronie danych (LOPD). Zebrane dane sa wykorzystywane wylacznie do prawidlowego funkcjonowania uslug i nie sa nigdy udostepniane osobom trzecim bez zgody uzytkownika."
+        "content": "CasaFix zobowiazuje sie do przestrzegania obowiazujacych przepisow dotyczacych ochrony danych osobowych, zgodnie z Ogolnym rozporzadzeniem o ochronie danych (RODO) i francuska ustawa Informatique et Libertes. Dane na serwerach UE (Supabase). Zebrane dane sa wykorzystywane wylacznie do prawidlowego funkcjonowania uslug i nie sa nigdy udostepniane osobom trzecim bez zgody uzytkownika."
       },
       "article8": {
         "title": "Artykul 8 – Wlasnosc intelektualna",
@@ -490,7 +490,7 @@
       },
       "article9": {
         "title": "Artykul 9 – Prawo wlasciwe i jurysdykcja",
-        "content": "Niniejsze OWU podlegaja prawu hiszpanskoemu. Wszelkie spory dotyczace interpretacji lub wykonania niniejszych OWU beda rozstrzygane przez wlasciwe sady w Maladze, Hiszpania."
+        "content": "Niniejsze OWU podlegaja prawu francuskiemu. Wszelkie spory beda rozstrzygane przez wlasciwe sady francuskie."
       },
       "article10": {
         "title": "Artykul 10 – Zmiana OWU",
@@ -499,7 +499,7 @@
     },
     "legalNotice": {
       "publisherTitle": "Wydawca Aplikacji",
-      "publisherContent": "CasaFix\nAplikacja posredniczaca w uslugach domowych\nCosta del Sol, Malaga, Hiszpania\nKontakt: contact@casafix.es",
+      "publisherContent": "CasaFix\nAplikacja posredniczaca w uslugach domowych\nFrancja\nKontakt: contact@casafix.fr",
       "hostingTitle": "Hosting",
       "hostingContent": "Aplikacja jest hostowana przez Vercel Inc., 340 S Lemon Ave #4133, Walnut, CA 91789, Stany Zjednoczone. Baza danych jest hostowana przez Supabase Inc.",
       "ipTitle": "Wlasnosc intelektualna",
@@ -507,16 +507,16 @@
     },
     "privacy": {
       "dataTitle": "Zbieranie danych",
-      "dataContent": "CasaFix zbiera nastepujace dane osobowe podczas rejestracji: imie, nazwisko, adres e-mail, numer telefonu i lokalizacje. Dane te sa niezbedne do prawidlowego funkcjonowania uslugi posrednictwa z fachowcami. Zgodnie z RODO i hiszpanska LOPD, Twoje dane sa przetwarzane w sposob zgodny z prawem, rzetelny i przejrzysty.",
+      "dataContent": "CasaFix zbiera nastepujace dane osobowe podczas rejestracji: imie, nazwisko, adres e-mail, numer telefonu i lokalizacje. Dane te sa niezbedne do prawidlowego funkcjonowania uslugi posrednictwa z fachowcami. Zgodnie z RODO i francuska ustawa Informatique et Libertes, Twoje dane sa przetwarzane w sposob zgodny z prawem, rzetelny i przejrzysty.",
       "cookiesTitle": "Pliki cookie",
       "cookiesContent": "Aplikacja uzywa funkcjonalnych plikow cookie niezbednych do prawidlowego dzialania uslugi. Analityczne pliki cookie moga byc uzywane do poprawy doswiadczenia uzytkownika. W kazdej chwili mozesz zmienic preferencje dotyczace plikow cookie w ustawieniach aplikacji.",
       "rightsTitle": "Twoje prawa",
-      "rightsContent": "Zgodnie z RODO masz prawo dostepu, sprostowania, usuniecia, przenoszenia danych, a takze prawo sprzeciwu i ograniczenia przetwarzania. Aby skorzystac z tych praw, skontaktuj sie z nami: contact@casafix.es. Masz rowniez prawo zlozyc skarge do Hiszpanskiej Agencji Ochrony Danych (AEPD)."
+      "rightsContent": "Zgodnie z RODO masz prawo dostepu, sprostowania, usuniecia, przenoszenia danych, a takze prawo sprzeciwu i ograniczenia przetwarzania. Aby skorzystac z tych praw, skontaktuj sie z nami: contact@casafix.fr. Masz rowniez prawo zlozyc skarge do CNIL (Commission Nationale de l'Informatique et des Libertes)."
     }
   },
   "account": {
     "phone": "Telefon",
-    "phonePlaceholder": "+34 600 000 000",
+    "phonePlaceholder": "+33 6 00 00 00 00",
     "save": "Zapisz",
     "saved": "Zmiany zapisane",
     "saveError": "Blad podczas zapisywania",
@@ -527,7 +527,7 @@
     "deleteTitle": "Usunac konto?",
     "deleteConfirm": "Ta operacja jest nieodwracalna. Wszystkie Twoje dane zostana usuniete.",
     "deleteError": "Blad podczas usuwania konta",
-    "invalidPhone": "Nieprawidlowy numer telefonu. Oczekiwany format: +34 600 000 000",
+    "invalidPhone": "Nieprawidlowy numer telefonu. Oczekiwany format: +33 6 00 00 00 00",
     "address": "Adres",
     "addressPlaceholder": "Ulica, numer, kod pocztowy, miasto",
     "addressRequired": "Adres jest wymagany do fakturowania"
@@ -686,7 +686,7 @@
     "bookingsCount": "Bookings",
     "artisanDetail": "Artisan detail",
     "nieNif": "NIE / NIF",
-    "autonomoNumber": "Autonomo No.",
+    "siretNumber": "SIRET No.",
     "idDocument": "ID Document",
     "idRecto": "Front side",
     "idVerso": "Back side",
@@ -720,6 +720,20 @@
     "pendingConfirmation": "Pending confirmation",
     "workCompleted": "Work completed",
     "no": "No",
-    "yes": "Yes"
+    "yes": "Yes",
+    "select": "Select",
+    "selectAll": "Select all",
+    "deselectAll": "Deselect all",
+    "deleteBooking": "Delete",
+    "searchInvoice": "Search an invoice...",
+    "noInvoices": "No invoices",
+    "invoicesTitle": "Invoices",
+    "invoiceRevenue": "CasaFix revenue (commissions)",
+    "invoiceCount": "{{count}} invoice(s)",
+    "totalTTC": "Total incl. tax",
+    "commissionLabel": "Commission",
+    "netArtisan": "Net artisan",
+    "commissionRate": "Commission 15%",
+    "anonymous": "Anonymous"
   }
 }

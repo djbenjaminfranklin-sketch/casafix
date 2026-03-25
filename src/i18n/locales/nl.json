@@ -3,7 +3,7 @@
   "error": { "title": "Oeps!", "message": "Er is een onverwachte fout opgetreden. Probeer het opnieuw.", "retry": "Opnieuw proberen" },
   "notifications": { "artisanSelected": "Geselecteerd", "artisanSelectedBody": "U bent geselecteerd voor \"{{service}}\". Ga naar het adres van de klant.", "artisanNotSelected": "Niet geselecteerd", "artisanNotSelectedBody": "De klant heeft een andere vakman gekozen voor \"{{service}}\"." },
   "appName": "CasaFix",
-  "location": "Costa del Sol",
+  "location": "Frankrijk",
   "searchPlaceholder": "Wat zoekt u?",
   "servicesTitle": "Thuisservices",
   "emergency": "Noodgeval",
@@ -256,7 +256,7 @@
     "locationErrorDesc": "Locatie kon niet worden bepaald. Controleer uw locatie-instellingen.",
     "locationDenied": "Locatietoegang is vereist om een vakman bij u in de buurt te vinden.",
     "enterAddress": "Voer uw adres in",
-    "addressPlaceholder": "Bijv. 12 Calle de la Playa, Marbella",
+    "addressPlaceholder": "Bijv. 12 Rue de la Paix, Paris",
     "addressRequired": "Voer uw adres in zodat de vakman u kan vinden.",
     "showQrToArtisan": "Toon deze code aan de vakman",
     "cancelTitle": "Aanvraag annuleren?",
@@ -455,7 +455,7 @@
     "cgu": {
       "article1": {
         "title": "Artikel 1 – Doel",
-        "content": "Deze Algemene Gebruiksvoorwaarden (hierna «AGV») hebben tot doel de voorwaarden en modaliteiten van het gebruik van de mobiele applicatie CasaFix (hierna «de Applicatie») te definiëren, evenals de rechten en verplichtingen van de partijen. De Applicatie is een bemiddelingsdienst tussen particulieren die thuisdiensten zoeken en gekwalificeerde vakmensen die actief zijn aan de Costa del Sol (Marbella, Estepona, Fuengirola, Málaga en omgeving)."
+        "content": "Deze Algemene Gebruiksvoorwaarden (hierna «AGV») hebben tot doel de voorwaarden en modaliteiten van het gebruik van de mobiele applicatie CasaFix (hierna «de Applicatie») te definiëren, evenals de rechten en verplichtingen van de partijen. De Applicatie is een bemiddelingsdienst tussen particulieren die thuisdiensten zoeken en gekwalificeerde vakmensen die actief zijn in Frankrijk."
       },
       "article2": {
         "title": "Artikel 2 – Toegang tot de Applicatie",
@@ -479,7 +479,7 @@
       },
       "article7": {
         "title": "Artikel 7 – Persoonsgegevens",
-        "content": "CasaFix voldoet aan de AVG en de Spaanse LOPD. De verzamelde gegevens worden uitsluitend gebruikt voor de werking van de dienst en worden niet zonder toestemming aan derden verstrekt."
+        "content": "CasaFix voldoet aan de AVG en de Franse Loi Informatique et Libertes. De verzamelde gegevens worden uitsluitend gebruikt voor de werking van de dienst en worden niet zonder toestemming aan derden verstrekt."
       },
       "article8": {
         "title": "Artikel 8 – Intellectueel eigendom",
@@ -487,7 +487,7 @@
       },
       "article9": {
         "title": "Artikel 9 – Toepasselijk recht",
-        "content": "Deze AGV worden beheerst door het Spaans recht. Geschillen worden voorgelegd aan de bevoegde rechtbanken van Málaga."
+        "content": "Deze AGV worden beheerst door het Frans recht. Geschillen worden voorgelegd aan de bevoegde Franse rechtbanken."
       },
       "article10": {
         "title": "Artikel 10 – Wijzigingen",
@@ -496,7 +496,7 @@
     },
     "legalNotice": {
       "publisherTitle": "Uitgever van de Applicatie",
-      "publisherContent": "CasaFix\nBemiddelingsapplicatie voor thuisdiensten\nCosta del Sol, Málaga, Spanje\nContact: contact@casafix.es",
+      "publisherContent": "CasaFix\nBemiddelingsapplicatie voor thuisdiensten\nFrankrijk\nContact: contact@casafix.fr",
       "hostingTitle": "Hosting",
       "hostingContent": "De applicatie wordt gehost door Vercel Inc., 340 S Lemon Ave #4133, Walnut, CA 91789, VS. De database door Supabase Inc.",
       "ipTitle": "Intellectueel eigendom",
@@ -504,16 +504,16 @@
     },
     "privacy": {
       "dataTitle": "Gegevensverzameling",
-      "dataContent": "CasaFix verzamelt de volgende persoonsgegevens: naam, achternaam, e-mail, telefoon en locatie. Deze gegevens zijn noodzakelijk voor de werking van de dienst, conform de AVG en de Spaanse LOPD.",
+      "dataContent": "CasaFix verzamelt de volgende persoonsgegevens: naam, achternaam, e-mail, telefoon en locatie. Deze gegevens zijn noodzakelijk voor de werking van de dienst, conform de AVG en de Franse Loi Informatique et Libertes.",
       "cookiesTitle": "Cookies",
       "cookiesContent": "De applicatie maakt gebruik van functionele en analytische cookies. U kunt uw voorkeuren op elk moment wijzigen.",
       "rightsTitle": "Uw rechten",
-      "rightsContent": "U hebt recht op inzage, rectificatie, verwijdering en overdraagbaarheid van uw gegevens. Contact: contact@casafix.es. U kunt een klacht indienen bij de Spaanse Gegevensbeschermingsautoriteit (AEPD)."
+      "rightsContent": "U hebt recht op inzage, rectificatie, verwijdering en overdraagbaarheid van uw gegevens. Contact: contact@casafix.fr. U kunt een klacht indienen bij de CNIL (Commission Nationale de l'Informatique et des Libertes)."
     }
   },
   "account": {
     "phone": "Telefoon",
-    "phonePlaceholder": "+34 600 000 000",
+    "phonePlaceholder": "+33 6 00 00 00 00",
     "save": "Opslaan",
     "saved": "Wijzigingen opgeslagen",
     "saveError": "Fout bij opslaan",

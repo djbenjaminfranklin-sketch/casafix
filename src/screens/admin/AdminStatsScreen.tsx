@@ -174,7 +174,7 @@ export default function AdminStatsScreen() {
         <View style={styles.revenueCard}>
           <Text style={styles.revenueLabel}>{t("admin.revenue")}</Text>
           <Text style={styles.revenueValue}>{stats.revenue.toLocaleString("fr-FR")} EUR</Text>
-          <Text style={styles.revenueSubtext}>Commission 15%</Text>
+          <Text style={styles.revenueSubtext}>{t("admin.commissionRate")}</Text>
         </View>
 
         {/* Completed Bookings */}

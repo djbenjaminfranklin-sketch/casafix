@@ -96,15 +96,15 @@ export default function AdminInvoicesScreen() {
 
       <View style={styles.invoiceAmounts}>
         <View style={styles.amountItem}>
-          <Text style={styles.amountLabel}>Total TTC</Text>
+          <Text style={styles.amountLabel}>{t("admin.totalTTC")}</Text>
           <Text style={styles.amountValue}>{item.total?.toFixed(2)}€</Text>
         </View>
         <View style={styles.amountItem}>
-          <Text style={styles.amountLabel}>Commission</Text>
+          <Text style={styles.amountLabel}>{t("admin.commissionLabel")}</Text>
           <Text style={styles.amountCommission}>{item.casafix_commission?.toFixed(2)}€</Text>
         </View>
         <View style={styles.amountItem}>
-          <Text style={styles.amountLabel}>Net artisan</Text>
+          <Text style={styles.amountLabel}>{t("admin.netArtisan")}</Text>
           <Text style={styles.amountNet}>{item.artisan_net?.toFixed(2)}€</Text>
         </View>
       </View>
@@ -119,14 +119,14 @@ export default function AdminInvoicesScreen() {
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
           <Icon name="arrow-back" size={24} color="#ffffff" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Factures</Text>
+        <Text style={styles.headerTitle}>{t("admin.invoicesTitle")}</Text>
       </View>
 
       {/* Revenue card */}
       <View style={styles.revenueCard}>
-        <Text style={styles.revenueLabel}>Revenus CasaFix (commissions)</Text>
+        <Text style={styles.revenueLabel}>{t("admin.invoiceRevenue")}</Text>
         <Text style={styles.revenueAmount}>{totalRevenue.toFixed(2)}€</Text>
-        <Text style={styles.revenueCount}>{invoices.length} facture(s)</Text>
+        <Text style={styles.revenueCount}>{t("admin.invoiceCount", { count: invoices.length })}</Text>
       </View>
 
       {/* Search */}
@@ -134,7 +134,7 @@ export default function AdminInvoicesScreen() {
         <Icon name="search" size={18} color="#9ca3af" />
         <TextInput
           style={styles.searchInput}
-          placeholder="Rechercher une facture..."
+          placeholder={t("admin.searchInvoice")}
           placeholderTextColor="#6b7280"
           value={search}
           onChangeText={setSearch}
@@ -162,7 +162,7 @@ export default function AdminInvoicesScreen() {
           ListEmptyComponent={
             <View style={styles.emptyContainer}>
               <Icon name="receipt-outline" size={48} color="#6b7280" />
-              <Text style={styles.emptyText}>Aucune facture</Text>
+              <Text style={styles.emptyText}>{t("admin.noInvoices")}</Text>
             </View>
           }
         />

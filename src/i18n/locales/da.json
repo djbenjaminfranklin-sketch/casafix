@@ -3,7 +3,7 @@
   "error": { "title": "Ups!", "message": "Der opstod en uventet fejl. Prøv venligst igen.", "retry": "Prøv igen" },
   "notifications": { "artisanSelected": "Valgt", "artisanSelectedBody": "Du er blevet valgt til \"{{service}}\". Tag til kundens adresse.", "artisanNotSelected": "Ikke valgt", "artisanNotSelectedBody": "Kunden valgte en anden håndværker til \"{{service}}\"." },
   "appName": "CasaFix",
-  "location": "Costa del Sol",
+  "location": "Frankrig",
   "searchPlaceholder": "Hvad leder du efter?",
   "servicesTitle": "Hjemmeservice",
   "emergency": "Nødsituation",
@@ -256,7 +256,7 @@
     "locationErrorDesc": "Kunne ikke hente din placering. Tjek dine placeringsindstillinger.",
     "locationDenied": "Placeringsadgang er nødvendig for at finde en håndværker i nærheden.",
     "enterAddress": "Indtast din adresse",
-    "addressPlaceholder": "F.eks. 12 Calle de la Playa, Marbella",
+    "addressPlaceholder": "F.eks. 12 Rue de la Paix, Paris",
     "addressRequired": "Indtast din adresse, så håndværkeren kan finde dig.",
     "showQrToArtisan": "Vis denne kode til håndværkeren",
     "cancelTitle": "Annullere anmodningen?",
@@ -455,7 +455,7 @@
     "cgu": {
       "article1": {
         "title": "Artikel 1 – Formål",
-        "content": "Disse betingelser regulerer brugen af CasaFix-appen for hjemmeservice på Costa del Sol."
+        "content": "Disse betingelser regulerer brugen af CasaFix-appen for hjemmeservice i Frankrig."
       },
       "article2": {
         "title": "Artikel 2 – Adgang",
@@ -479,7 +479,7 @@
       },
       "article7": {
         "title": "Artikel 7 – Persondata",
-        "content": "CasaFix overholder GDPR og spansk LOPD."
+        "content": "CasaFix overholder GDPR og den franske databeskyttelseslov (Loi Informatique et Libertés). Data på EU-servere (Supabase)."
       },
       "article8": {
         "title": "Artikel 8 – Immaterielle rettigheder",
@@ -487,7 +487,7 @@
       },
       "article9": {
         "title": "Artikel 9 – Gældende lov",
-        "content": "Spansk lov gælder. Værneting er Málaga, Spanien."
+        "content": "Fransk lov gælder. Kompetente franske domstole."
       },
       "article10": {
         "title": "Artikel 10 – Ændringer",
@@ -496,7 +496,7 @@
     },
     "legalNotice": {
       "publisherTitle": "Udgiver",
-      "publisherContent": "CasaFix\nHjemmeserviceplatform\nCosta del Sol, Málaga, Spanien\nKontakt: contact@casafix.es",
+      "publisherContent": "CasaFix\nHjemmeserviceplatform\nFrankrig\nKontakt: contact@casafix.fr",
       "hostingTitle": "Hosting",
       "hostingContent": "Vercel Inc., USA. Database: Supabase Inc.",
       "ipTitle": "Immaterielle rettigheder",
@@ -508,12 +508,12 @@
       "cookiesTitle": "Cookies",
       "cookiesContent": "Appen bruger funktionelle og analytiske cookies.",
       "rightsTitle": "Dine rettigheder",
-      "rightsContent": "Du har ret til indsigt, rettelse og sletning af dine data. Kontakt: contact@casafix.es."
+      "rightsContent": "Du har ret til indsigt, rettelse og sletning af dine data. Kontakt: contact@casafix.fr."
     }
   },
   "account": {
     "phone": "Telefon",
-    "phonePlaceholder": "+34 600 000 000",
+    "phonePlaceholder": "+33 6 00 00 00 00",
     "save": "Gem",
     "saved": "Ændringer gemt",
     "saveError": "Fejl ved gemning",
@@ -686,7 +686,7 @@
     "bookingsCount": "Bookings",
     "artisanDetail": "Artisan detail",
     "nieNif": "NIE / NIF",
-    "autonomoNumber": "Autonomo No.",
+    "siretNumber": "SIRET No.",
     "idDocument": "ID Document",
     "idRecto": "Front side",
     "idVerso": "Back side",
@@ -720,6 +720,20 @@
     "pendingConfirmation": "Pending confirmation",
     "workCompleted": "Work completed",
     "no": "No",
-    "yes": "Yes"
+    "yes": "Yes",
+    "select": "Select",
+    "selectAll": "Select all",
+    "deselectAll": "Deselect all",
+    "deleteBooking": "Delete",
+    "searchInvoice": "Search an invoice...",
+    "noInvoices": "No invoices",
+    "invoicesTitle": "Invoices",
+    "invoiceRevenue": "CasaFix revenue (commissions)",
+    "invoiceCount": "{{count}} invoice(s)",
+    "totalTTC": "Total incl. tax",
+    "commissionLabel": "Commission",
+    "netArtisan": "Net artisan",
+    "commissionRate": "Commission 15%",
+    "anonymous": "Anonymous"
   }
 }

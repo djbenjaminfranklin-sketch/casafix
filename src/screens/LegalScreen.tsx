@@ -95,6 +95,27 @@ export default function LegalScreen({ route, navigation }: Props) {
             </Text>
 
             <Text style={[styles.articleTitle, { marginTop: SPACING.lg }]}>
+              {t("legal.privacy.purposeTitle")}
+            </Text>
+            <Text style={styles.articleContent}>
+              {t("legal.privacy.purposeContent")}
+            </Text>
+
+            <Text style={[styles.articleTitle, { marginTop: SPACING.lg }]}>
+              {t("legal.privacy.legalBasisTitle")}
+            </Text>
+            <Text style={styles.articleContent}>
+              {t("legal.privacy.legalBasisContent")}
+            </Text>
+
+            <Text style={[styles.articleTitle, { marginTop: SPACING.lg }]}>
+              {t("legal.privacy.subprocessorsTitle")}
+            </Text>
+            <Text style={styles.articleContent}>
+              {t("legal.privacy.subprocessorsContent")}
+            </Text>
+
+            <Text style={[styles.articleTitle, { marginTop: SPACING.lg }]}>
               {t("legal.privacy.cookiesTitle")}
             </Text>
             <Text style={styles.articleContent}>
@@ -107,12 +128,19 @@ export default function LegalScreen({ route, navigation }: Props) {
             <Text style={styles.articleContent}>
               {t("legal.privacy.rightsContent")}
             </Text>
+
+            <Text style={[styles.articleTitle, { marginTop: SPACING.lg }]}>
+              {t("legal.privacy.contactTitle")}
+            </Text>
+            <Text style={styles.articleContent}>
+              {t("legal.privacy.contactContent")}
+            </Text>
           </View>
         )}
 
         <View style={styles.footer}>
           <Text style={styles.footerText}>
-            CasaFix - Costa del Sol
+            CasaFix - France
           </Text>
         </View>
       </ScrollView>

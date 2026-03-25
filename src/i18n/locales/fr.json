@@ -14,7 +14,7 @@
     "artisanNotSelectedBody": "Le client a choisi un autre artisan pour \"{{service}}\"."
   },
   "appName": "CasaFix",
-  "location": "Costa del Sol",
+  "location": "France",
   "searchPlaceholder": "Que recherchez-vous ?",
   "servicesTitle": "Services à domicile",
   "emergency": "Urgence",
@@ -267,7 +267,7 @@
     "locationErrorDesc": "Impossible d'obtenir votre position. Vérifiez vos paramètres de localisation.",
     "locationDenied": "L'accès à la localisation est nécessaire pour trouver un artisan proche de chez vous.",
     "enterAddress": "Entrez votre adresse",
-    "addressPlaceholder": "Ex: 12 Calle de la Playa, Marbella",
+    "addressPlaceholder": "Ex: 12 Rue de la Paix, Paris",
     "addressRequired": "Veuillez entrer votre adresse pour que l'artisan puisse vous trouver.",
     "lateCancel": "Annulation gratuite si l'artisan est en retard",
     "punctuality": "Ponctualité",
@@ -523,65 +523,81 @@
     "cgu": {
       "article1": {
         "title": "Article 1 – Objet",
-        "content": "Les présentes Conditions Générales d'Utilisation (ci-après « CGU ») ont pour objet de définir les modalités et conditions d'utilisation de l'application mobile CasaFix (ci-après « l'Application »), ainsi que les droits et obligations des parties dans le cadre de l'utilisation de l'Application. L'Application est un service de mise en relation entre des particuliers recherchant des prestations de services à domicile et des artisans qualifiés intervenant sur la Costa del Sol (Marbella, Estepona, Fuengirola, Málaga et environs)."
+        "content": "Les présentes Conditions Générales d'Utilisation (ci-après « CGU ») ont pour objet de définir les modalités et conditions d'utilisation de l'application mobile CasaFix (ci-après « l'Application »), éditée par BENJAMIN TAIEB, auto-entrepreneur. L'Application est une plateforme de mise en relation entre des particuliers recherchant des prestations de services à domicile (réparations, dépannages, travaux) et des artisans vérifiés (SIRET, Kbis, assurance RC Pro) intervenant en France. CasaFix agit en qualité d'intermédiaire technique et n'est pas le prestataire direct des services."
       },
       "article2": {
-        "title": "Article 2 – Accès à l'Application",
-        "content": "L'accès à l'Application est gratuit pour les utilisateurs. L'utilisation de certains services peut nécessiter la création d'un compte utilisateur. L'utilisateur s'engage à fournir des informations exactes et à jour lors de son inscription et à maintenir la confidentialité de ses identifiants de connexion."
+        "title": "Article 2 – Inscription et accès",
+        "content": "L'accès à l'Application est gratuit. L'inscription s'effectue par email, Apple Sign-In ou Google Sign-In. L'utilisateur s'engage à fournir des informations exactes et à jour lors de son inscription et à maintenir la confidentialité de ses identifiants de connexion. L'Application est disponible en 13 langues."
       },
       "article3": {
         "title": "Article 3 – Services proposés",
-        "content": "CasaFix propose une mise en relation entre utilisateurs et artisans pour les services suivants : plomberie, électricité, serrurerie, chauffage, climatisation, traitement nuisibles, électroménager, vitrerie, petits travaux, rénovation, piscine et jardinage. Les prix affichés sont indicatifs et communiqués à titre informatif. Un devis détaillé et gratuit est établi avant toute intervention. CasaFix n'est pas le prestataire direct des services et agit en qualité d'intermédiaire."
+        "content": "CasaFix propose une mise en relation entre utilisateurs et artisans vérifiés pour les services suivants : plomberie, électricité, serrurerie, chauffage, climatisation, traitement nuisibles, électroménager, vitrerie, petits travaux, rénovation, piscine et jardinage. L'utilisateur peut effectuer une réservation en urgence ou sur rendez-vous. Un diagnostic photo par intelligence artificielle (Claude Vision) est disponible pour aider à identifier la nature du problème. CasaFix n'est pas le prestataire direct des services et agit en qualité d'intermédiaire technique."
       },
       "article4": {
-        "title": "Article 4 – Tarification et paiement",
-        "content": "Les tarifs affichés dans l'Application sont des fourchettes indicatives TTC (Toutes Taxes Comprises). Aucune majoration n'est appliquée pour les interventions en soirée, le week-end ou les jours fériés. Le paiement s'effectue exclusivement en ligne : lors de la réservation, une préautorisation du montant maximum est effectuée sur la carte bancaire du client. À l'issue de l'intervention, l'artisan renseigne le montant final de la prestation, et seul ce montant est débité. La différence entre le montant préautorisé et le montant final est automatiquement libérée. La facture est envoyée par email sous 48 heures."
+        "title": "Article 4 – Réservation et paiement",
+        "content": "Lors de la réservation, une préautorisation du montant maximum estimé est effectuée sur la carte bancaire du client via Stripe. Aucun débit n'est réalisé avant la fin de l'intervention. À l'issue de l'intervention, l'artisan propose le prix final. Le client dispose de 48 heures pour confirmer ou contester le montant. Seul le montant final validé est débité. La différence entre le montant préautorisé et le montant final est automatiquement libérée. La facture est envoyée par email. Les tarifs affichés sont des fourchettes indicatives TTC. Aucune majoration n'est appliquée pour les interventions en soirée, le week-end ou les jours fériés."
       },
       "article5": {
-        "title": "Article 5 – Garanties",
-        "content": "Toutes les interventions réalisées par les artisans du réseau CasaFix bénéficient d'une garantie de 1 an sur les pièces et la main-d'œuvre. En cas de problème lié à une intervention précédente, un retour sur site gratuit est organisé dans un délai de 48 heures. Les artisans partenaires sont assurés en responsabilité civile professionnelle et disposent des qualifications requises."
+        "title": "Article 5 – Annulation",
+        "content": "Le client peut annuler gratuitement sa réservation dans les 2 minutes suivant la confirmation. Passé ce délai, des frais de déplacement de 75 € sont dus à l'artisan. Ce montant couvre les frais réels de déplacement de l'artisan et ne constitue pas une pénalité. Conformément à l'article L. 221-28 du Code de la consommation, le droit de rétractation ne s'applique pas aux prestations de services d'urgence pleinement exécutées."
       },
       "article6": {
-        "title": "Article 6 – Responsabilité",
-        "content": "CasaFix agit en qualité d'intermédiaire et ne saurait être tenu responsable de la qualité des prestations réalisées par les artisans, bien que CasaFix s'engage à sélectionner des professionnels qualifiés et assurés. L'utilisateur reconnaît que CasaFix ne peut garantir la disponibilité permanente de l'Application ni l'absence d'erreurs techniques."
+        "title": "Article 6 – Protection contre les absences",
+        "content": "En cas de non-présentation de l'artisan dans un délai de 45 minutes après l'heure convenue, le client est automatiquement remboursé. L'arrivée de l'artisan est confirmée par un système de QR code. Le suivi GPS en temps réel permet au client de suivre l'artisan en route."
       },
       "article7": {
-        "title": "Article 7 – Données personnelles",
-        "content": "CasaFix s'engage à respecter la législation en vigueur relative à la protection des données personnelles, conformément au Règlement Général sur la Protection des Données (RGPD) et à la Ley Orgánica de Protección de Datos (LOPD) espagnole. Les données collectées sont utilisées exclusivement pour le bon fonctionnement du service et ne sont jamais cédées à des tiers sans le consentement de l'utilisateur."
+        "title": "Article 7 – Avis et évaluations",
+        "content": "Après chaque intervention, le client et l'artisan sont invités à laisser un avis réciproque. Les avis sont obligatoires et contribuent à la qualité du réseau. Les avis frauduleux ou abusifs peuvent être modérés par CasaFix."
       },
       "article8": {
-        "title": "Article 8 – Propriété intellectuelle",
-        "content": "L'ensemble des éléments composant l'Application (textes, images, logos, icônes, logiciels) est protégé par les lois relatives à la propriété intellectuelle. Toute reproduction, représentation ou diffusion, en tout ou partie, du contenu de l'Application sans l'autorisation préalable et écrite de CasaFix est interdite."
+        "title": "Article 8 – Litiges et médiation",
+        "content": "En cas de litige, le client peut signaler un problème directement depuis l'Application. L'équipe CasaFix examine chaque signalement dans un délai de 24 heures. Une médiation est proposée entre le client et l'artisan. Un remboursement total ou partiel peut être accordé selon les circonstances. Conformément aux articles L. 611-1 et suivants du Code de la consommation, le client peut recourir gratuitement à un médiateur de la consommation."
       },
       "article9": {
-        "title": "Article 9 – Droit applicable et juridiction",
-        "content": "Les présentes CGU sont régies par le droit espagnol. Tout litige relatif à l'interprétation ou à l'exécution des présentes CGU sera soumis aux tribunaux compétents de Málaga, Espagne."
+        "title": "Article 9 – Responsabilité",
+        "content": "CasaFix agit en qualité d'intermédiaire technique au sens de la loi pour la confiance dans l'économie numérique (LCEN). CasaFix ne saurait être tenu responsable de la qualité des prestations réalisées par les artisans, bien que CasaFix s'engage à vérifier leurs qualifications (SIRET, Kbis, assurance RC Pro). L'utilisateur reconnaît que CasaFix ne peut garantir la disponibilité permanente de l'Application ni l'absence d'erreurs techniques. Les artisans partenaires sont des professionnels indépendants."
       },
       "article10": {
-        "title": "Article 10 – Modification des CGU",
+        "title": "Article 10 – Données personnelles et RGPD",
+        "content": "CasaFix s'engage à respecter le Règlement Général sur la Protection des Données (RGPD) et la loi Informatique et Libertés. Les données collectées sont utilisées exclusivement pour le bon fonctionnement du service et ne sont jamais cédées à des tiers sans le consentement de l'utilisateur. Les données sont hébergées sur des serveurs situés dans l'Union européenne (Supabase). Pour plus de détails, consultez notre Politique de Confidentialité."
+      },
+      "article11": {
+        "title": "Article 11 – Droit applicable et juridiction",
+        "content": "Les présentes CGU sont régies par le droit français. Tout litige relatif à l'interprétation ou à l'exécution des présentes CGU sera soumis aux tribunaux compétents français, conformément aux dispositions du Code de la consommation et du Code de procédure civile."
+      },
+      "article12": {
+        "title": "Article 12 – Modification des CGU",
         "content": "CasaFix se réserve le droit de modifier les présentes CGU à tout moment. Les modifications entrent en vigueur dès leur publication dans l'Application. L'utilisateur est invité à consulter régulièrement les CGU. La poursuite de l'utilisation de l'Application après modification des CGU vaut acceptation des nouvelles conditions."
       }
     },
     "legalNotice": {
       "publisherTitle": "Éditeur de l'Application",
-      "publisherContent": "CasaFix\nApplication de mise en relation pour services à domicile\nCosta del Sol, Málaga, Espagne\nContact : contact@casafix.es",
+      "publisherContent": "CasaFix\nÉditeur : BENJAMIN TAIEB, auto-entrepreneur\nApplication de mise en relation pour services de réparation et dépannage à domicile\nFrance\nContact : contact@casafix.fr",
       "hostingTitle": "Hébergement",
-      "hostingContent": "L'application est hébergée par Vercel Inc., 340 S Lemon Ave #4133, Walnut, CA 91789, États-Unis. La base de données est hébergée par Supabase Inc.",
+      "hostingContent": "L'application et les données sont hébergées par Supabase Inc. sur des serveurs situés dans l'Union européenne, conformément au RGPD. Services tiers : Stripe (paiements), Firebase (notifications), Anthropic (diagnostic IA Claude Vision).",
       "ipTitle": "Propriété intellectuelle",
-      "ipContent": "L'ensemble du contenu de l'application CasaFix (logos, textes, images, structure) est protégé par le droit de la propriété intellectuelle. Toute reproduction sans autorisation expresse est interdite et constitue une contrefaçon."
+      "ipContent": "L'ensemble du contenu de l'application CasaFix (logos, textes, images, structure, code source) est protégé par le droit de la propriété intellectuelle français et européen. Toute reproduction, représentation ou diffusion, en tout ou partie, sans autorisation expresse et écrite de CasaFix est interdite et constitue une contrefaçon au sens des articles L. 335-2 et suivants du Code de la propriété intellectuelle."
     },
     "privacy": {
-      "dataTitle": "Collecte des données",
-      "dataContent": "CasaFix collecte les données personnelles suivantes lors de l'inscription : nom, prénom, adresse email, numéro de téléphone et localisation. Ces données sont nécessaires au bon fonctionnement du service de mise en relation avec les artisans. Conformément au RGPD et à la LOPD espagnole, vos données sont traitées de manière licite, loyale et transparente.",
-      "cookiesTitle": "Cookies",
-      "cookiesContent": "L'application utilise des cookies fonctionnels nécessaires au bon fonctionnement du service. Des cookies analytiques peuvent être utilisés pour améliorer l'expérience utilisateur. Vous pouvez à tout moment modifier vos préférences de cookies dans les paramètres de l'application.",
-      "rightsTitle": "Vos droits",
-      "rightsContent": "Conformément au RGPD, vous disposez d'un droit d'accès, de rectification, de suppression, de portabilité de vos données, ainsi que d'un droit d'opposition et de limitation du traitement. Pour exercer ces droits, contactez-nous à : contact@casafix.es. Vous disposez également du droit d'introduire une réclamation auprès de l'Agencia Española de Protección de Datos (AEPD)."
+      "dataTitle": "Données collectées",
+      "dataContent": "CasaFix collecte les données personnelles suivantes : identité (nom, prénom), adresse email, numéro de téléphone, adresse postale, données de géolocalisation (GPS), photos envoyées pour le diagnostic IA, messages échangés avec les artisans, et données de paiement (traitées par Stripe, jamais stockées sur nos serveurs). Ces données sont nécessaires à la mise en relation avec les artisans et au bon fonctionnement du service.",
+      "purposeTitle": "Finalités du traitement",
+      "purposeContent": "Vos données sont utilisées pour : la mise en relation entre clients et artisans vérifiés, le traitement des paiements et la facturation, la sécurité de la plateforme (vérification des artisans, prévention des fraudes), le suivi GPS des interventions, le diagnostic photo par intelligence artificielle, l'envoi de notifications relatives à vos réservations, et l'amélioration continue du service.",
+      "legalBasisTitle": "Base légale",
+      "legalBasisContent": "Le traitement de vos données repose sur : votre consentement (article 6.1.a du RGPD) pour la géolocalisation et les photos, et l'exécution du contrat (article 6.1.b du RGPD) pour les données nécessaires à la fourniture du service (identité, paiement, communications).",
+      "subprocessorsTitle": "Sous-traitants",
+      "subprocessorsContent": "CasaFix fait appel aux sous-traitants suivants : Supabase Inc. (hébergement des données, serveurs UE), Stripe Inc. (traitement des paiements, certifié PCI-DSS), Firebase / Google (notifications push), Anthropic (Claude Vision, diagnostic photo IA). Tous nos sous-traitants sont soumis à des obligations contractuelles conformes au RGPD.",
+      "cookiesTitle": "Cookies et traceurs",
+      "cookiesContent": "L'application utilise des cookies fonctionnels strictement nécessaires au bon fonctionnement du service. Des cookies analytiques peuvent être utilisés pour améliorer l'expérience utilisateur, uniquement avec votre consentement. Conformément à la directive ePrivacy et aux recommandations de la CNIL, vous pouvez à tout moment modifier vos préférences.",
+      "rightsTitle": "Vos droits RGPD",
+      "rightsContent": "Conformément au RGPD et à la loi Informatique et Libertés, vous disposez des droits suivants : droit d'accès à vos données, droit de rectification, droit à l'effacement (droit à l'oubli), droit à la portabilité de vos données, droit d'opposition au traitement, droit à la limitation du traitement. Vous pouvez exercer ces droits à tout moment en nous contactant. Vous disposez également du droit d'introduire une réclamation auprès de la CNIL (Commission Nationale de l'Informatique et des Libertés).",
+      "contactTitle": "Contact",
+      "contactContent": "Pour toute question relative à vos données personnelles ou pour exercer vos droits, contactez-nous à : contact@casafix.fr\n\nResponsable du traitement : BENJAMIN TAIEB, auto-entrepreneur\nFrance"
     }
   },
   "account": {
     "phone": "Téléphone",
-    "phonePlaceholder": "+34 600 000 000",
+    "phonePlaceholder": "+33 6 00 00 00 00",
     "save": "Enregistrer",
     "saved": "Modifications enregistrées",
     "saveError": "Erreur lors de la sauvegarde",
@@ -592,7 +608,7 @@
     "deleteTitle": "Supprimer votre compte ?",
     "deleteConfirm": "Cette action est irréversible. Toutes vos données seront supprimées.",
     "deleteError": "Erreur lors de la suppression du compte",
-    "invalidPhone": "Numéro de téléphone invalide. Format attendu : +34 600 000 000",
+    "invalidPhone": "Numéro de téléphone invalide. Format attendu : +33 6 00 00 00 00",
     "address": "Adresse",
     "addressPlaceholder": "Rue, numéro, code postal, ville",
     "addressRequired": "L'adresse est nécessaire pour la facturation"
@@ -630,7 +646,7 @@
     "client": "Client",
     "service": "Service",
     "subtotal": "Montant HT",
-    "iva": "IVA",
+    "iva": "TVA",
     "total": "Total TTC",
     "paidByCard": "Paiement effectué par carte bancaire",
     "commission": "Commission CasaFix",
@@ -751,13 +767,13 @@
     "address": "Adresse",
     "bookingsCount": "Réservations",
     "artisanDetail": "Détail artisan",
-    "nieNif": "NIE / NIF",
-    "autonomoNumber": "N. Autonomo",
+    "nieNif": "SIRET / SIREN",
+    "siretNumber": "N. SIRET",
     "idDocument": "Document d'identité",
     "idRecto": "Recto",
     "idVerso": "Verso",
     "viewFullscreen": "Voir en plein écran",
-    "ivaRate": "Taux IVA",
+    "ivaRate": "Taux TVA",
     "categoriesTitle": "Catégories",
     "reviews": "Avis",
     "noReviews": "Aucun avis",
@@ -790,7 +806,17 @@
     "select": "Sélectionner",
     "selectAll": "Tout sélectionner",
     "deselectAll": "Tout désélectionner",
-    "deleteBooking": "Supprimer"
+    "deleteBooking": "Supprimer",
+    "searchInvoice": "Rechercher une facture...",
+    "noInvoices": "Aucune facture",
+    "invoicesTitle": "Factures",
+    "invoiceRevenue": "Revenus CasaFix (commissions)",
+    "invoiceCount": "{{count}} facture(s)",
+    "totalTTC": "Total TTC",
+    "commissionLabel": "Commission",
+    "netArtisan": "Net artisan",
+    "commissionRate": "Commission 15%",
+    "anonymous": "Anonyme"
   },
   "promo": {
     "title": "Code promo",
@@ -806,7 +832,7 @@
     "title": "Parrainage",
     "yourCode": "Votre code de parrainage",
     "share": "Partager mon code",
-    "shareMessage": "Rejoins CasaFix et utilise mon code {{code}} pour obtenir 10€ de réduction sur ta première intervention ! Télécharge l'app : https://casafix.es",
+    "shareMessage": "Rejoins CasaFix et utilise mon code {{code}} pour obtenir 10€ de réduction sur ta première intervention ! Télécharge l'app : https://casafix.fr",
     "reward": "10€ offerts pour vous et votre filleul",
     "referrals": "Parrainages",
     "explanation": "Parrainez un ami, vous recevez tous les deux 10€ de réduction sur votre prochaine intervention CasaFix."

@@ -1,5 +1,5 @@
 export const CGU = {
-  lastUpdated: "2026-03-10",
+  lastUpdated: "2026-03-25",
   articles: [
     {
       id: "article1",
@@ -50,6 +50,16 @@ export const CGU = {
       id: "article10",
       titleKey: "legal.cgu.article10.title",
       contentKey: "legal.cgu.article10.content",
+    },
+    {
+      id: "article11",
+      titleKey: "legal.cgu.article11.title",
+      contentKey: "legal.cgu.article11.content",
+    },
+    {
+      id: "article12",
+      titleKey: "legal.cgu.article12.title",
+      contentKey: "legal.cgu.article12.content",
     },
   ],
 };

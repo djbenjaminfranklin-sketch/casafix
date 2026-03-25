@@ -3,7 +3,7 @@
   "error": { "title": "Hoppla!", "message": "Ein unerwarteter Fehler ist aufgetreten. Bitte versuchen Sie es erneut.", "retry": "Erneut versuchen" },
   "notifications": { "artisanSelected": "Ausgewählt", "artisanSelectedBody": "Sie wurden für \"{{service}}\" ausgewählt. Begeben Sie sich zur Adresse des Kunden.", "artisanNotSelected": "Nicht ausgewählt", "artisanNotSelectedBody": "Der Kunde hat einen anderen Handwerker für \"{{service}}\" gewählt." },
   "appName": "CasaFix",
-  "location": "Costa del Sol",
+  "location": "Frankreich",
   "searchPlaceholder": "Was suchen Sie?",
   "servicesTitle": "Haushaltsservice",
   "emergency": "Notfall",
@@ -256,7 +256,7 @@
     "locationErrorDesc": "Standort konnte nicht ermittelt werden. Prüfen Sie Ihre Standorteinstellungen.",
     "locationDenied": "Standortzugriff ist erforderlich, um einen Handwerker in Ihrer Nähe zu finden.",
     "enterAddress": "Geben Sie Ihre Adresse ein",
-    "addressPlaceholder": "Z.B. 12 Calle de la Playa, Marbella",
+    "addressPlaceholder": "Z.B. 12 Rue de la Paix, Paris",
     "addressRequired": "Bitte geben Sie Ihre Adresse ein, damit der Handwerker Sie finden kann.",
     "showQrToArtisan": "Zeigen Sie diesen Code dem Handwerker",
     "cancelTitle": "Anfrage stornieren?",
@@ -455,7 +455,7 @@
     "cgu": {
       "article1": {
         "title": "Artikel 1 – Zweck",
-        "content": "Diese AGB regeln die Nutzung der CasaFix-App, einer Plattform zur Vermittlung von Haushaltsdienstleistungen an der Costa del Sol (Marbella, Estepona, Fuengirola, Málaga und Umgebung)."
+        "content": "Diese AGB regeln die Nutzung der CasaFix-App, einer Plattform zur Vermittlung von Haushaltsdienstleistungen in Frankreich."
       },
       "article2": {
         "title": "Artikel 2 – Zugang",
@@ -479,7 +479,7 @@
       },
       "article7": {
         "title": "Artikel 7 – Datenschutz",
-        "content": "CasaFix hält die DSGVO und das spanische LOPD ein. Daten werden ausschließlich für den Service verwendet."
+        "content": "CasaFix hält die DSGVO und das französische Datenschutzgesetz (Loi Informatique et Libertés) ein. Daten auf EU-Servern (Supabase)."
       },
       "article8": {
         "title": "Artikel 8 – Geistiges Eigentum",
@@ -487,7 +487,7 @@
       },
       "article9": {
         "title": "Artikel 9 – Geltendes Recht",
-        "content": "Diese AGB unterliegen spanischem Recht. Gerichtsstand ist Málaga, Spanien."
+        "content": "Diese AGB unterliegen französischem Recht. Gerichtsstand sind die zuständigen französischen Gerichte."
       },
       "article10": {
         "title": "Artikel 10 – Änderungen",
@@ -496,7 +496,7 @@
     },
     "legalNotice": {
       "publisherTitle": "Herausgeber",
-      "publisherContent": "CasaFix\nVermittlungsplattform für Haushaltsdienstleistungen\nCosta del Sol, Málaga, Spanien\nKontakt: contact@casafix.es",
+      "publisherContent": "CasaFix\nVermittlungsplattform für Haushaltsdienstleistungen\nFrankreich\nKontakt: contact@casafix.fr",
       "hostingTitle": "Hosting",
       "hostingContent": "Vercel Inc., 340 S Lemon Ave #4133, Walnut, CA 91789, USA. Datenbank: Supabase Inc.",
       "ipTitle": "Geistiges Eigentum",
@@ -504,16 +504,16 @@
     },
     "privacy": {
       "dataTitle": "Datenerhebung",
-      "dataContent": "CasaFix erhebt: Name, E-Mail, Telefon und Standort. Diese Daten sind für den Service erforderlich, gemäß DSGVO und spanischem LOPD.",
+      "dataContent": "CasaFix erhebt: Name, E-Mail, Telefon, Adresse, GPS, Fotos, Nachrichten und Zahlungsdaten (Stripe). Diese Daten sind für den Service erforderlich, gemäß DSGVO und französischem Datenschutzgesetz.",
       "cookiesTitle": "Cookies",
       "cookiesContent": "Die App verwendet funktionale und analytische Cookies. Einstellungen jederzeit änderbar.",
       "rightsTitle": "Ihre Rechte",
-      "rightsContent": "Sie haben das Recht auf Zugang, Berichtigung, Löschung und Übertragung Ihrer Daten. Kontakt: contact@casafix.es."
+      "rightsContent": "Sie haben das Recht auf Zugang, Berichtigung, Löschung und Übertragung Ihrer Daten. Kontakt: contact@casafix.fr."
     }
   },
   "account": {
     "phone": "Telefon",
-    "phonePlaceholder": "+34 600 000 000",
+    "phonePlaceholder": "+33 6 00 00 00 00",
     "save": "Speichern",
     "saved": "Änderungen gespeichert",
     "saveError": "Fehler beim Speichern",

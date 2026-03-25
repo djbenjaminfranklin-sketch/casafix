@@ -14,7 +14,7 @@
     "artisanNotSelectedBody": "The client chose another artisan for \"{{service}}\"."
   },
   "appName": "CasaFix",
-  "location": "Costa del Sol",
+  "location": "France",
   "searchPlaceholder": "What are you looking for?",
   "servicesTitle": "Home services",
   "emergency": "Emergency",
@@ -271,7 +271,7 @@
     "locationErrorDesc": "Unable to get your location. Check your location settings.",
     "locationDenied": "Location access is required to find an artisan near you.",
     "enterAddress": "Enter your address",
-    "addressPlaceholder": "E.g. 12 Calle de la Playa, Marbella",
+    "addressPlaceholder": "E.g. 12 Rue de la Paix, Paris",
     "addressRequired": "Please enter your address so the artisan can find you.",
     "showQrToArtisan": "Show this code to the artisan",
     "cancelTitle": "Cancel the request?",
@@ -548,65 +548,81 @@
     "cgu": {
       "article1": {
         "title": "Article 1 – Purpose",
-        "content": "These Terms and Conditions govern the use of the CasaFix mobile application, a platform connecting homeowners with qualified artisans on the Costa del Sol (Marbella, Estepona, Fuengirola, Málaga and surrounding areas)."
+        "content": "These Terms and Conditions (hereinafter \"T&C\") govern the use of the CasaFix mobile application (hereinafter \"the Application\"), published by BENJAMIN TAIEB, auto-entrepreneur (sole proprietor). The Application is a platform connecting homeowners seeking home repair and maintenance services with verified artisans (SIRET, Kbis, professional liability insurance) operating in France. CasaFix acts as a technical intermediary and is not the direct provider of services."
       },
       "article2": {
-        "title": "Article 2 – Access",
-        "content": "Access to the Application is free. Some services may require creating a user account. Users agree to provide accurate information and maintain the confidentiality of their login credentials."
+        "title": "Article 2 – Registration and access",
+        "content": "Access to the Application is free. Registration is available via email, Apple Sign-In or Google Sign-In. Users agree to provide accurate and up-to-date information and to maintain the confidentiality of their login credentials. The Application is available in 13 languages."
       },
       "article3": {
-        "title": "Article 3 – Services",
-        "content": "CasaFix connects users with artisans for: plumbing, electrical, locksmith, heating, AC, pest control, appliances, glazing, small works, renovation, pool and garden services. Displayed prices are indicative. A free, no-obligation quote is provided before any work."
+        "title": "Article 3 – Services offered",
+        "content": "CasaFix connects users with verified artisans for: plumbing, electrical, locksmith, heating, AC, pest control, appliances, glazing, small works, renovation, pool and garden services. Users can book an emergency or scheduled appointment. An AI-powered photo diagnostic (Claude Vision) is available to help identify the issue. CasaFix is not the direct service provider and acts as a technical intermediary."
       },
       "article4": {
-        "title": "Article 4 – Pricing & Payment",
-        "content": "Prices shown are indicative ranges including VAT. No surcharge is applied for evenings, weekends or holidays. Payment is exclusively online: upon booking, the maximum amount is pre-authorised on the customer's card. After the job, the artisan enters the final price and only that amount is charged. The difference is automatically released. An invoice is sent by email within 48 hours."
+        "title": "Article 4 – Booking and payment",
+        "content": "Upon booking, the estimated maximum amount is pre-authorised on the customer's bank card via Stripe. No charge is made until the work is completed. After the intervention, the artisan proposes the final price. The customer has 48 hours to confirm or dispute the amount. Only the validated final amount is charged. The difference between the pre-authorised and final amounts is automatically released. An invoice is sent by email. Displayed prices are indicative ranges including VAT. No surcharge is applied for evenings, weekends or public holidays."
       },
       "article5": {
-        "title": "Article 5 – Guarantees",
-        "content": "All work carried out by CasaFix network artisans comes with a 1-year guarantee on parts and labour. A free return visit is arranged within 48 hours for any related issues. Partner artisans carry professional liability insurance."
+        "title": "Article 5 – Cancellation",
+        "content": "The customer may cancel free of charge within 2 minutes of booking confirmation. After this period, a displacement fee of €75 is owed to the artisan. This amount covers the artisan's actual travel costs and is not a penalty. In accordance with Article L. 221-28 of the French Consumer Code, the right of withdrawal does not apply to fully performed emergency service contracts."
       },
       "article6": {
-        "title": "Article 6 – Liability",
-        "content": "CasaFix acts as an intermediary and is not directly responsible for the quality of work, though it commits to selecting qualified and insured professionals."
+        "title": "Article 6 – No-show protection",
+        "content": "If the artisan does not arrive within 45 minutes of the agreed time, the customer is automatically refunded. The artisan's arrival is confirmed via a QR code system. Real-time GPS tracking allows the customer to follow the artisan en route."
       },
       "article7": {
-        "title": "Article 7 – Personal Data",
-        "content": "CasaFix complies with GDPR and Spanish LOPD regulations. Data collected is used solely for service operation and is never shared with third parties without consent."
+        "title": "Article 7 – Reviews and ratings",
+        "content": "After each intervention, both the customer and the artisan are invited to leave a reciprocal review. Reviews are mandatory and contribute to network quality. Fraudulent or abusive reviews may be moderated by CasaFix."
       },
       "article8": {
-        "title": "Article 8 – Intellectual Property",
-        "content": "All elements of the Application are protected by intellectual property law. Reproduction without authorisation is prohibited."
+        "title": "Article 8 – Disputes and mediation",
+        "content": "In case of a dispute, the customer can report a problem directly from the Application. The CasaFix team reviews each report within 24 hours. Mediation between the customer and artisan is offered. A full or partial refund may be granted depending on the circumstances. In accordance with Articles L. 611-1 et seq. of the French Consumer Code, the customer may use a consumer mediator free of charge."
       },
       "article9": {
-        "title": "Article 9 – Applicable Law",
-        "content": "These Terms are governed by Spanish law. Disputes shall be submitted to the competent courts of Málaga, Spain."
+        "title": "Article 9 – Liability",
+        "content": "CasaFix acts as a technical intermediary within the meaning of the French LCEN (Law on Confidence in the Digital Economy). CasaFix is not directly responsible for the quality of work performed by artisans, though CasaFix commits to verifying their qualifications (SIRET, Kbis, professional liability insurance). The user acknowledges that CasaFix cannot guarantee permanent availability of the Application or the absence of technical errors. Partner artisans are independent professionals."
       },
       "article10": {
-        "title": "Article 10 – Amendments",
-        "content": "CasaFix reserves the right to modify these Terms at any time. Continued use of the Application constitutes acceptance of the updated Terms."
+        "title": "Article 10 – Personal data and GDPR",
+        "content": "CasaFix complies with the General Data Protection Regulation (GDPR) and the French Data Protection Act (Loi Informatique et Libertés). Data collected is used solely for service operation and is never shared with third parties without consent. Data is hosted on servers located in the European Union (Supabase). For more details, see our Privacy Policy."
+      },
+      "article11": {
+        "title": "Article 11 – Applicable law and jurisdiction",
+        "content": "These T&C are governed by French law. Any dispute relating to the interpretation or performance of these T&C shall be submitted to the competent French courts, in accordance with the provisions of the Consumer Code and the Code of Civil Procedure."
+      },
+      "article12": {
+        "title": "Article 12 – Amendment of Terms",
+        "content": "CasaFix reserves the right to modify these T&C at any time. Amendments take effect upon publication in the Application. Users are encouraged to review the T&C regularly. Continued use of the Application after amendments constitutes acceptance of the new terms."
       }
     },
     "legalNotice": {
       "publisherTitle": "Application Publisher",
-      "publisherContent": "CasaFix\nHome services marketplace\nCosta del Sol, Málaga, Spain\nContact: contact@casafix.es",
+      "publisherContent": "CasaFix\nPublisher: BENJAMIN TAIEB, auto-entrepreneur (sole proprietor)\nHome repair and maintenance services marketplace\nFrance\nContact: contact@casafix.fr",
       "hostingTitle": "Hosting",
-      "hostingContent": "The application is hosted by Vercel Inc., 340 S Lemon Ave #4133, Walnut, CA 91789, USA. Database hosted by Supabase Inc.",
+      "hostingContent": "The application and data are hosted by Supabase Inc. on servers located in the European Union, in compliance with the GDPR. Third-party services: Stripe (payments), Firebase (notifications), Anthropic (AI diagnostic via Claude Vision).",
       "ipTitle": "Intellectual Property",
-      "ipContent": "All CasaFix content is protected by intellectual property law. Reproduction without express authorisation is prohibited."
+      "ipContent": "All CasaFix content (logos, text, images, structure, source code) is protected by French and European intellectual property law. Any reproduction, representation or distribution, in whole or in part, without the express written authorisation of CasaFix is prohibited and constitutes infringement under Articles L. 335-2 et seq. of the French Intellectual Property Code."
     },
     "privacy": {
-      "dataTitle": "Data Collection",
-      "dataContent": "CasaFix collects the following personal data: name, surname, email, phone number and location. This data is necessary for service operation, in compliance with GDPR and Spanish LOPD.",
-      "cookiesTitle": "Cookies",
-      "cookiesContent": "The application uses functional and analytical cookies. You can modify your preferences at any time.",
-      "rightsTitle": "Your Rights",
-      "rightsContent": "You have the right to access, rectify, delete and port your data. Contact: contact@casafix.es. You may also file a complaint with the Spanish AEPD."
+      "dataTitle": "Data collected",
+      "dataContent": "CasaFix collects the following personal data: identity (name, surname), email address, phone number, postal address, geolocation data (GPS), photos submitted for AI diagnostic, messages exchanged with artisans, and payment data (processed by Stripe, never stored on our servers). This data is necessary for connecting you with artisans and for the proper operation of the service.",
+      "purposeTitle": "Purposes of processing",
+      "purposeContent": "Your data is used for: connecting customers with verified artisans, payment processing and invoicing, platform security (artisan verification, fraud prevention), GPS tracking of interventions, AI-powered photo diagnostic, sending notifications about your bookings, and continuous service improvement.",
+      "legalBasisTitle": "Legal basis",
+      "legalBasisContent": "The processing of your data is based on: your consent (Article 6.1.a GDPR) for geolocation and photos, and performance of a contract (Article 6.1.b GDPR) for data necessary to provide the service (identity, payment, communications).",
+      "subprocessorsTitle": "Subprocessors",
+      "subprocessorsContent": "CasaFix uses the following subprocessors: Supabase Inc. (data hosting, EU servers), Stripe Inc. (payment processing, PCI-DSS certified), Firebase / Google (push notifications), Anthropic (Claude Vision, AI photo diagnostic). All subprocessors are bound by contractual obligations compliant with the GDPR.",
+      "cookiesTitle": "Cookies and trackers",
+      "cookiesContent": "The application uses strictly necessary functional cookies. Analytical cookies may be used to improve the user experience, only with your consent. In accordance with the ePrivacy Directive and CNIL recommendations, you can change your preferences at any time.",
+      "rightsTitle": "Your GDPR rights",
+      "rightsContent": "Under the GDPR and the French Data Protection Act, you have the following rights: right of access to your data, right to rectification, right to erasure (right to be forgotten), right to data portability, right to object to processing, right to restrict processing. You can exercise these rights at any time by contacting us. You also have the right to file a complaint with the CNIL (Commission Nationale de l'Informatique et des Libertés).",
+      "contactTitle": "Contact",
+      "contactContent": "For any questions about your personal data or to exercise your rights, contact us at: contact@casafix.fr\n\nData controller: BENJAMIN TAIEB, auto-entrepreneur (sole proprietor)\nFrance"
     }
   },
   "account": {
     "phone": "Phone",
-    "phonePlaceholder": "+34 600 000 000",
+    "phonePlaceholder": "+33 6 00 00 00 00",
     "save": "Save",
     "saved": "Changes saved",
     "saveError": "Error saving changes",
@@ -760,13 +776,13 @@
     "address": "Address",
     "bookingsCount": "Bookings",
     "artisanDetail": "Artisan detail",
-    "nieNif": "NIE / NIF",
-    "autonomoNumber": "Autonomo No.",
+    "nieNif": "SIRET / SIREN",
+    "siretNumber": "SIRET No.",
     "idDocument": "ID Document",
     "idRecto": "Front side",
     "idVerso": "Back side",
     "viewFullscreen": "View fullscreen",
-    "ivaRate": "IVA Rate",
+    "ivaRate": "VAT Rate",
     "categoriesTitle": "Categories",
     "reviews": "Reviews",
     "noReviews": "No reviews",
@@ -795,7 +811,21 @@
     "pendingConfirmation": "Pending confirmation",
     "workCompleted": "Work completed",
     "no": "No",
-    "yes": "Yes"
+    "yes": "Yes",
+    "select": "Select",
+    "selectAll": "Select all",
+    "deselectAll": "Deselect all",
+    "deleteBooking": "Delete",
+    "searchInvoice": "Search an invoice...",
+    "noInvoices": "No invoices",
+    "invoicesTitle": "Invoices",
+    "invoiceRevenue": "CasaFix revenue (commissions)",
+    "invoiceCount": "{{count}} invoice(s)",
+    "totalTTC": "Total incl. tax",
+    "commissionLabel": "Commission",
+    "netArtisan": "Net artisan",
+    "commissionRate": "Commission 15%",
+    "anonymous": "Anonymous"
   },
   "promo": {
     "title": "Promo code",
@@ -811,7 +841,7 @@
     "title": "Referral",
     "yourCode": "Your referral code",
     "share": "Share my code",
-    "shareMessage": "Join CasaFix and use my code {{code}} to get €10 off your first service! Download the app: https://casafix.es",
+    "shareMessage": "Join CasaFix and use my code {{code}} to get €10 off your first service! Download the app: https://casafix.fr",
     "reward": "€10 off for you and your friend",
     "referrals": "Referrals",
     "explanation": "Refer a friend and you both get €10 off your next CasaFix service."

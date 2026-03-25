@@ -48,7 +48,7 @@ export default function HelpScreen({ navigation }: Props) {
         <View style={styles.card}>
           <TouchableOpacity
             style={styles.contactRow}
-            onPress={() => Linking.openURL("mailto:contact@casafix.es")}
+            onPress={() => Linking.openURL("mailto:contact@casafix.fr")}
             activeOpacity={0.7}
           >
             <View style={[styles.iconCircle, { backgroundColor: "#eff6ff" }]}>
@@ -56,14 +56,14 @@ export default function HelpScreen({ navigation }: Props) {
             </View>
             <View style={styles.contactText}>
               <Text style={styles.contactLabel}>{t("help.email")}</Text>
-              <Text style={styles.contactValue}>contact@casafix.es</Text>
+              <Text style={styles.contactValue}>contact@casafix.fr</Text>
             </View>
             <Icon name="chevron-forward" size={18} color={COLORS.textLight} />
           </TouchableOpacity>
 
           <TouchableOpacity
             style={[styles.contactRow, { borderBottomWidth: 0 }]}
-            onPress={() => Linking.openURL("https://wa.me/34600000000")}
+            onPress={() => Linking.openURL("https://wa.me/33600000000")}
             activeOpacity={0.7}
           >
             <View style={[styles.iconCircle, { backgroundColor: "#f0fdf4" }]}>
@@ -71,7 +71,7 @@ export default function HelpScreen({ navigation }: Props) {
             </View>
             <View style={styles.contactText}>
               <Text style={styles.contactLabel}>WhatsApp</Text>
-              <Text style={styles.contactValue}>+34 600 000 000</Text>
+              <Text style={styles.contactValue}>+33 6 00 00 00 00</Text>
             </View>
             <Icon name="chevron-forward" size={18} color={COLORS.textLight} />
           </TouchableOpacity>

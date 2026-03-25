@@ -155,7 +155,7 @@ export default function ProfileScreen() {
             <Text style={{ color: COLORS.primary }}>Casa</Text>
             <Text style={{ color: COLORS.accent }}>Fix</Text>
           </Text>
-          <Text style={styles.version}>v1.0.0 - Costa del Sol</Text>
+          <Text style={styles.version}>v1.0.0 - {t("location")}</Text>
         </View>
       </ScrollView>
     </SafeAreaView>

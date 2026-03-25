@@ -329,7 +329,7 @@ export default function AdminArtisanDetailScreen() {
             <Text style={styles.infoValue}>{artisan.nie_nif || "N/A"}</Text>
           </View>
           <View style={styles.infoCard}>
-            <Text style={styles.infoLabel}>{t("admin.autonomoNumber")}</Text>
+            <Text style={styles.infoLabel}>{t("admin.siretNumber")}</Text>
             <Text style={styles.infoValue}>{artisan.autonomo_number || "N/A"}</Text>
           </View>
           <View style={styles.infoCard}>

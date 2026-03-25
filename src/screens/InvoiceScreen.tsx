@@ -133,10 +133,10 @@ export default function InvoiceScreen({ navigation, route }: Props) {
               <Text style={styles.sectionDetail}>{invoice.artisan_business_address}</Text>
             )}
             {invoice.artisan_nie_nif && (
-              <Text style={styles.sectionDetail}>NIE/NIF : {invoice.artisan_nie_nif}</Text>
+              <Text style={styles.sectionDetail}>SIRET : {invoice.artisan_nie_nif}</Text>
             )}
             {invoice.artisan_autonomo_number && (
-              <Text style={styles.sectionDetail}>Autonomo : {invoice.artisan_autonomo_number}</Text>
+              <Text style={styles.sectionDetail}>SIRET : {invoice.artisan_autonomo_number}</Text>
             )}
           </View>
 

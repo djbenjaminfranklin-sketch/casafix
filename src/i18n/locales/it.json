@@ -3,7 +3,7 @@
   "error": { "title": "Ops!", "message": "Si è verificato un errore imprevisto. Riprova.", "retry": "Riprova" },
   "notifications": { "artisanSelected": "Selezionato", "artisanSelectedBody": "Sei stato selezionato per \"{{service}}\". Recati all'indirizzo del cliente.", "artisanNotSelected": "Non selezionato", "artisanNotSelectedBody": "Il cliente ha scelto un altro artigiano per \"{{service}}\"." },
   "appName": "CasaFix",
-  "location": "Costa del Sol",
+  "location": "Francia",
   "searchPlaceholder": "Cosa cerchi?",
   "servicesTitle": "Servizi a domicilio",
   "emergency": "Emergenza",
@@ -254,7 +254,7 @@
     "locationErrorDesc": "Impossibile ottenere la tua posizione. Controlla le impostazioni di localizzazione.",
     "locationDenied": "L'accesso alla posizione e necessario per trovare un artigiano vicino a te.",
     "enterAddress": "Inserisci il tuo indirizzo",
-    "addressPlaceholder": "Es: 12 Calle de la Playa, Marbella",
+    "addressPlaceholder": "Es: 12 Rue de la Paix, Paris",
     "addressRequired": "Inserisci il tuo indirizzo affinche l'artigiano possa trovarti.",
     "lateCancel": "Cancellazione gratuita se l'artigiano e in ritardo",
     "punctuality": "Puntualita",
@@ -458,7 +458,7 @@
     "cgu": {
       "article1": {
         "title": "Articolo 1 – Oggetto",
-        "content": "Le presenti Condizioni Generali d'Uso (di seguito \"CGU\") hanno lo scopo di definire le modalita e le condizioni d'uso dell'applicazione mobile CasaFix (di seguito \"l'Applicazione\"), nonche i diritti e gli obblighi delle parti nell'ambito dell'utilizzo dell'Applicazione. L'Applicazione e un servizio di intermediazione tra privati in cerca di servizi a domicilio e artigiani qualificati operanti sulla Costa del Sol (Marbella, Estepona, Fuengirola, Malaga e dintorni)."
+        "content": "Le presenti Condizioni Generali d'Uso (di seguito \"CGU\") hanno lo scopo di definire le modalita e le condizioni d'uso dell'applicazione mobile CasaFix (di seguito \"l'Applicazione\"), nonche i diritti e gli obblighi delle parti nell'ambito dell'utilizzo dell'Applicazione. L'Applicazione e un servizio di intermediazione tra privati in cerca di servizi a domicilio e artigiani qualificati operanti in Francia."
       },
       "article2": {
         "title": "Articolo 2 – Accesso all'Applicazione",
@@ -482,7 +482,7 @@
       },
       "article7": {
         "title": "Articolo 7 – Dati personali",
-        "content": "CasaFix si impegna a rispettare la legislazione vigente relativa alla protezione dei dati personali, in conformita con il Regolamento Generale sulla Protezione dei Dati (GDPR) e la Ley Organica de Proteccion de Datos (LOPD) spagnola. I dati raccolti vengono utilizzati esclusivamente per il corretto funzionamento del servizio e non vengono mai ceduti a terzi senza il consenso dell'utente."
+        "content": "CasaFix si impegna a rispettare la legislazione vigente relativa alla protezione dei dati personali, in conformita con il Regolamento Generale sulla Protezione dei Dati (GDPR) e la Loi Informatique et Libertes francese. I dati raccolti vengono utilizzati esclusivamente per il corretto funzionamento del servizio e non vengono mai ceduti a terzi senza il consenso dell'utente."
       },
       "article8": {
         "title": "Articolo 8 – Proprieta intellettuale",
@@ -490,7 +490,7 @@
       },
       "article9": {
         "title": "Articolo 9 – Legge applicabile e giurisdizione",
-        "content": "Le presenti CGU sono regolate dal diritto spagnolo. Qualsiasi controversia relativa all'interpretazione o all'esecuzione delle presenti CGU sara sottoposta ai tribunali competenti di Malaga, Spagna."
+        "content": "Le presenti CGU sono regolate dal diritto francese. Qualsiasi controversia sara sottoposta ai tribunali francesi competenti."
       },
       "article10": {
         "title": "Articolo 10 – Modifica delle CGU",
@@ -499,7 +499,7 @@
     },
     "legalNotice": {
       "publisherTitle": "Editore dell'Applicazione",
-      "publisherContent": "CasaFix\nApplicazione di intermediazione per servizi a domicilio\nCosta del Sol, Malaga, Spagna\nContatto: contact@casafix.es",
+      "publisherContent": "CasaFix\nApplicazione di intermediazione per servizi a domicilio\nFrancia\nContatto: contact@casafix.fr",
       "hostingTitle": "Hosting",
       "hostingContent": "L'applicazione e ospitata da Vercel Inc., 340 S Lemon Ave #4133, Walnut, CA 91789, Stati Uniti. Il database e ospitato da Supabase Inc.",
       "ipTitle": "Proprieta intellettuale",
@@ -507,16 +507,16 @@
     },
     "privacy": {
       "dataTitle": "Raccolta dei dati",
-      "dataContent": "CasaFix raccoglie i seguenti dati personali durante la registrazione: nome, cognome, indirizzo email, numero di telefono e posizione. Questi dati sono necessari per il corretto funzionamento del servizio di intermediazione con gli artigiani. Conformemente al GDPR e alla LOPD spagnola, i tuoi dati vengono trattati in modo lecito, leale e trasparente.",
+      "dataContent": "CasaFix raccoglie i seguenti dati personali durante la registrazione: nome, cognome, indirizzo email, numero di telefono e posizione. Questi dati sono necessari per il corretto funzionamento del servizio di intermediazione con gli artigiani. Conformemente al GDPR e alla Loi Informatique et Libertes francese, i tuoi dati vengono trattati in modo lecito, leale e trasparente.",
       "cookiesTitle": "Cookie",
       "cookiesContent": "L'applicazione utilizza cookie funzionali necessari al corretto funzionamento del servizio. Cookie analitici possono essere utilizzati per migliorare l'esperienza utente. Puoi modificare in qualsiasi momento le tue preferenze sui cookie nelle impostazioni dell'applicazione.",
       "rightsTitle": "I tuoi diritti",
-      "rightsContent": "Conformemente al GDPR, hai diritto di accesso, rettifica, cancellazione, portabilita dei tuoi dati, nonche diritto di opposizione e limitazione del trattamento. Per esercitare questi diritti, contattaci a: contact@casafix.es. Hai inoltre il diritto di presentare un reclamo presso l'Agenzia Spagnola per la Protezione dei Dati (AEPD)."
+      "rightsContent": "Conformemente al GDPR, hai diritto di accesso, rettifica, cancellazione, portabilita dei tuoi dati, nonche diritto di opposizione e limitazione del trattamento. Per esercitare questi diritti, contattaci a: contact@casafix.fr. Hai inoltre il diritto di presentare un reclamo presso la CNIL (Commission Nationale de l'Informatique et des Libertes)."
     }
   },
   "account": {
     "phone": "Telefono",
-    "phonePlaceholder": "+34 600 000 000",
+    "phonePlaceholder": "+33 6 00 00 00 00",
     "save": "Salva",
     "saved": "Modifiche salvate",
     "saveError": "Errore durante il salvataggio",
@@ -527,7 +527,7 @@
     "deleteTitle": "Eliminare il tuo account?",
     "deleteConfirm": "Questa azione e irreversibile. Tutti i tuoi dati verranno eliminati.",
     "deleteError": "Errore durante l'eliminazione dell'account",
-    "invalidPhone": "Numero di telefono non valido. Formato previsto: +34 600 000 000",
+    "invalidPhone": "Numero di telefono non valido. Formato previsto: +33 6 00 00 00 00",
     "address": "Indirizzo",
     "addressPlaceholder": "Via, numero, CAP, citta",
     "addressRequired": "L'indirizzo e necessario per la fatturazione"
@@ -686,7 +686,7 @@
     "bookingsCount": "Bookings",
     "artisanDetail": "Artisan detail",
     "nieNif": "NIE / NIF",
-    "autonomoNumber": "Autonomo No.",
+    "siretNumber": "SIRET No.",
     "idDocument": "ID Document",
     "idRecto": "Front side",
     "idVerso": "Back side",
@@ -720,6 +720,20 @@
     "pendingConfirmation": "Pending confirmation",
     "workCompleted": "Work completed",
     "no": "No",
-    "yes": "Yes"
+    "yes": "Yes",
+    "select": "Select",
+    "selectAll": "Select all",
+    "deselectAll": "Deselect all",
+    "deleteBooking": "Delete",
+    "searchInvoice": "Search an invoice...",
+    "noInvoices": "No invoices",
+    "invoicesTitle": "Invoices",
+    "invoiceRevenue": "CasaFix revenue (commissions)",
+    "invoiceCount": "{{count}} invoice(s)",
+    "totalTTC": "Total incl. tax",
+    "commissionLabel": "Commission",
+    "netArtisan": "Net artisan",
+    "commissionRate": "Commission 15%",
+    "anonymous": "Anonymous"
   }
 }

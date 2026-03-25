@@ -139,7 +139,7 @@ export default function AdminDisputesScreen() {
             <View style={styles.reportRow}>
               <Icon name="person-outline" size={14} color="#9ca3af" />
               <Text style={styles.reporterText}>
-                {item.reporter?.full_name || "Anonyme"}
+                {item.reporter?.full_name || t("admin.anonymous")}
               </Text>
               <Icon name="arrow-forward" size={12} color="#6b7280" />
               <Text style={styles.reportedText}>

@@ -3,7 +3,7 @@
   "error": { "title": "Ups!", "message": "A apărut o eroare neașteptată. Vă rugăm să încercați din nou.", "retry": "Reîncercați" },
   "notifications": { "artisanSelected": "Selectat", "artisanSelectedBody": "Ați fost selectat pentru \"{{service}}\". Mergeți la adresa clientului.", "artisanNotSelected": "Neselectat", "artisanNotSelectedBody": "Clientul a ales un alt meșter pentru \"{{service}}\"." },
   "appName": "CasaFix",
-  "location": "Costa del Sol",
+  "location": "Franta",
   "searchPlaceholder": "Ce cautati?",
   "servicesTitle": "Servicii la domiciliu",
   "emergency": "Urgenta",
@@ -254,7 +254,7 @@
     "locationErrorDesc": "Nu s-a putut obtine pozitia dvs. Verificati setarile de localizare.",
     "locationDenied": "Accesul la localizare este necesar pentru a gasi un meserias in apropierea dvs.",
     "enterAddress": "Introduceti adresa dvs.",
-    "addressPlaceholder": "Ex: 12 Calle de la Playa, Marbella",
+    "addressPlaceholder": "Ex: 12 Rue de la Paix, Paris",
     "addressRequired": "Introduceti adresa dvs. pentru ca meseriasul sa va poata gasi.",
     "lateCancel": "Anulare gratuita daca meseriasul intarzie",
     "punctuality": "Punctualitate",
@@ -458,7 +458,7 @@
     "cgu": {
       "article1": {
         "title": "Articolul 1 – Obiect",
-        "content": "Prezentele Termeni si conditii generale (denumite in continuare \"TCG\") au ca obiect definirea modalitatilor si conditiilor de utilizare a aplicatiei mobile CasaFix (denumita in continuare \"Aplicatia\"), precum si drepturile si obligatiile partilor in cadrul utilizarii Aplicatiei. Aplicatia este un serviciu de intermediere intre persoane care cauta servicii la domiciliu si meseriasi calificati care opereaza pe Costa del Sol (Marbella, Estepona, Fuengirola, Malaga si imprejurimi)."
+        "content": "Prezentele Termeni si conditii generale (denumite in continuare \"TCG\") au ca obiect definirea modalitatilor si conditiilor de utilizare a aplicatiei mobile CasaFix (denumita in continuare \"Aplicatia\"), precum si drepturile si obligatiile partilor in cadrul utilizarii Aplicatiei. Aplicatia este un serviciu de intermediere intre persoane care cauta servicii la domiciliu si meseriasi calificati care opereaza in Franta."
       },
       "article2": {
         "title": "Articolul 2 – Accesul la Aplicatie",
@@ -482,7 +482,7 @@
       },
       "article7": {
         "title": "Articolul 7 – Date personale",
-        "content": "CasaFix se angajeaza sa respecte legislatia in vigoare privind protectia datelor personale, in conformitate cu Regulamentul General privind Protectia Datelor (GDPR) si Legea organica spaniola privind protectia datelor (LOPD). Datele colectate sunt utilizate exclusiv pentru buna functionare a serviciului si nu sunt niciodata cedate tertilor fara acordul utilizatorului."
+        "content": "CasaFix se angajeaza sa respecte legislatia in vigoare privind protectia datelor personale, in conformitate cu Regulamentul General privind Protectia Datelor (GDPR) si legea franceza Informatique et Libertes. Datele colectate sunt utilizate exclusiv pentru buna functionare a serviciului si nu sunt niciodata cedate tertilor fara acordul utilizatorului. Datele sunt stocate pe servere UE (Supabase)."
       },
       "article8": {
         "title": "Articolul 8 – Proprietate intelectuala",
@@ -490,7 +490,7 @@
       },
       "article9": {
         "title": "Articolul 9 – Drept aplicabil si jurisdictie",
-        "content": "Prezentele TCG sunt guvernate de dreptul spaniol. Orice litigiu privind interpretarea sau executarea prezentelor TCG va fi supus instantelor competente din Malaga, Spania."
+        "content": "Prezentele TCG sunt guvernate de dreptul francez. Orice litigiu va fi supus instantelor competente franceze."
       },
       "article10": {
         "title": "Articolul 10 – Modificarea TCG",
@@ -499,7 +499,7 @@
     },
     "legalNotice": {
       "publisherTitle": "Editorul Aplicatiei",
-      "publisherContent": "CasaFix\nAplicatie de intermediere pentru servicii la domiciliu\nCosta del Sol, Malaga, Spania\nContact: contact@casafix.es",
+      "publisherContent": "CasaFix\nAplicatie de intermediere pentru servicii la domiciliu\nFranta\nContact: contact@casafix.fr",
       "hostingTitle": "Gazduire",
       "hostingContent": "Aplicatia este gazduita de Vercel Inc., 340 S Lemon Ave #4133, Walnut, CA 91789, Statele Unite. Baza de date este gazduita de Supabase Inc.",
       "ipTitle": "Proprietate intelectuala",
@@ -507,16 +507,16 @@
     },
     "privacy": {
       "dataTitle": "Colectarea datelor",
-      "dataContent": "CasaFix colecteaza urmatoarele date personale la inregistrare: nume, prenume, adresa de email, numar de telefon si localizare. Aceste date sunt necesare bunei functionari a serviciului de intermediere cu meseriasii. In conformitate cu GDPR si LOPD spaniola, datele dvs. sunt prelucrate in mod licit, loial si transparent.",
+      "dataContent": "CasaFix colecteaza urmatoarele date personale: identitate, email, telefon, adresa, GPS, fotografii, mesaje si date de plata (Stripe, niciodata stocate pe serverele noastre). Aceste date sunt necesare intermedierii cu meseriasii. In conformitate cu GDPR si legea franceza Informatique et Libertes, datele dvs. sunt prelucrate in mod licit, loial si transparent.",
       "cookiesTitle": "Cookie-uri",
       "cookiesContent": "Aplicatia utilizeaza cookie-uri functionale necesare bunei functionari a serviciului. Cookie-uri analitice pot fi utilizate pentru imbunatatirea experientei utilizatorului. Puteti modifica oricand preferintele de cookie-uri in setarile aplicatiei.",
       "rightsTitle": "Drepturile dvs.",
-      "rightsContent": "In conformitate cu GDPR, aveti dreptul de acces, rectificare, stergere, portabilitate a datelor, precum si dreptul de opozitie si limitare a prelucrarii. Pentru exercitarea acestor drepturi, contactati-ne la: contact@casafix.es. Aveti de asemenea dreptul de a depune o plangere la Agentia Spaniola de Protectie a Datelor (AEPD)."
+      "rightsContent": "In conformitate cu GDPR, aveti dreptul de acces, rectificare, stergere, portabilitate a datelor, precum si dreptul de opozitie si limitare a prelucrarii. Pentru exercitarea acestor drepturi, contactati-ne la: contact@casafix.fr. Aveti de asemenea dreptul de a depune o plangere la CNIL (Commission Nationale de l'Informatique et des Libertes)."
     }
   },
   "account": {
     "phone": "Telefon",
-    "phonePlaceholder": "+34 600 000 000",
+    "phonePlaceholder": "+33 6 00 00 00 00",
     "save": "Salveaza",
     "saved": "Modificari salvate",
     "saveError": "Eroare la salvare",
@@ -527,7 +527,7 @@
     "deleteTitle": "Stergeti contul dvs.?",
     "deleteConfirm": "Aceasta actiune este ireversibila. Toate datele dvs. vor fi sterse.",
     "deleteError": "Eroare la stergerea contului",
-    "invalidPhone": "Numar de telefon invalid. Format asteptat: +34 600 000 000",
+    "invalidPhone": "Numar de telefon invalid. Format asteptat: +33 6 00 00 00 00",
     "address": "Adresa",
     "addressPlaceholder": "Strada, numar, cod postal, oras",
     "addressRequired": "Adresa este necesara pentru facturare"
@@ -686,7 +686,7 @@
     "bookingsCount": "Bookings",
     "artisanDetail": "Artisan detail",
     "nieNif": "NIE / NIF",
-    "autonomoNumber": "Autonomo No.",
+    "siretNumber": "SIRET No.",
     "idDocument": "ID Document",
     "idRecto": "Front side",
     "idVerso": "Back side",
@@ -720,6 +720,20 @@
     "pendingConfirmation": "Pending confirmation",
     "workCompleted": "Work completed",
     "no": "No",
-    "yes": "Yes"
+    "yes": "Yes",
+    "select": "Select",
+    "selectAll": "Select all",
+    "deselectAll": "Deselect all",
+    "deleteBooking": "Delete",
+    "searchInvoice": "Search an invoice...",
+    "noInvoices": "No invoices",
+    "invoicesTitle": "Invoices",
+    "invoiceRevenue": "CasaFix revenue (commissions)",
+    "invoiceCount": "{{count}} invoice(s)",
+    "totalTTC": "Total incl. tax",
+    "commissionLabel": "Commission",
+    "netArtisan": "Net artisan",
+    "commissionRate": "Commission 15%",
+    "anonymous": "Anonymous"
   }
 }

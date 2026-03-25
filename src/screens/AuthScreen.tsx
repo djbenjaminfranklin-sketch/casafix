@@ -70,7 +70,7 @@ export default function AuthScreen() {
           {/* Logo */}
           <View style={styles.logoSection}>
             <Image source={require("../assets/logo.png")} style={styles.logoImage} />
-            <Text style={styles.tagline}>Costa del Sol</Text>
+            <Text style={styles.tagline}>{t("location")}</Text>
           </View>
 
           {/* Toggle */}

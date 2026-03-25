@@ -271,7 +271,7 @@ export default function WorkCompletionScreen({ route, navigation }: Props) {
               </View>
               <View style={styles.receiptDivider} />
               <View style={styles.invoiceRow}>
-                <Text style={[styles.invoiceLabel, styles.finalLabel]}>Total TTC</Text>
+                <Text style={[styles.invoiceLabel, styles.finalLabel]}>{t("invoice.total")}</Text>
                 <Text style={styles.finalPrice}>{invoice.total}€</Text>
               </View>
             </View>
