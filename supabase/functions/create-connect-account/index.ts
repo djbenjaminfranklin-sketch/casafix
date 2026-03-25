@@ -32,35 +32,37 @@ serve(async (req) => {
     );
     if (!user) throw new Error("Not authenticated");
 
-    const { email, full_name, return_url } = await req.json();
+    const { artisan_id, return_url, refresh_url } = await req.json();
 
-    // Check if artisan already has a Stripe account
+    // Get artisan info
+    const artisanUserId = artisan_id || user.id;
     const { data: artisan } = await supabase
       .from("artisans")
-      .select("stripe_account_id")
-      .eq("id", user.id)
+      .select("stripe_account_id, full_name, country")
+      .eq("id", artisanUserId)
       .single();
 
     let accountId = artisan?.stripe_account_id;
 
     if (!accountId) {
       // Create a new Stripe Connect Express account
+      const country = artisan?.country === "ES" ? "ES" : "FR";
       const account = await stripe.accounts.create({
         type: "express",
-        country: "ES",
-        email,
+        country,
+        email: user.email,
         business_type: "individual",
         individual: {
-          first_name: full_name?.split(" ")[0] || "",
-          last_name: full_name?.split(" ").slice(1).join(" ") || "",
-          email,
+          first_name: artisan?.full_name?.split(" ")[0] || "",
+          last_name: artisan?.full_name?.split(" ").slice(1).join(" ") || "",
+          email: user.email,
         },
         capabilities: {
           card_payments: { requested: true },
           transfers: { requested: true },
         },
         metadata: {
-          artisan_id: user.id,
+          artisan_id: artisanUserId,
         },
       });
 
@@ -70,14 +72,14 @@ serve(async (req) => {
       await supabase
         .from("artisans")
         .update({ stripe_account_id: accountId })
-        .eq("id", user.id);
+        .eq("id", artisanUserId);
     }
 
     // Create an account onboarding link
     const accountLink = await stripe.accountLinks.create({
       account: accountId,
-      refresh_url: return_url || "casafixpro://stripe-refresh",
-      return_url: return_url || "casafixpro://stripe-return",
+      refresh_url: refresh_url || "casafixpro://stripe/refresh",
+      return_url: return_url || "casafixpro://stripe/return",
       type: "account_onboarding",
     });
 
