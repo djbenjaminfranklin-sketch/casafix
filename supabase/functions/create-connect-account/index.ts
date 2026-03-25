@@ -78,8 +78,8 @@ serve(async (req) => {
     // Create an account onboarding link
     const accountLink = await stripe.accountLinks.create({
       account: accountId,
-      refresh_url: refresh_url || "casafixpro://stripe/refresh",
-      return_url: return_url || "casafixpro://stripe/return",
+      refresh_url: "https://casafix.fr/stripe/refresh",
+      return_url: "https://casafix.fr/stripe/return",
       type: "account_onboarding",
     });
 
@@ -91,8 +91,9 @@ serve(async (req) => {
       { headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   } catch (error) {
+    console.error("create-connect-account error:", error.message, error.stack);
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ error: error.message, stack: error.stack }),
       { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   }

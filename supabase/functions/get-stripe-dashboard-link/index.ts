@@ -71,8 +71,8 @@ serve(async (req) => {
       );
       const accountLink = await stripe.accountLinks.create({
         account: artisan.stripe_account_id,
-        refresh_url: refresh_url || "casafixpro://stripe/refresh",
-        return_url: return_url || "casafixpro://stripe/return",
+        refresh_url: "https://casafix.fr/stripe/refresh",
+        return_url: "https://casafix.fr/stripe/return",
         type: "account_onboarding",
       });
       return new Response(
