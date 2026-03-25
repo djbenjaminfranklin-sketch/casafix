@@ -756,13 +756,20 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="dark-content" />
 
-      {/* Map */}
+      {/* Map — only render once we have real GPS coordinates */}
+      {!userLocation ? (
+        <View style={[styles.map, { justifyContent: "center", alignItems: "center", backgroundColor: "#f3f4f6" }]}>
+          <ActivityIndicator size="large" color={COLORS.primary} />
+          <Text style={{ marginTop: 8, color: COLORS.textLight, fontSize: 13 }}>{t("booking.locating")}</Text>
+        </View>
+      ) : (
       <MapView
         ref={mapRef}
         provider={PROVIDER_DEFAULT}
         style={styles.map}
         initialRegion={{
-          ...displayLocation,
+          latitude: userLocation.latitude,
+          longitude: userLocation.longitude,
           latitudeDelta: 0.02,
           longitudeDelta: 0.02,
         }}
@@ -793,6 +800,7 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
           </Marker>
         )}
       </MapView>
+      )}
 
       {/* Navigation buttons overlay */}
       <TouchableOpacity

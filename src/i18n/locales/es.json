@@ -272,6 +272,7 @@
     "photoHelp": "Añade fotos para ayudar al artesano a darte un precio más preciso.",
     "noArtisanTitle": "Ningún artesano disponible",
     "noArtisanDesc": "No hay ningún artesano disponible en este momento. Su preautorización ha sido liberada. Inténtelo más tarde.",
+    "locating": "Obteniendo su ubicación...",
     "noShowTitle": "¿El artesano no ha llegado?",
     "noShowDesc": "Han pasado 45 minutos desde que se asignó al artesano. Si no ha llegado, puede informar de su ausencia y buscar otro.",
     "noShowResearch": "Informar y buscar otro",

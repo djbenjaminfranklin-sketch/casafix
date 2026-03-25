@@ -289,7 +289,8 @@
     "noShowDesc": "It's been 45 minutes since the artisan was assigned. If they haven't arrived, you can report their absence and search again.",
     "noShowResearch": "Report and search again",
     "noShowCancel": "Report and cancel",
-    "noArtisanDesc": "No artisan is available at the moment. Your pre-authorisation has been released. Please try again later."
+    "noArtisanDesc": "No artisan is available at the moment. Your pre-authorisation has been released. Please try again later.",
+    "locating": "Getting your location..."
   },
   "auth": {
     "login": "Log in",
