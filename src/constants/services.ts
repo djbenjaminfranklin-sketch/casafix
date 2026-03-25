@@ -159,15 +159,6 @@ export const SERVICES: CategoryServices[] = [
         ],
       },
       {
-        id: "shutters",
-        icon: "reorder",
-        services: [
-          { id: "shutter_repair", priceRange: "150–300 €" },
-          { id: "shutter_install", priceRange: "300–600 €" },
-          { id: "shutter_motor_install", priceRange: "250–500 €" },
-        ],
-      },
-      {
         id: "other",
         icon: "ellipsis-horizontal",
         services: [
