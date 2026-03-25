@@ -281,6 +281,8 @@
     "noArtisanTitle": "Aucun artisan disponible",
     "noArtisanDesc": "Aucun artisan n'est disponible pour le moment. Votre préautorisation a été libérée. Veuillez réessayer ultérieurement.",
     "locating": "Localisation en cours...",
+    "artisanArriving": "L'artisan arrive dans environ {{minutes}} minutes",
+    "artisanArrivingSoon": "L'artisan est tout proche !",
     "noShowTitle": "L'artisan n'est pas arrivé ?",
     "noShowDesc": "Cela fait 45 minutes que l'artisan a été assigné. S'il n'est pas arrivé, vous pouvez signaler son absence et relancer une recherche.",
     "noShowResearch": "Signaler et relancer",

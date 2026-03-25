@@ -290,7 +290,9 @@
     "noShowResearch": "Report and search again",
     "noShowCancel": "Report and cancel",
     "noArtisanDesc": "No artisan is available at the moment. Your pre-authorisation has been released. Please try again later.",
-    "locating": "Getting your location..."
+    "locating": "Getting your location...",
+    "artisanArriving": "Artisan arriving in about {{minutes}} minutes",
+    "artisanArrivingSoon": "Artisan is almost there!"
   },
   "auth": {
     "login": "Log in",

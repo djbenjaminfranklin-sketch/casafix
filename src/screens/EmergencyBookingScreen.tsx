@@ -156,6 +156,21 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
     longitude: 0,
   });
   const [etaMinutes, setEtaMinutes] = useState(0);
+  const [estimatedArrivalTime, setEstimatedArrivalTime] = useState<string | null>(null);
+
+  // Countdown timer — updates every 30 seconds
+  useEffect(() => {
+    if (!estimatedArrivalTime) return;
+    const tick = () => {
+      const remaining = Math.max(0, Math.round(
+        (new Date(estimatedArrivalTime).getTime() - Date.now()) / 60000
+      ));
+      setEtaMinutes(remaining);
+    };
+    tick();
+    const interval = setInterval(tick, 30000);
+    return () => clearInterval(interval);
+  }, [estimatedArrivalTime]);
 
   // Pulse animation for searching
   const pulseAnim = useRef(new Animated.Value(0)).current;
@@ -468,12 +483,9 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
     if (!bookingId) return;
 
     const unsubscribe = subscribeToBooking(bookingId, async (updatedBooking: Booking) => {
-      // Update ETA if artisan sent one
+      // Update ETA if artisan sent one — store raw time, countdown handles the rest
       if (updatedBooking.estimated_arrival) {
-        const remaining = Math.max(0, Math.round(
-          (new Date(updatedBooking.estimated_arrival).getTime() - Date.now()) / 60000
-        ));
-        setEtaMinutes(remaining);
+        setEstimatedArrivalTime(updatedBooking.estimated_arrival);
       }
 
       // Artisan accepted the booking
@@ -825,11 +837,25 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
         <Icon name="home" size={20} color={COLORS.text} />
       </TouchableOpacity>
 
-      {/* ETA overlay on map when artisan is moving */}
-      {state === "arriving" && (
+      {/* ETA overlay on map when artisan is on the way */}
+      {(state === "matched" || state === "arriving") && etaMinutes > 0 && (
         <View style={styles.etaOverlay}>
           <Icon name="car" size={16} color={COLORS.primary} />
-          <Text style={styles.etaOverlayText}>{etaMinutes} min</Text>
+          <Text style={styles.etaOverlayText}>
+            {etaMinutes > 60
+              ? `${Math.floor(etaMinutes / 60)}h${String(etaMinutes % 60).padStart(2, "0")}`
+              : `${etaMinutes} min`}
+          </Text>
+        </View>
+      )}
+      {(state === "matched" || state === "arriving") && estimatedArrivalTime && (
+        <View style={styles.etaBanner}>
+          <Icon name="time-outline" size={18} color="#FFFFFF" />
+          <Text style={styles.etaBannerText}>
+            {etaMinutes > 0
+              ? t("booking.artisanArriving", { minutes: etaMinutes })
+              : t("booking.artisanArrivingSoon")}
+          </Text>
         </View>
       )}
 
@@ -1216,6 +1242,15 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.15, shadowRadius: 8, elevation: 4,
   },
   etaOverlayText: { fontSize: 15, fontWeight: "700", color: COLORS.primary },
+  etaBanner: {
+    position: "absolute", top: 110, left: SPACING.md, right: SPACING.md,
+    flexDirection: "row", alignItems: "center", gap: 10,
+    backgroundColor: COLORS.primary, paddingHorizontal: 16, paddingVertical: 12,
+    borderRadius: RADIUS.md,
+    shadowColor: "#000", shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2, shadowRadius: 8, elevation: 5,
+  },
+  etaBannerText: { fontSize: 14, fontWeight: "600", color: "#FFFFFF", flex: 1 },
   pulseOverlay: {
     position: "absolute", top: 0, left: 0, right: 0, bottom: 0,
     alignItems: "center", justifyContent: "center",
