@@ -946,6 +946,24 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
               <Text style={styles.photoHelpText}>{t("booking.photoHelp")}</Text>
             </View>
 
+            {/* AI Analyze button */}
+            {media.length > 0 && description.trim().length > 0 && !aiDiagnostic && (
+              <TouchableOpacity
+                style={[styles.analyzeBtn, analyzingAi && { opacity: 0.6 }]}
+                onPress={handleAnalyze}
+                activeOpacity={0.85}
+                disabled={analyzingAi}
+              >
+                <Icon name="sparkles" size={20} color={COLORS.primary} />
+                <Text style={styles.analyzeBtnText}>
+                  {analyzingAi ? t("diagnostic.analyzing") : t("diagnostic.analyze")}
+                </Text>
+              </TouchableOpacity>
+            )}
+
+            {/* AI Diagnostic result */}
+            {aiDiagnostic && <DiagnosticCard diagnostic={aiDiagnostic} />}
+
             {/* Confirm button */}
             <TouchableOpacity style={[styles.confirmBtn, submitting && { opacity: 0.4 }]} onPress={handleConfirm} activeOpacity={0.85} disabled={submitting}>
               {submitting ? (
@@ -1415,6 +1433,12 @@ const styles = StyleSheet.create({
     marginBottom: SPACING.md, marginTop: 4,
   },
   photoHelpText: { fontSize: 12, color: "#6b7280", flex: 1, lineHeight: 17 },
+  analyzeBtn: {
+    flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 8,
+    backgroundColor: "#FEF3C7", paddingVertical: 12, borderRadius: RADIUS.md,
+    marginBottom: SPACING.sm, borderWidth: 1, borderColor: "#FDE68A",
+  },
+  analyzeBtnText: { fontSize: 14, fontWeight: "600", color: COLORS.primary },
   confirmBtn: {
     flexDirection: "row", alignItems: "center", justifyContent: "center",
     backgroundColor: COLORS.primary, paddingVertical: 14, borderRadius: RADIUS.md, gap: 10,
