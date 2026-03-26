@@ -21,6 +21,7 @@ const CATEGORY_IMAGES: Record<string, any> = {
   smallworks: require("../assets/categories/smallworks.jpg"),
   pool: require("../assets/categories/pool.jpg"),
   garden: require("../assets/categories/garden.jpg"),
+  multimedia: require("../assets/categories/multimedia.jpg"),
 };
 
 type Props = {
