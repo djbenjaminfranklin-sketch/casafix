@@ -6,7 +6,6 @@ export type Severity = "low" | "medium" | "high" | "urgent";
 
 export interface DiagnosticResult {
   diagnostic: string;
-  estimatedPriceRange: string;
   materialsNeeded: string[];
   severity: Severity;
   tips: string;
@@ -17,7 +16,6 @@ interface AnalyzeProblemParams {
   description: string;
   serviceName: string;
   categoryName: string;
-  priceRange: string;
 }
 
 /**
@@ -59,7 +57,7 @@ async function uploadTempPhoto(uri: string): Promise<string> {
 export async function analyzeProblem(
   params: AnalyzeProblemParams
 ): Promise<DiagnosticResult> {
-  const { mediaItems, description, serviceName, categoryName, priceRange } = params;
+  const { mediaItems, description, serviceName, categoryName } = params;
 
   const photoItems = mediaItems.filter((m) => m.type === "photo");
 
@@ -92,7 +90,6 @@ export async function analyzeProblem(
       photoUrls,
       description,
       serviceName,
-      priceRange,
       categoryName,
     }),
   });

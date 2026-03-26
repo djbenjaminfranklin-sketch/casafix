@@ -22,7 +22,7 @@ serve(async (req) => {
       throw new Error("ANTHROPIC_API_KEY is not configured");
     }
 
-    const { photoUrls, description, serviceName, categoryName, priceRange } =
+    const { photoUrls, description, serviceName, categoryName } =
       await req.json();
 
     if (!photoUrls || !Array.isArray(photoUrls) || photoUrls.length === 0) {
@@ -70,19 +70,12 @@ Tu dois analyser les photos et la description fournie par le client pour établi
 Tu dois TOUJOURS répondre en JSON valide avec la structure suivante :
 {
   "diagnostic": "Description détaillée du problème identifié, causes probables et recommandations",
-  "estimatedPriceRange": "XX€ - YY€",
   "materialsNeeded": ["matériau 1", "matériau 2"],
   "severity": "low | medium | high | urgent",
   "tips": "Conseils pratiques pour l'artisan qui va intervenir"
 }
 
-Règles pour l'estimation du prix :
-- La fourchette de prix du service est indiquée dans le message. Tu dois t'appuyer dessus.
-- Ta fourchette haute doit correspondre au prix maximum du service
-- Ta fourchette basse doit être environ 25% en dessous du prix maximum (pas plus bas)
-- Exemple : si le service coûte "150€ - 250€", ton estimation doit être entre "185€ - 250€"
-- Inclus la main d'oeuvre et les matériaux
-- Zone géographique : Costa del Sol, Espagne
+IMPORTANT : Ne fournis PAS d'estimation de prix. Le prix sera défini par l'artisan sur place.
 
 Règles pour la sévérité :
 - "low" : Problème esthétique ou mineur, pas d'urgence
@@ -96,10 +89,9 @@ Réponds UNIQUEMENT avec le JSON, sans texte avant ou après. Adapte la langue d
 
 **Catégorie** : ${categoryName || "Non spécifiée"}
 **Service** : ${serviceName}
-**Fourchette de prix du service** : ${priceRange || "Non spécifiée"}
 **Description du client** : ${description}
 
-Fournis un diagnostic complet avec estimation de prix basée sur la fourchette du service.`;
+Fournis un diagnostic complet sans estimation de prix.`;
 
     // Call Claude API with vision
     const response = await fetch("https://api.anthropic.com/v1/messages", {

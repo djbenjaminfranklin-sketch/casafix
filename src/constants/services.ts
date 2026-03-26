@@ -491,6 +491,47 @@ export const SERVICES: CategoryServices[] = [
       },
     ],
   },
+  {
+    categoryId: "multimedia",
+    subcategories: [
+      {
+        id: "phone",
+        icon: "phone-portrait",
+        services: [
+          { id: "phone_screen_repair", priceRange: "50–200 €" },
+          { id: "phone_battery", priceRange: "40–100 €" },
+          { id: "phone_charging", priceRange: "40–80 €" },
+          { id: "phone_water_damage", priceRange: "60–150 €" },
+        ],
+      },
+      {
+        id: "computer",
+        icon: "laptop",
+        services: [
+          { id: "computer_screen_repair", priceRange: "100–350 €" },
+          { id: "computer_keyboard", priceRange: "80–200 €" },
+          { id: "computer_battery", priceRange: "60–150 €" },
+          { id: "computer_virus", priceRange: "50–100 €" },
+          { id: "computer_data_recovery", priceRange: "80–300 €" },
+        ],
+      },
+      {
+        id: "tablet",
+        icon: "tablet-portrait",
+        services: [
+          { id: "tablet_screen_repair", priceRange: "80–250 €" },
+          { id: "tablet_battery", priceRange: "50–120 €" },
+        ],
+      },
+      {
+        id: "other",
+        icon: "ellipsis-horizontal",
+        services: [
+          { id: "other_service", priceRange: "50–150 €" },
+        ],
+      },
+    ],
+  },
 ];
 
 export function getServicesByCategory(categoryId: string): CategoryServices | undefined {

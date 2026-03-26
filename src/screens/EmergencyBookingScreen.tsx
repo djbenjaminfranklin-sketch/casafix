@@ -645,7 +645,6 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
         description: description.trim(),
         serviceName,
         categoryName: category ? t(`categories.${category.id}`) : "",
-        priceRange,
       });
       setAiDiagnostic(result);
     } catch (e: any) {

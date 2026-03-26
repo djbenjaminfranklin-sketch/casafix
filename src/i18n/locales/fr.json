@@ -40,7 +40,8 @@
     "smallworks": "Petits travaux",
     "renovation": "Rénovation",
     "pool": "Piscine",
-    "garden": "Jardin"
+    "garden": "Jardin",
+    "multimedia": "Multimédia"
   },
   "subcategories": {
     "toilet": "WC / Toilettes",
@@ -84,6 +85,9 @@
     "garden_maintenance": "Entretien jardin",
     "garden_install": "Aménagement jardin",
     "garden_repair": "Réparation jardin",
+    "phone": "Téléphone",
+    "computer": "Ordinateur",
+    "tablet": "Tablette",
     "other": "Autre"
   },
   "services": {
@@ -221,7 +225,18 @@
     "garden_design": "Conception de jardin",
     "irrigation_repair": "Réparation système d'arrosage",
     "fence_repair": "Réparation clôture",
-    "other_service": "Autre demande (devis sur place)"
+    "other_service": "Autre demande (devis sur place)",
+    "phone_screen_repair": "Réparation écran téléphone",
+    "phone_battery": "Remplacement batterie téléphone",
+    "phone_charging": "Réparation port de charge",
+    "phone_water_damage": "Téléphone tombé dans l'eau",
+    "computer_screen_repair": "Réparation écran ordinateur",
+    "computer_keyboard": "Remplacement clavier",
+    "computer_battery": "Remplacement batterie PC portable",
+    "computer_virus": "Suppression virus / nettoyage",
+    "computer_data_recovery": "Récupération de données",
+    "tablet_screen_repair": "Réparation écran tablette",
+    "tablet_battery": "Remplacement batterie tablette"
   },
   "banner": {
     "onlinePayment": "Paiement en ligne",

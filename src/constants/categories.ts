@@ -10,6 +10,7 @@ export const CATEGORIES = [
   { id: "smallworks", icon: "construct", color: "#b45309", bg: "#fef3c7" },
   { id: "pool", icon: "water", color: "#0891b2", bg: "#cffafe" },
   { id: "garden", icon: "leaf", color: "#16a34a", bg: "#dcfce7" },
+  { id: "multimedia", icon: "phone-portrait", color: "#8b5cf6", bg: "#f5f3ff" },
 ] as const;
 
 export type CategoryId = (typeof CATEGORIES)[number]["id"];

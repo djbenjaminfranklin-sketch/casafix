@@ -125,7 +125,6 @@ export default function AppointmentBookingScreen({ route, navigation }: Props) {
         description: description.trim(),
         serviceName,
         categoryName: category ? t(`categories.${category.id}`) : "",
-        priceRange,
       });
       setAiDiagnostic(result);
     } catch (e: any) {

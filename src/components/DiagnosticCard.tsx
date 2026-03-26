@@ -39,13 +39,6 @@ export default function DiagnosticCard({ diagnostic }: Props) {
       {/* Diagnostic text */}
       <Text style={styles.diagnosticText}>{diagnostic.diagnostic}</Text>
 
-      {/* Price estimate */}
-      <View style={styles.row}>
-        <Icon name="card-outline" size={16} color={COLORS.primary} />
-        <Text style={styles.rowLabel}>{t("diagnostic.estimatedPrice")}</Text>
-        <Text style={styles.priceText}>{diagnostic.estimatedPriceRange}</Text>
-      </View>
-
       {/* Materials */}
       {diagnostic.materialsNeeded.length > 0 && (
         <View style={styles.materialsSection}>
@@ -125,11 +118,6 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     color: "#4b5563",
     flex: 1,
-  },
-  priceText: {
-    fontSize: 15,
-    fontWeight: "700",
-    color: COLORS.primary,
   },
   materialsSection: {
     marginTop: 10,

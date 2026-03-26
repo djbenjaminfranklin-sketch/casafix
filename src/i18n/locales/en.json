@@ -40,7 +40,8 @@
     "smallworks": "Small Works",
     "renovation": "Renovation",
     "pool": "Pool",
-    "garden": "Garden"
+    "garden": "Garden",
+    "multimedia": "Multimedia"
   },
   "subcategories": {
     "toilet": "Toilet / WC",
@@ -84,6 +85,9 @@
     "garden_maintenance": "Garden Maintenance",
     "garden_install": "Landscaping",
     "garden_repair": "Garden Repair",
+    "phone": "Phone",
+    "computer": "Computer",
+    "tablet": "Tablet",
     "other": "Other"
   },
   "services": {
@@ -221,7 +225,18 @@
     "garden_design": "Garden design",
     "irrigation_repair": "Irrigation system repair",
     "fence_repair": "Fence repair",
-    "other_service": "Other request (quote on-site)"
+    "other_service": "Other request (quote on-site)",
+    "phone_screen_repair": "Phone screen repair",
+    "phone_battery": "Phone battery replacement",
+    "phone_charging": "Charging port repair",
+    "phone_water_damage": "Water-damaged phone repair",
+    "computer_screen_repair": "Computer screen repair",
+    "computer_keyboard": "Keyboard replacement",
+    "computer_battery": "Laptop battery replacement",
+    "computer_virus": "Virus removal / cleanup",
+    "computer_data_recovery": "Data recovery",
+    "tablet_screen_repair": "Tablet screen repair",
+    "tablet_battery": "Tablet battery replacement"
   },
   "banner": {
     "onlinePayment": "Online payment",
