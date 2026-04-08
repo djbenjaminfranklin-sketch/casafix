@@ -439,8 +439,7 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
               Math.sin(dLng / 2);
           const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
           const distanceKm = R * c;
-          const etaMin = Math.max(1, Math.round((distanceKm / 40) * 60 * 1.3)); // 1.3x for road factor
-          setEtaMinutes(etaMin);
+          // ETA will be set by the artisan, not calculated automatically
 
           // Fit map to show both user and artisan
           if (distanceKm > 0.1) {
