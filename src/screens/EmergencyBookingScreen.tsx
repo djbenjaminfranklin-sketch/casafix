@@ -315,16 +315,21 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
       const elapsed = Math.floor((Date.now() - searchStartRef.current!) / 1000);
       const remaining = Math.max(0, 120 - elapsed);
       setCancelCountdown(remaining);
-      if (remaining <= 0) {
+      if (remaining <= 0 && elapsed < 600) {
+        // After 2 min but before 10 min: paid cancellation
         setCanCancelFree(false);
-        clearInterval(interval);
+      }
+      if (elapsed >= 600) {
+        // After 10 min without artisan: free cancellation comes back
+        setCanCancelFree(true);
+        setCancelCountdown(0);
       }
     }, 1000);
 
     return () => clearInterval(interval);
   }, [state, bookingId]);
 
-  // 30-minute search timeout
+  // 30-minute search timeout (total max wait)
   useEffect(() => {
     if (state !== "searching" || !bookingId) return;
     const timeout = setTimeout(async () => {
