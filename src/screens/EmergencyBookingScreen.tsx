@@ -301,53 +301,27 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
     }
   }, [arrivalCode, bookingId]);
 
-  const bookingCreatedRef = useRef<string | null>(null);
+  const searchStartRef = useRef<number | null>(null);
 
   useEffect(() => {
     if (state !== "searching" || !bookingId) return;
 
-    let interval: ReturnType<typeof setInterval> | null = null;
-    let cancelled = false;
+    // Start the 2-minute timer from NOW (when searching screen appears)
+    if (!searchStartRef.current) {
+      searchStartRef.current = Date.now();
+    }
 
-    const initTimer = async () => {
-      if (!bookingCreatedRef.current) {
-        const { data } = await supabase
-          .from("bookings")
-          .select("created_at")
-          .eq("id", bookingId)
-          .single();
-        if (data?.created_at) {
-          bookingCreatedRef.current = data.created_at;
-        }
+    const interval = setInterval(() => {
+      const elapsed = Math.floor((Date.now() - searchStartRef.current!) / 1000);
+      const remaining = Math.max(0, 120 - elapsed);
+      setCancelCountdown(remaining);
+      if (remaining <= 0) {
+        setCanCancelFree(false);
+        clearInterval(interval);
       }
+    }, 1000);
 
-      if (cancelled) return;
-
-      const updateCountdown = () => {
-        if (!bookingCreatedRef.current) return;
-        const elapsed = Math.floor(
-          (Date.now() - new Date(bookingCreatedRef.current).getTime()) / 1000
-        );
-        const remaining = Math.max(0, 120 - elapsed);
-        setCancelCountdown(remaining);
-        if (remaining <= 0) {
-          setCanCancelFree(false);
-          if (interval) { clearInterval(interval); interval = null; }
-        }
-      };
-
-      updateCountdown();
-      if (!cancelled) {
-        interval = setInterval(updateCountdown, 1000);
-      }
-    };
-
-    initTimer();
-
-    return () => {
-      cancelled = true;
-      if (interval) clearInterval(interval);
-    };
+    return () => clearInterval(interval);
   }, [state, bookingId]);
 
   // 30-minute search timeout
