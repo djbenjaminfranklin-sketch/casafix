@@ -1122,6 +1122,12 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
               <Text style={styles.trackingPrice}>{priceRange}</Text>
             </View>
 
+            {/* QR code reminder */}
+            <View style={styles.qrReminder}>
+              <Icon name="qr-code-outline" size={16} color="#6b7280" />
+              <Text style={styles.qrReminderText}>{t("booking.showQrToArtisan")}</Text>
+            </View>
+
             {/* Action buttons */}
             <View style={styles.trackingActions}>
               <TouchableOpacity
@@ -1352,6 +1358,12 @@ const styles = StyleSheet.create({
   trackingPrice: {
     fontSize: 15, fontWeight: "700", color: COLORS.primary,
   },
+  qrReminder: {
+    flexDirection: "row", alignItems: "center", gap: 8,
+    backgroundColor: "#f3f4f6", padding: 10, borderRadius: RADIUS.sm,
+    marginBottom: SPACING.sm,
+  },
+  qrReminderText: { fontSize: 12, color: "#6b7280", flex: 1, lineHeight: 17 },
   trackingActions: {
     flexDirection: "row", gap: 10,
   },

@@ -59,6 +59,25 @@ export default function ChatScreen({ route, navigation }: Props) {
     setText("");
 
     await sendMessage(bookingId, content);
+
+    // Send push notification to artisan
+    const { data: booking } = await supabase
+      .from("bookings")
+      .select("artisan_id")
+      .eq("id", bookingId)
+      .single();
+
+    if (booking?.artisan_id) {
+      await supabase.from("notification_queue").insert({
+        user_id: booking.artisan_id,
+        title: t("chat.newMessage"),
+        body: content.length > 100 ? content.substring(0, 100) + "..." : content,
+        data: JSON.stringify({ type: "new_message", booking_id: bookingId }),
+        sent: false,
+      });
+      supabase.functions.invoke("process-notifications").catch(() => {});
+    }
+
     setSending(false);
   }
 
