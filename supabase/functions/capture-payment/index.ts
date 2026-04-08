@@ -39,12 +39,13 @@ serve(async (req) => {
       amount_to_capture: final_amount, // in cents
     });
 
-    // Update the booking with the final price
+    // Update the booking with the final price and mark payment as released
     await supabase
       .from("bookings")
       .update({
         final_price: final_amount / 100, // convert cents to euros
         status: "completed",
+        payment_released_at: new Date().toISOString(), // triggers invoice generation
       })
       .eq("stripe_payment_intent_id", payment_intent_id);
 
