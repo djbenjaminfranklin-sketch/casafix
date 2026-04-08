@@ -9,6 +9,10 @@ import {
   TouchableOpacity,
   Alert,
   ActivityIndicator,
+  KeyboardAvoidingView,
+  ScrollView,
+  Platform,
+  Keyboard,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import { useTranslation } from "react-i18next";
@@ -105,8 +109,15 @@ export default function ReviewScreen({ route, navigation }: Props) {
         <View style={{ width: 40 }} />
       </View>
 
-      {/* Content */}
-      <View style={styles.content}>
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === "ios" ? "padding" : undefined}
+      >
+      <ScrollView
+        contentContainerStyle={styles.content}
+        keyboardShouldPersistTaps="handled"
+        showsVerticalScrollIndicator={false}
+      >
         {/* Artisan info */}
         <View style={styles.artisanCard}>
           <View style={styles.artisanAvatar}>
@@ -165,9 +176,11 @@ export default function ReviewScreen({ route, navigation }: Props) {
           multiline
           textAlignVertical="top"
           maxLength={500}
+          blurOnSubmit
+          onSubmitEditing={() => Keyboard.dismiss()}
+          returnKeyType="done"
         />
         <Text style={styles.charCount}>{comment.length}/500</Text>
-      </View>
 
       {/* Submit */}
       <View style={styles.bottomBar}>
@@ -187,6 +200,8 @@ export default function ReviewScreen({ route, navigation }: Props) {
           )}
         </TouchableOpacity>
       </View>
+      </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }
