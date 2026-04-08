@@ -514,8 +514,50 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
       }
     });
 
-    return unsubscribe;
-  }, [bookingId, navigation, serviceName]);
+    // Fallback polling every 5s in case realtime misses updates
+    const pollInterval = setInterval(async () => {
+      const { data } = await supabase
+        .from("bookings")
+        .select("status, proposed_price, deposit_amount, max_price, stripe_payment_intent_id, estimated_arrival, artisan_id")
+        .eq("id", bookingId)
+        .single();
+
+      if (!data) return;
+
+      if (data.estimated_arrival) {
+        setEstimatedArrivalTime(data.estimated_arrival);
+      }
+
+      if (data.status === "matched" && data.artisan_id && state === "searching") {
+        const { data: fullBooking } = await getBookingWithArtisan(bookingId);
+        if (fullBooking?.artisan) {
+          const artisanDetails = await fetchFullArtisanDetails(fullBooking.artisan, fullBooking.artisan.id);
+          setMatchedArtisan(artisanDetails);
+        }
+        setState("matched");
+      }
+
+      if (data.status === "price_proposed" && data.proposed_price) {
+        const { data: fullBooking } = await getBookingWithArtisan(bookingId);
+        const artisanName = fullBooking?.artisan?.full_name || "";
+        clearInterval(pollInterval);
+        navigation.replace("PriceConfirmation", {
+          bookingId,
+          serviceName,
+          artisanName,
+          categoryId,
+          depositAmount: data.deposit_amount || data.max_price,
+          proposedPrice: data.proposed_price,
+          paymentIntentId: data.stripe_payment_intent_id || "",
+        });
+      }
+    }, 5000);
+
+    return () => {
+      unsubscribe();
+      clearInterval(pollInterval);
+    };
+  }, [bookingId, navigation, serviceName, state]);
 
   // Subscribe to artisan proposals (multi-artisan)
   useEffect(() => {
