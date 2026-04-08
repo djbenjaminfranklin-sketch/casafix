@@ -452,6 +452,25 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
     }
   }, [state, bookingId]);
 
+  // Track artisan position in realtime (poll every 10s)
+  useEffect(() => {
+    if ((state !== "matched" && state !== "arriving") || !matchedArtisan) return;
+
+    const interval = setInterval(async () => {
+      const { data } = await supabase
+        .from("artisans")
+        .select("latitude, longitude")
+        .eq("id", matchedArtisan.id)
+        .single();
+
+      if (data?.latitude && data?.longitude) {
+        setArtisanPosition({ latitude: data.latitude, longitude: data.longitude });
+      }
+    }, 10000); // every 10 seconds
+
+    return () => clearInterval(interval);
+  }, [state, matchedArtisan]);
+
   // Subscribe to booking realtime updates (detect price_proposed)
   useEffect(() => {
     if (!bookingId) return;
