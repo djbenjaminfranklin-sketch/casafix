@@ -962,7 +962,7 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
         ]}
         bounces={false}
         showsVerticalScrollIndicator={false}
-        scrollEnabled={state !== "matched" && state !== "arriving"}
+        scrollEnabled
         keyboardShouldPersistTaps="handled"
       >
         {state === "confirm" && (
@@ -1386,7 +1386,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1, shadowRadius: 12, elevation: 8,
   },
   bottomCardCompact: {
-    maxHeight: 220,
+    maxHeight: "45%",
     paddingTop: SPACING.md, paddingBottom: SPACING.lg,
   },
   trackingHeader: {
