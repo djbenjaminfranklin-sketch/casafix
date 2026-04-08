@@ -7,6 +7,8 @@ import {
   StatusBar,
   TouchableOpacity,
   ScrollView,
+  KeyboardAvoidingView,
+  Platform,
   Animated,
   Easing,
   Dimensions,
@@ -879,6 +881,11 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
       )}
 
       {/* Bottom card */}
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : undefined}
+        keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 0}
+        style={{ flex: state === "confirm" ? 1 : undefined }}
+      >
       <ScrollView
         style={[
           styles.bottomCard,
@@ -887,6 +894,7 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
         bounces={false}
         showsVerticalScrollIndicator={false}
         scrollEnabled={state !== "matched" && state !== "arriving"}
+        keyboardShouldPersistTaps="handled"
       >
         {state === "confirm" && (
           <>
@@ -1162,6 +1170,7 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
           </>
         )}
       </ScrollView>
+      </KeyboardAvoidingView>
 
       {/* QR Code Modal */}
       <Modal
