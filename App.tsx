@@ -33,16 +33,24 @@ function NotificationHandler({ navigationRef }: { navigationRef: React.RefObject
 
     // Handle notification tap (app in background)
     const unsubOpened = onNotificationOpenedApp((data) => {
-      if (data?.screen && navigationRef.current) {
+      if (!data || !navigationRef.current) return;
+      if (data.type === "new_message" && data.booking_id) {
+        navigationRef.current.navigate("Chat", { bookingId: data.booking_id, artisanName: "" });
+      } else if (data.screen) {
         navigationRef.current.navigate(data.screen, data.params ? JSON.parse(data.params) : undefined);
       }
     });
 
     // Check if app was opened from notification (cold start)
     getInitialNotification().then((data) => {
-      if (data?.screen && navigationRef.current) {
-        navigationRef.current.navigate(data.screen, data.params ? JSON.parse(data.params) : undefined);
-      }
+      if (!data || !navigationRef.current) return;
+      setTimeout(() => {
+        if (data.type === "new_message" && data.booking_id) {
+          navigationRef.current?.navigate("Chat", { bookingId: data.booking_id, artisanName: "" });
+        } else if (data.screen) {
+          navigationRef.current?.navigate(data.screen, data.params ? JSON.parse(data.params) : undefined);
+        }
+      }, 1000);
     });
 
     return () => {
