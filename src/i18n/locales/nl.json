@@ -280,7 +280,9 @@
     "checkEmail": "Controleer uw e-mail om uw account te bevestigen",
     "continueWithApple": "Doorgaan met Apple",
     "continueWithGoogle": "Doorgaan met Google",
-    "orContinueWith": "of doorgaan met"
+    "orContinueWith": "of doorgaan met",
+    "phone": "Telefoon",
+    "phoneRequired": "Telefoonnummer is verplicht"
   },
   "review": {
     "title": "Beoordeling achterlaten",

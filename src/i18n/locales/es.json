@@ -310,7 +310,9 @@
     "checkEmail": "Revisa tu correo para confirmar tu cuenta",
     "continueWithApple": "Continuar con Apple",
     "continueWithGoogle": "Continuar con Google",
-    "orContinueWith": "o continuar con"
+    "orContinueWith": "o continuar con",
+    "phone": "Teléfono",
+    "phoneRequired": "El número de teléfono es obligatorio"
   },
   "review": {
     "title": "Dejar una opinión",

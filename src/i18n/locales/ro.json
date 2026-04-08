@@ -279,7 +279,9 @@
     "checkEmail": "Verificati emailul pentru a confirma contul",
     "continueWithApple": "Continua cu Apple",
     "continueWithGoogle": "Continua cu Google",
-    "orContinueWith": "sau continua cu"
+    "orContinueWith": "sau continua cu",
+    "phone": "Telefon",
+    "phoneRequired": "Numarul de telefon este obligatoriu"
   },
   "review": {
     "title": "Lasati o recenzie",

@@ -324,7 +324,9 @@
     "checkEmail": "Check your email to confirm your account",
     "continueWithApple": "Continue with Apple",
     "continueWithGoogle": "Continue with Google",
-    "orContinueWith": "or continue with"
+    "orContinueWith": "or continue with",
+    "phone": "Phone",
+    "phoneRequired": "Phone number is required"
   },
   "review": {
     "title": "Leave a review",

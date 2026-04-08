@@ -25,6 +25,7 @@ export default function AuthScreen() {
 
   const [isLogin, setIsLogin] = useState(true);
   const [fullName, setFullName] = useState("");
+  const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -40,13 +41,17 @@ export default function AuthScreen() {
       Alert.alert(t("common.error"), t("auth.fillAllFields"));
       return;
     }
+    if (!isLogin && !phone.trim()) {
+      Alert.alert(t("common.error"), t("auth.phoneRequired"));
+      return;
+    }
 
     setLoading(true);
     if (isLogin) {
       const { error } = await signIn(email.trim(), password);
       if (error) Alert.alert(t("common.error"), error.message);
     } else {
-      const { error } = await signUp(email.trim(), password, fullName.trim());
+      const { error } = await signUp(email.trim(), password, fullName.trim(), phone.trim());
       if (error) {
         Alert.alert(t("common.error"), error.message);
       } else {
@@ -105,6 +110,21 @@ export default function AuthScreen() {
                   value={fullName}
                   onChangeText={setFullName}
                   autoCapitalize="words"
+                />
+              </View>
+            )}
+
+            {!isLogin && (
+              <View style={styles.inputGroup}>
+                <Icon name="call-outline" size={20} color={COLORS.textLight} style={styles.inputIcon} />
+                <TextInput
+                  style={styles.input}
+                  placeholder={t("auth.phone")}
+                  placeholderTextColor={COLORS.textLight}
+                  value={phone}
+                  onChangeText={setPhone}
+                  keyboardType="phone-pad"
+                  autoCapitalize="none"
                 />
               </View>
             )}

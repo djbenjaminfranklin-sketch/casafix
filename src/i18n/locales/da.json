@@ -280,7 +280,9 @@
     "checkEmail": "Tjek din e-mail for at bekræfte din konto",
     "continueWithApple": "Fortsæt med Apple",
     "continueWithGoogle": "Fortsæt med Google",
-    "orContinueWith": "eller fortsæt med"
+    "orContinueWith": "eller fortsæt med",
+    "phone": "Telefon",
+    "phoneRequired": "Telefonnummer er påkrævet"
   },
   "review": {
     "title": "Giv en anmeldelse",

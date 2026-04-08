@@ -279,7 +279,9 @@
     "checkEmail": "Sprawdz swoj email, aby potwierdzic konto",
     "continueWithApple": "Kontynuuj z Apple",
     "continueWithGoogle": "Kontynuuj z Google",
-    "orContinueWith": "lub kontynuuj przez"
+    "orContinueWith": "lub kontynuuj przez",
+    "phone": "Telefon",
+    "phoneRequired": "Numer telefonu jest wymagany"
   },
   "review": {
     "title": "Wystaw opinie",

@@ -280,7 +280,9 @@
     "checkEmail": "Überprüfen Sie Ihre E-Mail zur Kontobestätigung",
     "continueWithApple": "Weiter mit Apple",
     "continueWithGoogle": "Weiter mit Google",
-    "orContinueWith": "oder weiter mit"
+    "orContinueWith": "oder weiter mit",
+    "phone": "Telefon",
+    "phoneRequired": "Telefonnummer ist erforderlich"
   },
   "review": {
     "title": "Bewertung abgeben",

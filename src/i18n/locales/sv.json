@@ -280,7 +280,9 @@
     "checkEmail": "Kolla din e-post för att bekräfta kontot",
     "continueWithApple": "Fortsätt med Apple",
     "continueWithGoogle": "Fortsätt med Google",
-    "orContinueWith": "eller fortsätt med"
+    "orContinueWith": "eller fortsätt med",
+    "phone": "Telefon",
+    "phoneRequired": "Telefonnummer krävs"
   },
   "review": {
     "title": "Lämna omdöme",

@@ -318,7 +318,9 @@
     "checkEmail": "Vérifiez votre email pour confirmer votre compte",
     "continueWithApple": "Continuer avec Apple",
     "continueWithGoogle": "Continuer avec Google",
-    "orContinueWith": "ou continuer avec"
+    "orContinueWith": "ou continuer avec",
+    "phone": "Téléphone",
+    "phoneRequired": "Le numéro de téléphone est obligatoire"
   },
   "review": {
     "title": "Laisser un avis",

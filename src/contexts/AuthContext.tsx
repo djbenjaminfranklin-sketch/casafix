@@ -10,7 +10,7 @@ type AuthContextType = {
   profile: Profile | null;
   isAdmin: boolean;
   loading: boolean;
-  signUp: (email: string, password: string, fullName: string) => Promise<{ error: any }>;
+  signUp: (email: string, password: string, fullName: string, phone?: string) => Promise<{ error: any }>;
   signIn: (email: string, password: string) => Promise<{ error: any }>;
   signInWithApple: () => Promise<{ error: any }>;
   signInWithGoogle: () => Promise<{ error: any }>;
@@ -65,8 +65,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setLoading(false);
   }
 
-  async function signUp(email: string, password: string, fullName: string) {
-    const { error } = await supabase.auth.signUp({
+  async function signUp(email: string, password: string, fullName: string, phone?: string) {
+    const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
@@ -74,6 +74,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         emailRedirectTo: "casafix://auth/callback",
       },
     });
+
+    // Save phone to profiles table after signup
+    if (!error && data?.user && phone) {
+      await supabase
+        .from("profiles")
+        .update({ phone })
+        .eq("id", data.user.id);
+    }
+
     return { error };
   }
 
