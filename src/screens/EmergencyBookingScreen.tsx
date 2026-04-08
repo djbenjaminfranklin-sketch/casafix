@@ -700,8 +700,9 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
       paymentIntentClientSecret: piResult.clientSecret,
       merchantDisplayName: "CasaFix",
       style: "automatic",
+      primaryButtonLabel: t("payment.book"),
       applePay: {
-        merchantCountryCode: "ES",
+        merchantCountryCode: "FR",
       },
     });
 

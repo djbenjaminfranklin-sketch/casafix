@@ -179,6 +179,10 @@ export default function AppointmentBookingScreen({ route, navigation }: Props) {
       paymentIntentClientSecret: piResult.clientSecret,
       merchantDisplayName: "CasaFix",
       style: "automatic",
+      primaryButtonLabel: t("payment.book"),
+      applePay: {
+        merchantCountryCode: "FR",
+      },
     });
 
     if (initError) {

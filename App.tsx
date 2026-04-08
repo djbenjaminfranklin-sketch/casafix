@@ -65,7 +65,7 @@ export default function App() {
 
   return (
     <SafeAreaProvider>
-      <StripeProvider publishableKey={STRIPE_PUBLISHABLE_KEY} merchantIdentifier="merchant.com.casafix">
+      <StripeProvider publishableKey={STRIPE_PUBLISHABLE_KEY} merchantIdentifier="merchant.com.casafix" urlScheme="casafix">
         <AuthProvider>
           <LocationProvider>
             <NavigationContainer ref={navigationRef}>
