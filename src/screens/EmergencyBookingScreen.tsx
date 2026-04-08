@@ -705,6 +705,8 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
     // 3. Show PaymentSheet for card input
     const { error: initError } = await initPaymentSheet({
       paymentIntentClientSecret: piResult.clientSecret,
+      customerId: piResult.customerId,
+      customerEphemeralKeySecret: piResult.ephemeralKeySecret,
       merchantDisplayName: "CasaFix",
       style: "automatic",
       primaryButtonLabel: t("payment.book"),

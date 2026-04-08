@@ -59,6 +59,12 @@ serve(async (req) => {
         .eq("id", user.id);
     }
 
+    // Create an ephemeral key for the customer (needed for saved cards)
+    const ephemeralKey = await stripe.ephemeralKeys.create(
+      { customer: customerId },
+      { apiVersion: "2023-10-16" }
+    );
+
     // Create a PaymentIntent with manual capture (pre-authorization)
     const paymentIntent = await stripe.paymentIntents.create({
       amount, // amount in cents (e.g., 15000 = 150€)
@@ -82,6 +88,8 @@ serve(async (req) => {
       JSON.stringify({
         clientSecret: paymentIntent.client_secret,
         paymentIntentId: paymentIntent.id,
+        customerId,
+        ephemeralKeySecret: ephemeralKey.secret,
       }),
       { headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );

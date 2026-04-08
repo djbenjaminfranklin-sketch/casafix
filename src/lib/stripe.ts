@@ -10,7 +10,7 @@ export async function createPaymentIntent(params: {
   bookingId: string;
   amount: number; // in cents
   currency?: string;
-}): Promise<{ clientSecret: string; paymentIntentId: string } | null> {
+}): Promise<{ clientSecret: string; paymentIntentId: string; customerId: string; ephemeralKeySecret: string } | null> {
   const { data, error } = await supabase.functions.invoke("create-payment-intent", {
     body: {
       booking_id: params.bookingId,

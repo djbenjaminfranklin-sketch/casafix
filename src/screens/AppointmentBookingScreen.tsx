@@ -177,6 +177,8 @@ export default function AppointmentBookingScreen({ route, navigation }: Props) {
     // 3. Show PaymentSheet
     const { error: initError } = await initPaymentSheet({
       paymentIntentClientSecret: piResult.clientSecret,
+      customerId: piResult.customerId,
+      customerEphemeralKeySecret: piResult.ephemeralKeySecret,
       merchantDisplayName: "CasaFix",
       style: "automatic",
       primaryButtonLabel: t("payment.book"),
