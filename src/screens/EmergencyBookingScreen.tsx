@@ -524,8 +524,14 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
 
       if (!data) return;
 
-      if (data.estimated_arrival) {
+      if (data.estimated_arrival && data.status !== "in_progress") {
         setEstimatedArrivalTime(data.estimated_arrival);
+      }
+
+      // Artisan arrived (QR scanned) — clear ETA
+      if (data.status === "in_progress") {
+        setEstimatedArrivalTime(null);
+        setEtaMinutes(0);
       }
 
       if (data.status === "matched" && data.artisan_id && state === "searching") {
