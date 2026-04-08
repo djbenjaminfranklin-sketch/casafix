@@ -487,6 +487,16 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
         setEstimatedArrivalTime(updatedBooking.estimated_arrival);
       }
 
+      // Artisan cancelled — reset to searching
+      if (updatedBooking.status === "searching") {
+        setState("searching");
+        setMatchedArtisan(null);
+        setArtisanPosition({ latitude: 0, longitude: 0 });
+        setEstimatedArrivalTime(null);
+        setEtaMinutes(0);
+        setProposals([]);
+      }
+
       // Artisan accepted the booking
       if (updatedBooking.status === "matched" && updatedBooking.artisan_id) {
         const { data: fullBooking } = await getBookingWithArtisan(bookingId);
@@ -532,6 +542,16 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
       if (data.status === "in_progress") {
         setEstimatedArrivalTime(null);
         setEtaMinutes(0);
+      }
+
+      // Artisan cancelled — go back to searching
+      if (data.status === "searching" && (state === "matched" || state === "arriving" || state === "choosing")) {
+        setState("searching");
+        setMatchedArtisan(null);
+        setArtisanPosition({ latitude: 0, longitude: 0 });
+        setEstimatedArrivalTime(null);
+        setEtaMinutes(0);
+        setProposals([]);
       }
 
       if (data.status === "matched" && data.artisan_id && state === "searching") {
