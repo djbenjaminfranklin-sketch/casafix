@@ -246,7 +246,7 @@
   "payment": {
     "book": "Réserver",
     "maxPrice": "Prix max.",
-    "realPriceNote": "Le prix final sera défini sur place par l'artisan. Il peut varier en fonction du matériel nécessaire.",
+    "realPriceNote": "Le prix affiché est à titre indicatif. Le prix final sera défini sur place par l'artisan. Il peut varier en fonction du matériel nécessaire et du temps passé.",
     "explanation": "Votre argent est en sécurité. Il s'agit uniquement d'une préautorisation : AUCUN montant n'est débité de votre compte. Seul le prix final, fixé par l'artisan sur place, sera prélevé. S'il est inférieur, la différence est automatiquement restituée.",
     "preauth": "Préautorisation",
     "charged": "Montant débité",

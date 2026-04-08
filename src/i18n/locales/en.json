@@ -246,7 +246,7 @@
   "payment": {
     "book": "Book now",
     "maxPrice": "Max price",
-    "realPriceNote": "The final price will be set on-site by the artisan. It may vary depending on the materials required.",
+    "realPriceNote": "The displayed price is indicative only. The final price will be set on-site by the artisan. It may vary depending on materials required and time spent.",
     "explanation": "Your money is safe. This is only a pre-authorisation: NO money is taken from your account. Only the final price, set by the artisan on-site, will be charged. If it's less, the difference is automatically released.",
     "preauth": "Pre-authorisation",
     "charged": "Amount charged",

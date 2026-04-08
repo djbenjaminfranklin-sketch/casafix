@@ -246,7 +246,7 @@
   "payment": {
     "book": "Reservar",
     "maxPrice": "Precio máx.",
-    "realPriceNote": "El precio final será definido en el lugar por el profesional. Puede variar según el material necesario.",
+    "realPriceNote": "El precio mostrado es orientativo. El precio final será definido en el lugar por el profesional. Puede variar según el material necesario y el tiempo dedicado.",
     "explanation": "Tu dinero está seguro. Solo se realiza una preautorización: NO se cobra nada de tu cuenta. Únicamente se cobrará el precio final fijado por el artesano tras la intervención. Si es inferior, la diferencia se libera automáticamente.",
     "preauth": "Preautorización",
     "charged": "Importe cobrado",
