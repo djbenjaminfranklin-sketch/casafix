@@ -73,7 +73,7 @@ export default function MessagesScreen() {
       ).length;
 
       const artisanData = booking.artisan as any;
-      const artisanName = artisanData?.full_name || "Artisan";
+      const artisanName = artisanData?.full_name || t("priceConfirm.artisan");
 
       convos.push({
         booking_id: booking.id,

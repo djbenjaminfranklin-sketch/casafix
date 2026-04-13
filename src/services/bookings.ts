@@ -140,7 +140,7 @@ export async function reportNoShow(bookingId: string) {
   }
 
   // Release payment hold if exists
-  if (booking.payment_intent_id) {
+  if (booking.stripe_payment_intent_id) {
     try {
       await supabase.functions.invoke("release-payment", {
         body: { bookingId },

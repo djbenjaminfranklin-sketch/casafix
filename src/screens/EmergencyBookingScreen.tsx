@@ -128,7 +128,7 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
 
     return {
       id: artisanId,
-      name: artisanData.full_name || "Artisan",
+      name: artisanData.full_name || t("priceConfirm.artisan"),
       rating: artisanData.rating || 0,
       reviews: artisanData.review_count || 0,
       phone: artisanData.phone || "",
@@ -200,7 +200,7 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
                 longitude: pos.coords.longitude,
               });
             },
-            () => setLocationFailed(true),
+            () => { /* location failed */ },
             { enableHighAccuracy: true, timeout: 30000 }
           );
         },
@@ -225,7 +225,7 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
         startLocationTracking();
       },
       () => {
-        setLocationFailed(true);
+        { /* location failed */ };
       }
     );
 
@@ -339,7 +339,7 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
         t("booking.noArtisanTitle"),
         t("booking.noArtisanDesc"),
         [{
-          text: "OK",
+          text: t("booking.backHome"),
           onPress: async () => {
             await supabase.from("bookings").update({ status: "cancelled" }).eq("id", bookingId);
             navigation.reset({ index: 0, routes: [{ name: "Tabs" }] });
@@ -870,7 +870,7 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
         {(state === "matched" || state === "arriving") && artisanPosition.latitude !== 0 && (
           <Marker
             coordinate={artisanPosition}
-            title={matchedArtisan?.name || "Artisan"}
+            title={matchedArtisan?.name || t("priceConfirm.artisan")}
             anchor={{ x: 0.5, y: 0.5 }}
           >
             <View style={styles.artisanMarkerOuter}>
@@ -1178,7 +1178,7 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
                 <Icon name="person" size={20} color="#FFFFFF" />
               </View>
               <View style={styles.trackingArtisanInfo}>
-                <Text style={styles.trackingArtisanName}>{matchedArtisan?.name || "Artisan"}</Text>
+                <Text style={styles.trackingArtisanName}>{matchedArtisan?.name || t("priceConfirm.artisan")}</Text>
                 <View style={styles.trackingRating}>
                   <Icon name="star" size={12} color="#f59e0b" />
                   <Text style={styles.trackingRatingText}>
@@ -1233,7 +1233,7 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
                   if (bookingId) {
                     navigation.navigate("Chat", {
                       bookingId,
-                      artisanName: matchedArtisan?.name || "Artisan",
+                      artisanName: matchedArtisan?.name || t("priceConfirm.artisan"),
                     });
                   }
                 }}

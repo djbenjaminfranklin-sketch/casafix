@@ -37,7 +37,7 @@ function NotificationHandler({ navigationRef }: { navigationRef: React.RefObject
       if (data.type === "new_message" && data.booking_id) {
         navigationRef.current.navigate("Chat", { bookingId: data.booking_id, artisanName: "" });
       } else if (data.screen) {
-        navigationRef.current.navigate(data.screen, data.params ? JSON.parse(data.params) : undefined);
+        navigationRef.current.navigate(data.screen, data.params ? (() => { try { return JSON.parse(data.params); } catch { return undefined; } })() : undefined);
       }
     });
 
@@ -48,7 +48,7 @@ function NotificationHandler({ navigationRef }: { navigationRef: React.RefObject
         if (data.type === "new_message" && data.booking_id) {
           navigationRef.current?.navigate("Chat", { bookingId: data.booking_id, artisanName: "" });
         } else if (data.screen) {
-          navigationRef.current?.navigate(data.screen, data.params ? JSON.parse(data.params) : undefined);
+          navigationRef.current?.navigate(data.screen, data.params ? (() => { try { return JSON.parse(data.params); } catch { return undefined; } })() : undefined);
         }
       }, 1000);
     });

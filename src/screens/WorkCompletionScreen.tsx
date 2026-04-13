@@ -262,11 +262,11 @@ export default function WorkCompletionScreen({ route, navigation }: Props) {
                 <Text style={styles.invoiceValue}>{invoice.service_name}</Text>
               </View>
               <View style={styles.invoiceRow}>
-                <Text style={styles.invoiceLabel}>HT</Text>
+                <Text style={styles.invoiceLabel}>{t("invoice.subtotal")}</Text>
                 <Text style={styles.invoiceValue}>{invoice.subtotal}€</Text>
               </View>
               <View style={styles.invoiceRow}>
-                <Text style={styles.invoiceLabel}>IVA ({invoice.iva_rate}%)</Text>
+                <Text style={styles.invoiceLabel}>{t("invoice.iva")} ({invoice.iva_rate}%)</Text>
                 <Text style={styles.invoiceValue}>{invoice.iva_amount}€</Text>
               </View>
               <View style={styles.receiptDivider} />

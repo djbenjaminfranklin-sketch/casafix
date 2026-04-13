@@ -250,7 +250,8 @@
     "explanation": "Votre argent est en sécurité. Il s'agit uniquement d'une préautorisation : AUCUN montant n'est débité de votre compte. Seul le prix final, fixé par l'artisan sur place, sera prélevé. S'il est inférieur, la différence est automatiquement restituée.",
     "preauth": "Préautorisation",
     "charged": "Montant débité",
-    "secure": "Paiement 100% sécurisé"
+    "secure": "Paiement 100% sécurisé",
+    "setupError": "Erreur lors de la configuration du paiement"
   },
   "booking": {
     "chooseType": "Type de réservation",
@@ -303,7 +304,12 @@
     "noShowTitle": "L'artisan n'est pas arrivé ?",
     "noShowDesc": "Cela fait 45 minutes que l'artisan a été assigné. S'il n'est pas arrivé, vous pouvez signaler son absence et relancer une recherche.",
     "noShowResearch": "Signaler et relancer",
-    "noShowCancel": "Signaler et annuler"
+    "noShowCancel": "Signaler et annuler",
+    "artisansAvailable": "artisan(s) disponible(s)",
+    "chooseArtisan": "Choisissez votre artisan",
+    "select": "Choisir",
+    "waitingMore": "Recherche d'autres artisans en cours...",
+    "createError": "Erreur lors de la création de la réservation"
   },
   "auth": {
     "login": "Se connecter",
@@ -405,7 +411,8 @@
   },
   "chat": {
     "empty": "Aucun message",
-    "placeholder": "Écrire un message..."
+    "placeholder": "Écrire un message...",
+    "newMessage": "Nouveau message"
   },
   "favorites": {
     "empty": "Aucun favori",
@@ -881,5 +888,8 @@
     "addBefore": "Ajouter photos avant",
     "addAfter": "Ajouter photos après",
     "uploading": "Envoi des photos en cours..."
+  },
+  "multiday": {
+    "guaranteeReminder": "Tous les travaux sont couverts par une garantie de 1 an sur les pièces et la main-d'œuvre."
   }
 }
