@@ -110,7 +110,7 @@ export async function cancelBooking(bookingId: string) {
 }
 
 // Report artisan no-show: cancel booking, flag artisan, file report
-export async function reportNoShow(bookingId: string) {
+export async function reportNoShow(bookingId: string, relaunch: boolean = false) {
   // Get booking details
   const { data: booking } = await supabase
     .from("bookings")
@@ -120,13 +120,26 @@ export async function reportNoShow(bookingId: string) {
 
   if (!booking) return { error: { message: "Booking not found" } };
 
-  // Cancel the booking with no_show reason
-  const { error: cancelError } = await supabase
-    .from("bookings")
-    .update({ status: "cancelled", cancel_reason: "artisan_no_show" })
-    .eq("id", bookingId);
-
-  if (cancelError) return { error: cancelError };
+  if (relaunch) {
+    // Reset booking to searching — remove artisan, keep booking alive
+    await supabase
+      .from("bookings")
+      .update({
+        status: "searching",
+        artisan_id: null,
+        cancel_reason: null,
+        estimated_arrival: null,
+        artisan_arrived_at: null,
+        proposed_price: null,
+      })
+      .eq("id", bookingId);
+  } else {
+    // Cancel the booking
+    await supabase
+      .from("bookings")
+      .update({ status: "cancelled", cancel_reason: "artisan_no_show" })
+      .eq("id", bookingId);
+  }
 
   // File a report for the no-show
   if (booking.artisan_id) {
@@ -137,10 +150,29 @@ export async function reportNoShow(bookingId: string) {
       reason: "no_show",
       description: `Artisan ${booking.artisan?.full_name || "unknown"} did not show up for booking ${bookingId}`,
     });
+
+    // Notify admin about the no-show
+    const { data: admins } = await supabase
+      .from("profiles")
+      .select("id")
+      .eq("is_admin", true);
+
+    if (admins) {
+      for (const admin of admins) {
+        await supabase.from("notification_queue").insert({
+          user_id: admin.id,
+          title: "Signalement no-show",
+          body: `L'artisan ${booking.artisan?.full_name || "inconnu"} ne s'est pas présenté pour la réservation ${bookingId.slice(0, 8)}...`,
+          data: JSON.stringify({ type: "no_show_report", booking_id: bookingId }),
+          sent: false,
+        });
+      }
+      supabase.functions.invoke("process-notifications").catch(() => {});
+    }
   }
 
-  // Release payment hold if exists
-  if (booking.stripe_payment_intent_id) {
+  // Release payment hold if exists (only if cancelling, not relaunching)
+  if (!relaunch && booking.stripe_payment_intent_id) {
     try {
       await supabase.functions.invoke("release-payment", {
         body: { bookingId },

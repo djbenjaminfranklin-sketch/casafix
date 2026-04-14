@@ -361,16 +361,23 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
           {
             text: t("booking.noShowResearch"),
             onPress: async () => {
-              await reportNoShow(bookingId);
-              // Re-create a new booking with same params
-              navigation.reset({ index: 0, routes: [{ name: "Tabs" }] });
+              await reportNoShow(bookingId, true);
+              // Reset state to searching — booking stays alive, new artisans notified
+              setState("searching");
+              setMatchedArtisan(null);
+              setArtisanPosition({ latitude: 0, longitude: 0 });
+              setEstimatedArrivalTime(null);
+              setEtaMinutes(0);
+              setProposals([]);
+              // Trigger new notifications to artisans
+              supabase.functions.invoke("process-notifications").catch(() => {});
             },
           },
           {
             text: t("booking.noShowCancel"),
             style: "cancel",
             onPress: async () => {
-              await reportNoShow(bookingId);
+              await reportNoShow(bookingId, false);
               navigation.reset({ index: 0, routes: [{ name: "Tabs" }] });
             },
           },
