@@ -391,7 +391,9 @@
     "displacementWarning": "Si vous refusez, {{fee}}€ de frais de déplacement seront facturés.",
     "displacementFeeInfo": "En cas de refus du devis, {{fee}}€ de frais de déplacement de l'artisan seront appliqués.",
     "additionalPaymentError": "Erreur lors du paiement complémentaire",
-    "leaveReview": "Laisser un avis"
+    "leaveReview": "Laisser un avis",
+    "share": "Partager",
+    "print": "Imprimer"
   },
   "bookings": {
     "title": "Mes réservations",

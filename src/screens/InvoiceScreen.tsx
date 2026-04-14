@@ -220,11 +220,17 @@ export default function InvoiceScreen({ navigation, route }: Props) {
           </Text>
         </View>
 
-        {/* Share button */}
-        <TouchableOpacity style={styles.shareButton} onPress={handleShareInvoice}>
-          <Icon name="share-outline" size={20} color="#FFFFFF" />
-          <Text style={styles.shareButtonText}>{t("invoice.share")}</Text>
-        </TouchableOpacity>
+        {/* Share & Print buttons */}
+        <View style={styles.actionButtons}>
+          <TouchableOpacity style={styles.shareButton} onPress={handleShareInvoice}>
+            <Icon name="share-outline" size={20} color="#FFFFFF" />
+            <Text style={styles.shareButtonText}>{t("invoice.share")}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.printButton} onPress={handleShareInvoice}>
+            <Icon name="print-outline" size={20} color={COLORS.primary} />
+            <Text style={styles.printButtonText}>{t("invoice.print")}</Text>
+          </TouchableOpacity>
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
@@ -406,19 +412,41 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginTop: SPACING.md,
   },
+  actionButtons: {
+    flexDirection: "row",
+    gap: 10,
+    marginTop: SPACING.md,
+  },
   shareButton: {
+    flex: 1,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: COLORS.primary,
     borderRadius: RADIUS.lg,
     paddingVertical: 14,
-    marginTop: SPACING.md,
     gap: 8,
   },
   shareButtonText: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: "600",
     color: "#FFFFFF",
+  },
+  printButton: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#FFFFFF",
+    borderRadius: RADIUS.lg,
+    paddingVertical: 14,
+    gap: 8,
+    borderWidth: 1.5,
+    borderColor: COLORS.primary,
+  },
+  printButtonText: {
+    fontSize: 14,
+    fontWeight: "600",
+    color: COLORS.primary,
   },
 });
