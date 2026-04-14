@@ -102,29 +102,43 @@ export default function PriceConfirmationScreen({ route, navigation }: Props) {
     setConfirmed(true);
   }
 
-  async function handleCancel() {
+  async function handleRefusePrice() {
     Alert.alert(
-      t("priceConfirm.cancelTitle"),
-      t("priceConfirm.displacementWarning", { fee: DISPLACEMENT_FEE }),
+      t("priceConfirm.refusePriceTitle"),
+      t("priceConfirm.refusePriceDesc"),
       [
         { text: t("priceConfirm.no"), style: "cancel" },
         {
-          text: t("priceConfirm.yesCancel"),
-          style: "destructive",
+          text: t("priceConfirm.yesRefuse"),
           onPress: async () => {
-            const { data } = await supabase.rpc("client_cancel_booking", {
-              p_booking_id: bookingId,
-              p_client_id: (await supabase.auth.getUser()).data.user?.id,
-            });
+            // Reset booking to in_progress so artisan can propose again
+            await supabase
+              .from("bookings")
+              .update({
+                status: "in_progress",
+                proposed_price: null,
+              })
+              .eq("id", bookingId);
 
-            if (data?.cancellation_fee > 0) {
-              await capturePayment({
-                paymentIntentId,
-                finalAmount: Math.round(data.cancellation_fee * 100),
+            // Notify artisan
+            const { data: booking } = await supabase
+              .from("bookings")
+              .select("artisan_id, service_name")
+              .eq("id", bookingId)
+              .single();
+
+            if (booking?.artisan_id) {
+              await supabase.from("notification_queue").insert({
+                user_id: booking.artisan_id,
+                title: t("priceConfirm.priceRefusedTitle"),
+                body: t("priceConfirm.priceRefusedBody", { service: booking.service_name }),
+                data: JSON.stringify({ type: "price_refused", booking_id: bookingId }),
+                sent: false,
               });
+              supabase.functions.invoke("process-notifications").catch(() => {});
             }
 
-            navigation.popToTop();
+            navigation.goBack();
           },
         },
       ]
@@ -302,7 +316,7 @@ export default function PriceConfirmationScreen({ route, navigation }: Props) {
 
       {/* Bottom actions */}
       <View style={styles.bottomBar}>
-        <TouchableOpacity style={styles.cancelBtn} onPress={handleCancel} activeOpacity={0.8}>
+        <TouchableOpacity style={styles.cancelBtn} onPress={handleRefusePrice} activeOpacity={0.8}>
           <Text style={styles.cancelBtnText}>{t("priceConfirm.refuse")}</Text>
         </TouchableOpacity>
 
