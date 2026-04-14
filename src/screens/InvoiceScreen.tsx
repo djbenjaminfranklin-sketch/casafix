@@ -9,6 +9,8 @@ import {
   ScrollView,
   ActivityIndicator,
   Image,
+  Share,
+  Alert,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import { useTranslation } from "react-i18next";
@@ -51,6 +53,34 @@ export default function InvoiceScreen({ navigation, route }: Props) {
 
   const formatAmount = (amount: number) => {
     return amount.toFixed(2).replace(".", ",") + " \u20AC";
+  };
+
+  const handleShareInvoice = async () => {
+    if (!invoice) return;
+    const siret = invoice.artisan_nie_nif || invoice.artisan_autonomo_number || "";
+    const lines = [
+      `FACTURE CasaFix N° ${invoice.invoice_number}`,
+      `${t("invoice.date")} : ${formatDate(invoice.service_date)}`,
+      "",
+      `${t("invoice.provider")} : ${invoice.artisan_name}`,
+      siret ? `SIRET : ${siret}` : "",
+      "",
+      `${t("invoice.client")} : ${invoice.client_name}`,
+      "",
+      `${t("invoice.service")} : ${invoice.service_name}`,
+      "",
+      `${t("invoice.subtotal")} : ${formatAmount(invoice.subtotal)}`,
+      `${t("invoice.iva")} (${invoice.iva_rate}%) : ${formatAmount(invoice.iva_amount)}`,
+      `${t("invoice.total")} : ${formatAmount(invoice.total)}`,
+      "",
+      t("invoice.paidByCard"),
+    ].filter(Boolean).join("\n");
+
+    try {
+      await Share.share({ message: lines });
+    } catch (e: any) {
+      Alert.alert("Error", e.message);
+    }
   };
 
   if (loading) {
@@ -189,6 +219,12 @@ export default function InvoiceScreen({ navigation, route }: Props) {
             {t("invoice.invoiceNumber")}{invoice.invoice_number}
           </Text>
         </View>
+
+        {/* Share button */}
+        <TouchableOpacity style={styles.shareButton} onPress={handleShareInvoice}>
+          <Icon name="share-outline" size={20} color="#FFFFFF" />
+          <Text style={styles.shareButtonText}>{t("invoice.share")}</Text>
+        </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
   );
@@ -369,5 +405,20 @@ const styles = StyleSheet.create({
     color: COLORS.textLight,
     textAlign: "center",
     marginTop: SPACING.md,
+  },
+  shareButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: COLORS.primary,
+    borderRadius: RADIUS.lg,
+    paddingVertical: 14,
+    marginTop: SPACING.md,
+    gap: 8,
+  },
+  shareButtonText: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: "#FFFFFF",
   },
 });

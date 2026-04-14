@@ -681,7 +681,8 @@
     "commission": "Commission CasaFix",
     "yourShare": "Votre part",
     "noInvoice": "Facture non disponible",
-    "loading": "Chargement de la facture..."
+    "loading": "Chargement de la facture...",
+    "share": "Partager la facture"
   },
   "help": {
     "contactTitle": "Nous contacter",

@@ -490,7 +490,8 @@
     "commission": "Commission",
     "yourShare": "Your share",
     "noInvoice": "No invoice available",
-    "loading": "Loading..."
+    "loading": "Loading...",
+    "share": "Share invoice"
   },
   "multiday": {
     "guaranteeReminder": "Warranty reminder"

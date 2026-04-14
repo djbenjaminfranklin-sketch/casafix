@@ -634,6 +634,23 @@
     "methodNote": "Tu tarjeta se guarda de forma segura durante tu primera reserva",
     "poweredBy": "Pagos seguros con"
   },
+  "invoice": {
+    "title": "Factura",
+    "invoiceNumber": "Factura N°",
+    "date": "Fecha",
+    "provider": "Prestador",
+    "client": "Cliente",
+    "service": "Servicio",
+    "subtotal": "Importe sin IVA",
+    "iva": "IVA",
+    "total": "Total con IVA",
+    "paidByCard": "Pago realizado con tarjeta bancaria",
+    "commission": "Comisión CasaFix",
+    "yourShare": "Tu parte",
+    "noInvoice": "Factura no disponible",
+    "loading": "Cargando factura...",
+    "share": "Compartir factura"
+  },
   "help": {
     "contactTitle": "Contáctanos",
     "email": "Email",
