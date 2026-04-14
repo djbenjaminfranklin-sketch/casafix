@@ -969,7 +969,7 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
         ]}
         bounces={false}
         showsVerticalScrollIndicator={false}
-        scrollEnabled
+        scrollEnabled={state !== "matched" && state !== "arriving"}
         keyboardShouldPersistTaps="handled"
       >
         {state === "confirm" && (
@@ -1197,12 +1197,6 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
               <Text style={styles.trackingPrice}>{priceRange}</Text>
             </View>
 
-            {/* QR code reminder */}
-            <View style={styles.qrReminder}>
-              <Icon name="qr-code-outline" size={16} color="#6b7280" />
-              <Text style={styles.qrReminderText}>{t("booking.showQrToArtisan")}</Text>
-            </View>
-
             {/* Action buttons */}
             <View style={styles.trackingActions}>
               <TouchableOpacity
@@ -1393,8 +1387,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1, shadowRadius: 12, elevation: 8,
   },
   bottomCardCompact: {
-    maxHeight: "55%",
-    paddingTop: SPACING.md, paddingBottom: SPACING.lg,
+    paddingTop: SPACING.sm, paddingBottom: SPACING.md,
   },
   trackingHeader: {
     flexDirection: "row", justifyContent: "space-between", alignItems: "center",
