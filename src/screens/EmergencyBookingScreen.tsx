@@ -554,7 +554,7 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
         setProposals([]);
       }
 
-      if (data.status === "matched" && data.artisan_id && state === "searching") {
+      if (data.status === "matched" && data.artisan_id && (state === "searching" || state === "choosing")) {
         const { data: fullBooking } = await getBookingWithArtisan(bookingId);
         if (fullBooking?.artisan) {
           const artisanDetails = await fetchFullArtisanDetails(fullBooking.artisan, fullBooking.artisan.id);
@@ -1386,7 +1386,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1, shadowRadius: 12, elevation: 8,
   },
   bottomCardCompact: {
-    maxHeight: "45%",
+    maxHeight: "55%",
     paddingTop: SPACING.md, paddingBottom: SPACING.lg,
   },
   trackingHeader: {
