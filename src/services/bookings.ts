@@ -20,6 +20,7 @@ export async function createBooking(params: {
   latitude?: number;
   longitude?: number;
   description?: string;
+  is_night_rate?: boolean;
 }): Promise<{ data: Booking | null; error: any }> {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return { data: null, error: { message: "Not authenticated" } };

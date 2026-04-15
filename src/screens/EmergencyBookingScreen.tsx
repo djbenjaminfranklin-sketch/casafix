@@ -39,6 +39,7 @@ import { supabase } from "../lib/supabase";
 import { Booking } from "../lib/database.types";
 import { analyzeProblem, DiagnosticResult } from "../services/ai-diagnostic";
 import { useLocation } from "../contexts/LocationContext";
+import { isNightTime, applyNightRate } from "../utils/nightRate";
 
 const { width } = Dimensions.get("window");
 
@@ -760,8 +761,10 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
       return;
     }
 
-    // 2. Create PaymentIntent (pre-auth for max_price)
-    const maxPrice = booking.max_price || 150;
+    // 2. Create PaymentIntent (pre-auth for max_price, +30% night rate if applicable)
+    const baseMaxPrice = booking.max_price || 150;
+    const nightRate = isNightTime();
+    const maxPrice = nightRate ? applyNightRate(baseMaxPrice) : baseMaxPrice;
     const piResult = await createPaymentIntent({
       bookingId: booking.id,
       amount: Math.round(maxPrice * 100), // cents
@@ -814,7 +817,13 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
     setArrivalCode(code);
     await supabase
       .from("bookings")
-      .update({ arrival_code: code, deposit_amount: maxPrice, status: "searching" })
+      .update({
+        arrival_code: code,
+        deposit_amount: maxPrice,
+        max_price: maxPrice,
+        is_night_rate: nightRate,
+        status: "searching",
+      })
       .eq("id", booking.id);
 
     // Upload media if any
@@ -985,8 +994,19 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
                   <Text style={styles.priceLabel}>{t("payment.maxPrice")}</Text>
                   <Text style={styles.priceValue}>{priceRange}</Text>
                 </View>
+                <Text style={styles.nightRateInfo}>
+                  {t("nightRate.label")} : {t("nightRate.info")}
+                </Text>
               </View>
             </View>
+
+            {/* Night rate banner */}
+            {isNightTime() && (
+              <View style={styles.nightRateBanner}>
+                <Icon name="moon" size={16} color="#f59e0b" />
+                <Text style={styles.nightRateBannerText}>{t("nightRate.applied")}</Text>
+              </View>
+            )}
 
             {/* 2h guarantee */}
             <View style={styles.guaranteeBadge}>
@@ -1492,6 +1512,13 @@ const styles = StyleSheet.create({
   priceRow: { flexDirection: "row", alignItems: "center", gap: 6, marginTop: 4 },
   priceLabel: { fontSize: 11, color: COLORS.textLight },
   priceValue: { fontSize: 15, fontWeight: "700", color: COLORS.primary },
+  nightRateInfo: { fontSize: 11, color: "#9ca3af", fontStyle: "italic", marginTop: 2 },
+  nightRateBanner: {
+    flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 8,
+    backgroundColor: "#FEF3C7", paddingVertical: 8, borderRadius: RADIUS.sm,
+    marginBottom: SPACING.sm, borderWidth: 1, borderColor: "#FDE68A",
+  },
+  nightRateBannerText: { fontSize: 13, fontWeight: "600", color: "#92400e" },
   guaranteeBadge: {
     flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 8,
     backgroundColor: "#dcfce7", paddingVertical: 10, borderRadius: RADIUS.sm,

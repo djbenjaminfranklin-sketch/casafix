@@ -13,6 +13,7 @@ import { useTranslation } from "react-i18next";
 import { CATEGORIES } from "../constants/categories";
 import { getServicesByCategory } from "../constants/services";
 import { COLORS, SPACING, RADIUS } from "../constants/theme";
+import { isNightTime, applyNightRate } from "../utils/nightRate";
 
 type Props = {
   route: { params: { categoryId: string } };
@@ -132,6 +133,19 @@ export default function CategoryDetailScreen({ route, navigation }: Props) {
                           <Text style={styles.servicePrice}>{svc.priceRange === "__onQuote__" ? t("pricing.onQuote") : svc.priceRange}</Text>
                         </View>
                       </View>
+                      <Text style={styles.nightRateInfo}>
+                        {t("nightRate.label")} : {t("nightRate.info")}
+                      </Text>
+                      {isNightTime() && svc.priceRange !== "__onQuote__" && (
+                        <Text style={styles.nightRateAdjusted}>
+                          {t("nightRate.applied")} — {(() => {
+                            const nums = svc.priceRange.match(/\d+/g);
+                            if (!nums || nums.length === 0) return svc.priceRange;
+                            const max = Math.max(...nums.map(Number));
+                            return `${applyNightRate(max)}€`;
+                          })()}
+                        </Text>
+                      )}
                       <Text style={styles.priceNote}>{t("payment.realPriceNote")}</Text>
                       <TouchableOpacity
                         style={styles.bookBtn}
@@ -336,6 +350,18 @@ const styles = StyleSheet.create({
     color: COLORS.textLight,
     fontStyle: "italic",
     marginBottom: 10,
+  },
+  nightRateInfo: {
+    fontSize: 11,
+    color: "#9ca3af",
+    fontStyle: "italic",
+    marginBottom: 2,
+  },
+  nightRateAdjusted: {
+    fontSize: 11,
+    color: "#f59e0b",
+    fontWeight: "600",
+    marginBottom: 4,
   },
   paymentInfo: {
     flexDirection: "row",

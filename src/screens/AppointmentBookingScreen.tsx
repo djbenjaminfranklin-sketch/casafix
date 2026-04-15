@@ -25,6 +25,7 @@ import { usePaymentSheet } from "@stripe/stripe-react-native";
 import { supabase } from "../lib/supabase";
 import { Booking } from "../lib/database.types";
 import { analyzeProblem, DiagnosticResult } from "../services/ai-diagnostic";
+import { isNightTime, applyNightRate } from "../utils/nightRate";
 
 
 type Props = {
@@ -159,8 +160,10 @@ export default function AppointmentBookingScreen({ route, navigation }: Props) {
       return;
     }
 
-    // 2. Create PaymentIntent (pre-auth)
-    const maxPrice = booking.max_price || 150;
+    // 2. Create PaymentIntent (pre-auth, +30% night rate if applicable)
+    const baseMaxPrice = booking.max_price || 150;
+    const nightRate = isNightTime();
+    const maxPrice = nightRate ? applyNightRate(baseMaxPrice) : baseMaxPrice;
     const piResult = await createPaymentIntent({
       bookingId: booking.id,
       amount: Math.round(maxPrice * 100),
@@ -203,7 +206,11 @@ export default function AppointmentBookingScreen({ route, navigation }: Props) {
 
     // 4. Payment authorized
     setBookingId(booking.id);
-    await supabase.from("bookings").update({ deposit_amount: maxPrice }).eq("id", booking.id);
+    await supabase.from("bookings").update({
+      deposit_amount: maxPrice,
+      max_price: maxPrice,
+      is_night_rate: nightRate,
+    }).eq("id", booking.id);
 
     if (media.length > 0) {
       const { data: { user } } = await supabase.auth.getUser();
@@ -288,8 +295,19 @@ export default function AppointmentBookingScreen({ route, navigation }: Props) {
           <View style={styles.svcInfo}>
             <Text style={styles.svcName}>{serviceName}</Text>
             <Text style={styles.svcPrice}>{priceRange}</Text>
+            <Text style={styles.nightRateInfo}>
+              {t("nightRate.label")} : {t("nightRate.info")}
+            </Text>
           </View>
         </View>
+
+        {/* Night rate banner */}
+        {isNightTime() && (
+          <View style={styles.nightRateBanner}>
+            <Icon name="moon" size={16} color="#f59e0b" />
+            <Text style={styles.nightRateBannerText}>{t("nightRate.applied")}</Text>
+          </View>
+        )}
 
         {/* Date picker */}
         <Text style={styles.sectionTitle}>{t("booking.chooseDate")}</Text>
@@ -407,6 +425,13 @@ const styles = StyleSheet.create({
   svcInfo: { flex: 1 },
   svcName: { fontSize: 15, fontWeight: "600", color: "#1f2937" },
   svcPrice: { fontSize: 14, fontWeight: "700", color: COLORS.primary, marginTop: 2 },
+  nightRateInfo: { fontSize: 11, color: "#9ca3af", fontStyle: "italic", marginTop: 2 },
+  nightRateBanner: {
+    flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 8,
+    backgroundColor: "#FEF3C7", paddingVertical: 8, borderRadius: RADIUS.sm,
+    marginHorizontal: SPACING.md, marginTop: SPACING.sm, borderWidth: 1, borderColor: "#FDE68A",
+  },
+  nightRateBannerText: { fontSize: 13, fontWeight: "600", color: "#92400e" },
   sectionTitle: {
     fontSize: 16, fontWeight: "700", color: "#1f2937",
     paddingHorizontal: SPACING.md, marginTop: SPACING.lg, marginBottom: SPACING.sm,

@@ -11,6 +11,7 @@ import Icon from "react-native-vector-icons/Ionicons";
 import { useTranslation } from "react-i18next";
 import { CATEGORIES } from "../constants/categories";
 import { COLORS, SPACING, RADIUS } from "../constants/theme";
+import { isNightTime } from "../utils/nightRate";
 
 type Props = {
   route: { params: { categoryId: string; serviceId: string; serviceName: string; priceRange: string } };
@@ -43,6 +44,12 @@ export default function BookingChoiceScreen({ route, navigation }: Props) {
         <View style={styles.serviceInfo}>
           <Text style={styles.serviceNameText}>{serviceName}</Text>
           <Text style={styles.servicePriceText}>{priceRange === "__onQuote__" ? t("pricing.onQuote") : priceRange}</Text>
+          <Text style={styles.nightRateInfo}>
+            {t("nightRate.label")} : {t("nightRate.info")}
+          </Text>
+          {isNightTime() && (
+            <Text style={styles.nightRateBanner}>{t("nightRate.applied")}</Text>
+          )}
         </View>
       </View>
 
@@ -153,6 +160,8 @@ const styles = StyleSheet.create({
   serviceInfo: { flex: 1 },
   serviceNameText: { fontSize: 15, fontWeight: "600", color: "#1f2937" },
   servicePriceText: { fontSize: 14, fontWeight: "700", color: COLORS.primary, marginTop: 2 },
+  nightRateInfo: { fontSize: 11, color: "#9ca3af", fontStyle: "italic", marginTop: 2 },
+  nightRateBanner: { fontSize: 11, color: "#f59e0b", fontWeight: "600", marginTop: 2 },
   choices: { flex: 1, paddingHorizontal: SPACING.md, paddingTop: SPACING.lg, gap: SPACING.md },
   choiceCard: {
     backgroundColor: "#FFFFFF", borderRadius: RADIUS.lg, padding: SPACING.lg,
