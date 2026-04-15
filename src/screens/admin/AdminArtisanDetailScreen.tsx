@@ -325,20 +325,34 @@ export default function AdminArtisanDetailScreen() {
             <Text style={styles.infoValue}>{artisan.email || "N/A"}</Text>
           </View>
           <View style={styles.infoCard}>
-            <Text style={styles.infoLabel}>{t("admin.nieNif")}</Text>
-            <Text style={styles.infoValue}>{artisan.nie_nif || "N/A"}</Text>
-          </View>
-          <View style={styles.infoCard}>
-            <Text style={styles.infoLabel}>{t("admin.siretNumber")}</Text>
-            <Text style={styles.infoValue}>{artisan.autonomo_number || "N/A"}</Text>
+            <Text style={styles.infoLabel}>SIRET</Text>
+            <Text style={styles.infoValue}>{artisan.siret_number || artisan.nie_nif || artisan.autonomo_number || "N/A"}</Text>
           </View>
           <View style={styles.infoCard}>
             <Text style={styles.infoLabel}>{t("admin.address")}</Text>
             <Text style={styles.infoValue}>{artisan.business_address || "N/A"}</Text>
           </View>
           <View style={styles.infoCard}>
-            <Text style={styles.infoLabel}>{t("admin.ivaRate")}</Text>
+            <Text style={styles.infoLabel}>TVA</Text>
             <Text style={styles.infoValue}>{artisan.iva_rate != null ? `${artisan.iva_rate}%` : "N/A"}</Text>
+          </View>
+          <View style={styles.infoCard}>
+            <Text style={styles.infoLabel}>Kbis</Text>
+            <Text style={[styles.infoValue, { color: artisan.kbis_url ? "#16a34a" : "#dc2626" }]}>
+              {artisan.kbis_url ? "✅ Fourni" : "❌ Manquant"}
+            </Text>
+          </View>
+          <View style={styles.infoCard}>
+            <Text style={styles.infoLabel}>RC Pro</Text>
+            <Text style={[styles.infoValue, { color: artisan.rc_pro_url ? "#16a34a" : "#dc2626" }]}>
+              {artisan.rc_pro_url ? "✅ Fourni" : "❌ Manquant"}
+            </Text>
+          </View>
+          <View style={styles.infoCard}>
+            <Text style={styles.infoLabel}>Assurance décennale</Text>
+            <Text style={[styles.infoValue, { color: artisan.decennale_url ? "#16a34a" : "#9ca3af" }]}>
+              {artisan.decennale_url ? "✅ Fourni" : "— Optionnel"}
+            </Text>
           </View>
         </View>
 

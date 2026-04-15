@@ -48,6 +48,13 @@ export type Artisan = {
   id_document_url: string | null;
   id_document_verso_url: string | null;
   id_document_type: "nie" | "passport" | "id_card" | null;
+  siret_number: string | null;
+  country: "ES" | "FR" | null;
+  kbis_url: string | null;
+  rc_pro_url: string | null;
+  decennale_url: string | null;
+  urssaf_url: string | null;
+  company_id: string | null;
   verified: boolean;
   suspended_until: string | null;
   created_at: string;
