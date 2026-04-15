@@ -508,43 +508,56 @@
   },
   "howItWorks": {
     "title": "Comment ça marche",
-    "intro": "CasaFix vous met en relation avec des artisans vérifiés en quelques minutes. Voici comment :",
+    "intro": "CasaFix vous met en relation avec des artisans vérifiés en quelques minutes. Urgence ou rendez-vous, voici comment ça fonctionne :",
     "step1": {
       "title": "Choisissez un service",
-      "desc": "Sélectionnez le type de réparation : plomberie, électricité, serrurerie et plus."
+      "desc": "Sélectionnez parmi 12 catégories : plomberie, électricité, serrurerie, chauffage, climatisation, nuisibles, électroménager, vitrerie, petits travaux, piscine, jardin, multimédia."
     },
     "step2": {
-      "title": "Décrivez le problème",
-      "desc": "Prenez des photos et décrivez la situation. Notre IA fournira un diagnostic préliminaire."
+      "title": "Urgence ou rendez-vous",
+      "desc": "Choisissez une intervention immédiate (un artisan chez vous en moins de 2h) ou prenez rendez-vous jusqu'à 14 jours à l'avance."
     },
     "step3": {
-      "title": "Préautorisation sécurisée",
-      "desc": "Votre carte est préautorisée (RIEN n'est débité). Seul le prix final sera prélevé."
+      "title": "Diagnostic IA par photo",
+      "desc": "Prenez des photos du problème et décrivez la situation. Notre intelligence artificielle analyse et fournit un diagnostic préliminaire, le niveau de gravité et le matériel nécessaire."
     },
     "step4": {
-      "title": "Suivez votre artisan",
-      "desc": "Voyez votre artisan sur la carte en temps réel pendant qu'il se dirige vers vous."
+      "title": "Préautorisation sécurisée",
+      "desc": "Votre carte est préautorisée mais RIEN n'est débité. Il s'agit d'une simple vérification. Seul le prix final fixé par l'artisan sera prélevé."
     },
     "step5": {
-      "title": "Confirmez l'arrivée",
-      "desc": "Montrez le QR code à l'artisan à son arrivée pour confirmer sa présence."
+      "title": "Choisissez votre artisan",
+      "desc": "Plusieurs artisans peuvent accepter votre demande. Comparez leurs notes, avis et portfolios, puis choisissez celui qui vous convient."
     },
     "step6": {
-      "title": "Travaux réalisés",
-      "desc": "L'artisan effectue le travail et propose le prix final. Vous acceptez ou refusez."
+      "title": "Suivi GPS en temps réel",
+      "desc": "Suivez votre artisan sur la carte comme avec Uber. Vous recevez son temps d'arrivée estimé et un décompte en temps réel."
     },
     "step7": {
-      "title": "Paiement sécurisé",
-      "desc": "Seul le prix convenu est débité. Vous avez 48h pour valider le travail."
+      "title": "QR code à l'arrivée",
+      "desc": "Montrez le QR code sur votre écran à l'artisan pour confirmer son arrivée. C'est une preuve horodatée qui vous protège."
     },
     "step8": {
-      "title": "Notez votre artisan",
-      "desc": "Laissez un avis pour aider les autres clients et récompenser le bon travail."
+      "title": "Prix et paiement",
+      "desc": "L'artisan propose un prix final après diagnostic sur place. Vous pouvez accepter ou refuser. Si vous refusez, il peut reproposer. Seul le prix accepté est débité. Vous avez 48h pour valider le travail ou ouvrir un litige."
+    },
+    "step9": {
+      "title": "Majorations de prix",
+      "desc": "Les interventions de nuit (22h-8h) et du week-end (samedi-dimanche) sont majorées de +30%. Cette majoration est affichée avant la réservation."
+    },
+    "step10": {
+      "title": "Annulation et protection",
+      "desc": "Annulation gratuite dans les 2 premières minutes, puis 75€ de frais. Si aucun artisan ne répond après 10 minutes, annulation gratuite. Si l'artisan ne vient pas (45 min), remboursement automatique."
+    },
+    "step11": {
+      "title": "Avis et facture",
+      "desc": "Après l'intervention, notez l'artisan (1-5 étoiles). La facture est générée automatiquement, consultable et partageable depuis vos réservations."
     },
     "tipsTitle": "Bon à savoir",
-    "tip1": "Votre argent est en sécurité — simple préautorisation, aucun débit avant votre accord.",
-    "tip2": "Annulation gratuite dans les 2 premières minutes.",
-    "tip3": "Tous les artisans sont vérifiés et assurés."
+    "tip1": "Votre argent est en sécurité — aucun débit avant votre accord sur le prix final.",
+    "tip2": "Tous les artisans sont vérifiés : SIRET, Kbis, assurance RC Pro.",
+    "tip3": "Communiquez via le chat intégré — pas besoin de donner votre numéro.",
+    "tip4": "Le paiement en espèces est strictement interdit pour votre sécurité."
   },
   "legal": {
     "cguTitle": "Conditions Générales d'Utilisation",

@@ -16,13 +16,16 @@ type Props = { navigation: any };
 
 const STEPS_CLIENT = [
   { icon: "search", color: "#3b82f6", key: "howItWorks.step1" },
-  { icon: "camera", color: "#8b5cf6", key: "howItWorks.step2" },
-  { icon: "card", color: "#f59e0b", key: "howItWorks.step3" },
-  { icon: "navigate", color: "#16a34a", key: "howItWorks.step4" },
-  { icon: "qr-code", color: "#06b6d4", key: "howItWorks.step5" },
-  { icon: "construct", color: "#E8292C", key: "howItWorks.step6" },
-  { icon: "cash", color: "#16a34a", key: "howItWorks.step7" },
-  { icon: "star", color: "#f59e0b", key: "howItWorks.step8" },
+  { icon: "flash", color: "#E8292C", key: "howItWorks.step2" },
+  { icon: "camera", color: "#8b5cf6", key: "howItWorks.step3" },
+  { icon: "card", color: "#f59e0b", key: "howItWorks.step4" },
+  { icon: "people", color: "#16a34a", key: "howItWorks.step5" },
+  { icon: "navigate", color: "#3b82f6", key: "howItWorks.step6" },
+  { icon: "qr-code", color: "#06b6d4", key: "howItWorks.step7" },
+  { icon: "cash", color: "#16a34a", key: "howItWorks.step8" },
+  { icon: "moon", color: "#f59e0b", key: "howItWorks.step9" },
+  { icon: "shield-checkmark", color: "#E8292C", key: "howItWorks.step10" },
+  { icon: "star", color: "#f59e0b", key: "howItWorks.step11" },
 ];
 
 export default function HowItWorksScreen({ navigation }: Props) {
