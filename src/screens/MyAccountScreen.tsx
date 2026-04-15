@@ -26,6 +26,7 @@ export default function MyAccountScreen({ navigation }: Props) {
   const { user, profile, updateProfile, signOut } = useAuth();
 
   const [fullName, setFullName] = useState(profile?.full_name || "");
+  const [email, setEmail] = useState(user?.email || "");
   const [phone, setPhone] = useState(profile?.phone || "");
   const [address, setAddress] = useState(profile?.address || "");
   const [saving, setSaving] = useState(false);
@@ -33,6 +34,7 @@ export default function MyAccountScreen({ navigation }: Props) {
 
   const hasChanges =
     fullName !== (profile?.full_name || "") ||
+    email !== (user?.email || "") ||
     phone !== (profile?.phone || "") ||
     address !== (profile?.address || "");
 
@@ -50,6 +52,17 @@ export default function MyAccountScreen({ navigation }: Props) {
     setSaving(true);
     try {
       await updateProfile({ full_name: fullName.trim(), phone: phone.trim(), address: address.trim() });
+
+      // Update email if changed
+      if (email.trim() && email.trim() !== user?.email) {
+        const { error: emailError } = await supabase.auth.updateUser({ email: email.trim() });
+        if (emailError) {
+          Alert.alert(t("common.error"), emailError.message);
+          setSaving(false);
+          return;
+        }
+      }
+
       setEdited(false);
       Alert.alert("", t("account.saved"));
     } catch {
@@ -161,9 +174,14 @@ export default function MyAccountScreen({ navigation }: Props) {
         <Text style={styles.addressHint}>{t("account.addressRequired")}</Text>
 
         <Text style={styles.label}>{t("auth.email")}</Text>
-        <View style={[styles.input, styles.inputDisabled]}>
-          <Text style={styles.disabledText}>{user?.email}</Text>
-        </View>
+        <TextInput
+          style={styles.input}
+          value={email}
+          onChangeText={setEmail}
+          keyboardType="email-address"
+          autoCapitalize="none"
+          placeholderTextColor={COLORS.textLight}
+        />
 
         {/* Save */}
         {hasChanges && (
