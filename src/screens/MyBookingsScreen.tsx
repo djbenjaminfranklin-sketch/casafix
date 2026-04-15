@@ -104,7 +104,15 @@ export default function MyBookingsScreen({ navigation }: Props) {
   function handleBookingPress(booking: any) {
     const s = booking.status as BookingStatus;
 
-    if (s === "price_proposed") {
+    if (s === "searching" || s === "matched" || s === "in_progress") {
+      navigation.navigate("EmergencyBooking", {
+        categoryId: booking.category_id,
+        serviceId: booking.service_id,
+        serviceName: booking.service_name,
+        priceRange: booking.price_range,
+        resumeBookingId: booking.id,
+      });
+    } else if (s === "price_proposed") {
       navigation.navigate("PriceConfirmation", {
         bookingId: booking.id,
         serviceName: booking.service_name,
@@ -113,7 +121,7 @@ export default function MyBookingsScreen({ navigation }: Props) {
         proposedPrice: booking.proposed_price,
         paymentIntentId: booking.stripe_payment_intent_id,
       });
-    } else if (s === "pending_client_confirmation") {
+    } else if (s === "pending_client_confirmation" || s === "work_completed") {
       navigation.navigate("WorkCompletion", {
         bookingId: booking.id,
         serviceName: booking.service_name,
@@ -121,13 +129,8 @@ export default function MyBookingsScreen({ navigation }: Props) {
         finalPrice: booking.final_price || booking.proposed_price,
         artisanMarkedDoneAt: booking.artisan_marked_done_at,
       });
-    } else if (s === "completed" || s === "work_completed") {
-      navigation.navigate("Review", {
-        bookingId: booking.id,
-        artisanId: booking.artisan_id || "",
-        artisanName: booking.artisan?.full_name || "",
-        serviceName: booking.service_name,
-      });
+    } else if (s === "completed") {
+      navigation.navigate("Invoice", { bookingId: booking.id });
     }
   }
 
