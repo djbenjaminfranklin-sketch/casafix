@@ -906,9 +906,11 @@
     "guaranteeReminder": "Tous les travaux sont couverts par une garantie de 1 an sur les pièces et la main-d'œuvre."
   },
   "nightRate": {
-    "label": "Tarif de nuit",
-    "info": "+30% de 22h à 8h",
-    "applied": "Tarif de nuit appliqué (+30%)",
-    "notice": "Tarif de nuit : +30% entre 22h et 8h"
+    "label": "Majorations",
+    "info": "+30% nuit (22h-8h) et week-end (sam-dim)",
+    "applied": "Majoration appliquée (+30%)",
+    "appliedNight": "Tarif de nuit appliqué (+30%)",
+    "appliedWeekend": "Tarif week-end appliqué (+30%)",
+    "notice": "Majoration +30% : nuit (22h-8h) et week-end (samedi-dimanche)"
   }
 }

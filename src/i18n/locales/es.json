@@ -868,9 +868,11 @@
     "uploading": "Subiendo fotos..."
   },
   "nightRate": {
-    "label": "Tarifa nocturna",
-    "info": "+30% de 22h a 8h",
-    "applied": "Tarifa nocturna aplicada (+30%)",
-    "notice": "Tarifa nocturna: +30% entre 22h y 8h"
+    "label": "Recargos",
+    "info": "+30% noche (22h-8h) y fin de semana (sáb-dom)",
+    "applied": "Recargo aplicado (+30%)",
+    "appliedNight": "Tarifa nocturna aplicada (+30%)",
+    "appliedWeekend": "Tarifa de fin de semana aplicada (+30%)",
+    "notice": "Recargo +30%: noche (22h-8h) y fin de semana (sábado-domingo)"
   }
 }

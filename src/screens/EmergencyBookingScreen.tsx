@@ -39,7 +39,7 @@ import { supabase } from "../lib/supabase";
 import { Booking } from "../lib/database.types";
 import { analyzeProblem, DiagnosticResult } from "../services/ai-diagnostic";
 import { useLocation } from "../contexts/LocationContext";
-import { isNightTime, applyNightRate } from "../utils/nightRate";
+import { isNightTime, isWeekend, hasSurcharge, applySurcharge, getSurchargeLabel } from "../utils/nightRate";
 
 const { width } = Dimensions.get("window");
 
@@ -763,8 +763,8 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
 
     // 2. Create PaymentIntent (pre-auth for max_price, +30% night rate if applicable)
     const baseMaxPrice = booking.max_price || 150;
-    const nightRate = isNightTime();
-    const maxPrice = nightRate ? applyNightRate(baseMaxPrice) : baseMaxPrice;
+    const nightRate = hasSurcharge();
+    const maxPrice = nightRate ? applySurcharge(baseMaxPrice) : baseMaxPrice;
     const piResult = await createPaymentIntent({
       bookingId: booking.id,
       amount: Math.round(maxPrice * 100), // cents
@@ -1001,7 +1001,7 @@ export default function EmergencyBookingScreen({ route, navigation }: Props) {
             </View>
 
             {/* Night rate banner */}
-            {isNightTime() && (
+            {hasSurcharge() && (
               <View style={styles.nightRateBanner}>
                 <Icon name="moon" size={16} color="#f59e0b" />
                 <Text style={styles.nightRateBannerText}>{t("nightRate.applied")}</Text>

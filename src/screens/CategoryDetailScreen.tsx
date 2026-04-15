@@ -13,7 +13,7 @@ import { useTranslation } from "react-i18next";
 import { CATEGORIES } from "../constants/categories";
 import { getServicesByCategory } from "../constants/services";
 import { COLORS, SPACING, RADIUS } from "../constants/theme";
-import { isNightTime, applyNightRate } from "../utils/nightRate";
+import { isNightTime, isWeekend, hasSurcharge, applySurcharge, getSurchargeLabel } from "../utils/nightRate";
 
 type Props = {
   route: { params: { categoryId: string } };
@@ -136,13 +136,13 @@ export default function CategoryDetailScreen({ route, navigation }: Props) {
                       <Text style={styles.nightRateInfo}>
                         {t("nightRate.label")} : {t("nightRate.info")}
                       </Text>
-                      {isNightTime() && svc.priceRange !== "__onQuote__" && (
+                      {hasSurcharge() && svc.priceRange !== "__onQuote__" && (
                         <Text style={styles.nightRateAdjusted}>
                           {t("nightRate.applied")} — {(() => {
                             const nums = svc.priceRange.match(/\d+/g);
                             if (!nums || nums.length === 0) return svc.priceRange;
                             const max = Math.max(...nums.map(Number));
-                            return `${applyNightRate(max)}€`;
+                            return `${applySurcharge(max)}€`;
                           })()}
                         </Text>
                       )}

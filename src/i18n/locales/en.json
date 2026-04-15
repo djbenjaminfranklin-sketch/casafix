@@ -898,9 +898,11 @@
     "uploading": "Uploading photos..."
   },
   "nightRate": {
-    "label": "Night rate",
-    "info": "+30% from 10pm to 8am",
-    "applied": "Night rate applied (+30%)",
-    "notice": "Night rate: +30% between 10pm and 8am"
+    "label": "Surcharges",
+    "info": "+30% night (10pm-8am) and weekend (Sat-Sun)",
+    "applied": "Surcharge applied (+30%)",
+    "appliedNight": "Night rate applied (+30%)",
+    "appliedWeekend": "Weekend rate applied (+30%)",
+    "notice": "Surcharge +30%: night (10pm-8am) and weekend (Saturday-Sunday)"
   }
 }

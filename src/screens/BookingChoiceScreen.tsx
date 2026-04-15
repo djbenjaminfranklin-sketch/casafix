@@ -47,7 +47,7 @@ export default function BookingChoiceScreen({ route, navigation }: Props) {
           <Text style={styles.nightRateInfo}>
             {t("nightRate.label")} : {t("nightRate.info")}
           </Text>
-          {isNightTime() && (
+          {hasSurcharge() && (
             <Text style={styles.nightRateBanner}>{t("nightRate.applied")}</Text>
           )}
         </View>
