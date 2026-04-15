@@ -37,6 +37,8 @@ export default function AddressBookScreen({ navigation }: Props) {
   const [editingAddress, setEditingAddress] = useState<SavedAddress | null>(null);
   const [label, setLabel] = useState("");
   const [address, setAddress] = useState("");
+  const [postalCode, setPostalCode] = useState("");
+  const [city, setCity] = useState("");
   const [latitude, setLatitude] = useState<number | null>(null);
   const [longitude, setLongitude] = useState<number | null>(null);
   const [isDefault, setIsDefault] = useState(false);
@@ -56,9 +58,17 @@ export default function AddressBookScreen({ navigation }: Props) {
     }, [])
   );
 
+  const parseAddressParts = (raw: string) => {
+    const match = raw.match(/^(.+),\s*(\d{4,5})\s+(.+)$/);
+    if (match) return { street: match[1], postalCode: match[2], city: match[3] };
+    return { street: raw, postalCode: "", city: "" };
+  };
+
   const resetForm = () => {
     setLabel("");
     setAddress("");
+    setPostalCode("");
+    setCity("");
     setLatitude(null);
     setLongitude(null);
     setIsDefault(false);
@@ -73,7 +83,10 @@ export default function AddressBookScreen({ navigation }: Props) {
   const handleOpenEdit = (addr: SavedAddress) => {
     setEditingAddress(addr);
     setLabel(addr.label);
-    setAddress(addr.address);
+    const parts = parseAddressParts(addr.address);
+    setAddress(parts.street);
+    setPostalCode(parts.postalCode);
+    setCity(parts.city);
     setLatitude(addr.latitude);
     setLongitude(addr.longitude);
     setIsDefault(addr.is_default);
@@ -97,8 +110,17 @@ export default function AddressBookScreen({ navigation }: Props) {
                 `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&accept-language=fr`
               );
               const data = await response.json();
-              if (data.display_name) {
-                setAddress(data.display_name);
+              if (data.address) {
+                const a = data.address;
+                const street = [a.house_number, a.road].filter(Boolean).join(" ") || data.display_name || "";
+                setAddress(street);
+                setPostalCode(a.postcode || "");
+                setCity(a.city || a.town || a.village || a.municipality || "");
+              } else if (data.display_name) {
+                const parts = parseAddressParts(data.display_name);
+                setAddress(parts.street);
+                setPostalCode(parts.postalCode);
+                setCity(parts.city);
               }
             } catch (e) {
 
@@ -129,11 +151,14 @@ export default function AddressBookScreen({ navigation }: Props) {
     setSaving(true);
     const lat = latitude || 0;
     const lng = longitude || 0;
+    const combinedAddress = address.trim()
+      ? `${address.trim()}, ${postalCode.trim()} ${city.trim()}`.trim()
+      : "";
 
     if (editingAddress) {
       const { error } = await updateAddress(editingAddress.id, {
         label: label.trim(),
-        address: address.trim(),
+        address: combinedAddress,
         latitude: lat,
         longitude: lng,
         is_default: isDefault,
@@ -142,7 +167,7 @@ export default function AddressBookScreen({ navigation }: Props) {
         Alert.alert(t("common.error"), t("account.saveError"));
       }
     } else {
-      const { error } = await saveAddress(label.trim(), address.trim(), lat, lng, isDefault);
+      const { error } = await saveAddress(label.trim(), combinedAddress, lat, lng, isDefault);
       if (error) {
         Alert.alert(t("common.error"), t("account.saveError"));
       }
@@ -327,15 +352,39 @@ export default function AddressBookScreen({ navigation }: Props) {
               </View>
 
               {/* Address */}
-              <Text style={styles.fieldLabel}>{t("addresses.address")}</Text>
+              <Text style={styles.fieldLabel}>{t("address.street")}</Text>
               <TextInput
-                style={[styles.input, styles.addressInput]}
+                style={styles.input}
                 value={address}
                 onChangeText={setAddress}
-                placeholder={t("booking.addressPlaceholder")}
+                placeholder={t("address.street")}
                 placeholderTextColor={COLORS.textLight}
-                multiline
               />
+
+              <View style={styles.addressRow}>
+                <View style={{ width: "35%" }}>
+                  <Text style={styles.fieldLabel}>{t("address.postalCode")}</Text>
+                  <TextInput
+                    style={styles.input}
+                    value={postalCode}
+                    onChangeText={setPostalCode}
+                    placeholder={t("address.postalCode")}
+                    placeholderTextColor={COLORS.textLight}
+                    keyboardType="numeric"
+                    maxLength={5}
+                  />
+                </View>
+                <View style={{ flex: 1, marginLeft: 10 }}>
+                  <Text style={styles.fieldLabel}>{t("address.city")}</Text>
+                  <TextInput
+                    style={styles.input}
+                    value={city}
+                    onChangeText={setCity}
+                    placeholder={t("address.city")}
+                    placeholderTextColor={COLORS.textLight}
+                  />
+                </View>
+              </View>
 
               {/* Use current location */}
               <TouchableOpacity
@@ -561,9 +610,9 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: COLORS.text,
   },
-  addressInput: {
-    minHeight: 60,
-    textAlignVertical: "top",
+  addressRow: {
+    flexDirection: "row",
+    alignItems: "flex-start",
   },
   quickLabels: {
     flexDirection: "row",

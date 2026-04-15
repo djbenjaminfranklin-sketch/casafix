@@ -638,6 +638,11 @@
       "contactContent": "For any questions about your personal data or to exercise your rights, contact us at: contact@casafix.fr\n\nData controller: BENJAMIN TAIEB, auto-entrepreneur (sole proprietor)\nFrance"
     }
   },
+  "address": {
+    "street": "Address",
+    "postalCode": "Postal code",
+    "city": "City"
+  },
   "account": {
     "phone": "Phone",
     "phonePlaceholder": "+33 6 00 00 00 00",

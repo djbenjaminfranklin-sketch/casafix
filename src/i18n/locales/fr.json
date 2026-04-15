@@ -626,6 +626,11 @@
       "contactContent": "Pour toute question relative à vos données personnelles ou pour exercer vos droits, contactez-nous à : contact@casafix.fr\n\nResponsable du traitement : BENJAMIN TAIEB, auto-entrepreneur\nFrance"
     }
   },
+  "address": {
+    "street": "Adresse",
+    "postalCode": "Code postal",
+    "city": "Ville"
+  },
   "account": {
     "phone": "Téléphone",
     "phonePlaceholder": "+33 6 00 00 00 00",

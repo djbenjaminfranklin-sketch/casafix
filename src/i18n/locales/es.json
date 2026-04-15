@@ -598,6 +598,11 @@
       "contactContent": "Para cualquier consulta sobre sus datos personales o para ejercer sus derechos, contáctenos en: contact@casafix.fr\n\nResponsable del tratamiento: BENJAMIN TAIEB, auto-entrepreneur (empresario individual)\nFrancia"
     }
   },
+  "address": {
+    "street": "Dirección",
+    "postalCode": "Código postal",
+    "city": "Ciudad"
+  },
   "account": {
     "phone": "Teléfono",
     "phonePlaceholder": "+33 6 00 00 00 00",

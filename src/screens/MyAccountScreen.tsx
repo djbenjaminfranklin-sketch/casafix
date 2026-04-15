@@ -28,15 +28,27 @@ export default function MyAccountScreen({ navigation }: Props) {
   const [fullName, setFullName] = useState(profile?.full_name || "");
   const [email, setEmail] = useState(user?.email || "");
   const [phone, setPhone] = useState(profile?.phone || "");
-  const [address, setAddress] = useState(profile?.address || "");
+  const parsedAddress = (() => {
+    const raw = profile?.address || "";
+    // Try to parse "street, postalCode city" format
+    const match = raw.match(/^(.+),\s*(\d{4,5})\s+(.+)$/);
+    if (match) return { street: match[1], postalCode: match[2], city: match[3] };
+    return { street: raw, postalCode: "", city: "" };
+  })();
+  const [address, setAddress] = useState(parsedAddress.street);
+  const [postalCode, setPostalCode] = useState(parsedAddress.postalCode);
+  const [city, setCity] = useState(parsedAddress.city);
   const [saving, setSaving] = useState(false);
   const [edited, setEdited] = useState(false);
 
+  const combinedAddress = address.trim()
+    ? `${address.trim()}, ${postalCode.trim()} ${city.trim()}`.trim()
+    : "";
   const hasChanges =
     fullName !== (profile?.full_name || "") ||
     email !== (user?.email || "") ||
     phone !== (profile?.phone || "") ||
-    address !== (profile?.address || "");
+    combinedAddress !== (profile?.address || "");
 
   function isValidPhone(p: string): boolean {
     const cleaned = p.replace(/[\s\-\(\)]/g, "");
@@ -51,7 +63,7 @@ export default function MyAccountScreen({ navigation }: Props) {
     }
     setSaving(true);
     try {
-      await updateProfile({ full_name: fullName.trim(), phone: phone.trim(), address: address.trim() });
+      await updateProfile({ full_name: fullName.trim(), phone: phone.trim(), address: combinedAddress });
 
       // Update email if changed
       if (email.trim() && email.trim() !== user?.email) {
@@ -160,7 +172,7 @@ export default function MyAccountScreen({ navigation }: Props) {
           keyboardType="phone-pad"
         />
 
-        <Text style={styles.label}>{t("account.address")}</Text>
+        <Text style={styles.label}>{t("address.street")}</Text>
         <TextInput
           style={styles.input}
           value={address}
@@ -168,9 +180,40 @@ export default function MyAccountScreen({ navigation }: Props) {
             setAddress(v);
             setEdited(true);
           }}
-          placeholder={t("account.addressPlaceholder")}
+          placeholder={t("address.street")}
           placeholderTextColor={COLORS.textLight}
         />
+
+        <View style={styles.addressRow}>
+          <View style={{ width: "35%" }}>
+            <Text style={styles.label}>{t("address.postalCode")}</Text>
+            <TextInput
+              style={styles.input}
+              value={postalCode}
+              onChangeText={(v) => {
+                setPostalCode(v);
+                setEdited(true);
+              }}
+              placeholder={t("address.postalCode")}
+              placeholderTextColor={COLORS.textLight}
+              keyboardType="numeric"
+              maxLength={5}
+            />
+          </View>
+          <View style={{ flex: 1, marginLeft: 10 }}>
+            <Text style={styles.label}>{t("address.city")}</Text>
+            <TextInput
+              style={styles.input}
+              value={city}
+              onChangeText={(v) => {
+                setCity(v);
+                setEdited(true);
+              }}
+              placeholder={t("address.city")}
+              placeholderTextColor={COLORS.textLight}
+            />
+          </View>
+        </View>
         <Text style={styles.addressHint}>{t("account.addressRequired")}</Text>
 
         <Text style={styles.label}>{t("auth.email")}</Text>
@@ -265,6 +308,7 @@ const styles = StyleSheet.create({
     color: "#1f2937",
   },
   inputDisabled: { backgroundColor: "#f3f4f6" },
+  addressRow: { flexDirection: "row", alignItems: "flex-start" },
   addressHint: { fontSize: 12, color: COLORS.textLight, marginTop: 4 },
   disabledText: { fontSize: 15, color: COLORS.textLight },
   saveBtn: {
